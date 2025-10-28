@@ -1,0 +1,13 @@
+{
+    "name": "nazmunsakib/advanced-ajax-search-for-woocommerce",
+    "description": "Live product search with AJAX functionality",
+    "type": "wordpress-plugin",
+    "autoload": {
+        "psr-4": {
+            "AASFWC\\": ["includes/classes/", "includes/admin/"]
+        }
+    },
+    "require": {
+        "php": ">=7.4"
+    }
+}

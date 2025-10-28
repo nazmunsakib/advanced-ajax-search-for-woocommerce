@@ -1,0 +1,44 @@
+/**
+ * Admin Styles
+ *
+ * @package AASFWC
+ * @since 1.0.0
+ */
+
+.aasfwc-settings-page .form-table th {
+    width: 200px;
+    font-weight: 600;
+}
+
+.aasfwc-settings-page .form-table td {
+    padding: 15px 10px;
+}
+
+.aasfwc-settings-page .description {
+    font-style: italic;
+    color: #666;
+    margin-top: 5px;
+}
+
+.aasfwc-settings-page input[type="number"],
+.aasfwc-settings-page input[type="password"] {
+    width: 100px;
+}
+
+.aasfwc-settings-page input[type="password"] {
+    width: 300px;
+}
+
+.aasfwc-settings-section {
+    background: #fff;
+    border: 1px solid #ccd0d4;
+    border-radius: 4px;
+    margin: 20px 0;
+    padding: 20px;
+}
+
+.aasfwc-settings-section h3 {
+    margin-top: 0;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 10px;
+}

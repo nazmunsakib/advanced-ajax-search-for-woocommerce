@@ -1,0 +1,240 @@
+/**
+ * Advanced AJAX Search for WooCommerce - Styles
+ * 
+ * Professional CSS with scalable architecture and customization support
+ * 
+ * @package AASFWC
+ * @since 1.0.0
+ */
+
+/* CSS Custom Properties for easy customization */
+:root {
+    --aasfwc-primary-color: #0073aa;
+    --aasfwc-border-color: #ddd;
+    --aasfwc-border-radius: 4px;
+    --aasfwc-box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    --aasfwc-transition: all 0.3s ease;
+    --aasfwc-font-size-base: 14px;
+    --aasfwc-spacing-xs: 5px;
+    --aasfwc-spacing-sm: 10px;
+    --aasfwc-spacing-md: 15px;
+    --aasfwc-spacing-lg: 20px;
+    --aasfwc-z-index-dropdown: 1000;
+}
+
+/* Main Container */
+.aasfwc-ajax-search-container {
+    position: relative;
+    max-width: 400px;
+    width: 100%;
+    font-family: inherit;
+    font-size: var(--aasfwc-font-size-base);
+}
+
+/* Search Input */
+.aasfwc-product-search {
+    width: 100%;
+    padding: var(--aasfwc-spacing-sm) var(--aasfwc-spacing-md);
+    border: 1px solid var(--aasfwc-border-color);
+    border-radius: var(--aasfwc-border-radius);
+    font-size: var(--aasfwc-font-size-base);
+    transition: var(--aasfwc-transition);
+    box-sizing: border-box;
+    outline: none;
+}
+
+.aasfwc-product-search:focus {
+    border-color: var(--aasfwc-primary-color);
+    box-shadow: 0 0 0 2px rgba(0, 115, 170, 0.2);
+}
+
+/* Loading State */
+.aasfwc-ajax-search-container.aasfwc-loading .aasfwc-product-search {
+    background-image: url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="none" stroke="%23ccc" stroke-width="2"/><path d="M12 2a10 10 0 0 1 10 10" stroke="%23666" stroke-width="2" stroke-linecap="round"><animateTransform attributeName="transform" type="rotate" values="0 12 12;360 12 12" dur="1s" repeatCount="indefinite"/></path></svg>');
+    background-repeat: no-repeat;
+    background-position: right var(--aasfwc-spacing-sm) center;
+    background-size: 16px 16px;
+    padding-right: 35px;
+}
+
+/* Results Container */
+.aasfwc-search-results {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: #fff;
+    border: 1px solid var(--aasfwc-border-color);
+    border-top: none;
+    border-radius: 0 0 var(--aasfwc-border-radius) var(--aasfwc-border-radius);
+    max-height: 400px;
+    overflow-y: auto;
+    z-index: var(--aasfwc-z-index-dropdown);
+    box-shadow: var(--aasfwc-box-shadow);
+    display: none;
+}
+
+.aasfwc-ajax-search-container.aasfwc-focused .aasfwc-search-results,
+.aasfwc-ajax-search-container.aasfwc-has-results .aasfwc-search-results {
+    display: block;
+}
+
+/* Results List */
+.aasfwc-search-results-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.aasfwc-search-result-item {
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.aasfwc-search-result-item:last-child {
+    border-bottom: none;
+}
+
+/* Product Link */
+.aasfwc-product-link {
+    display: flex;
+    align-items: center;
+    padding: var(--aasfwc-spacing-sm);
+    text-decoration: none;
+    color: #333;
+    transition: var(--aasfwc-transition);
+}
+
+.aasfwc-product-link:hover {
+    background-color: #f8f9fa;
+    color: var(--aasfwc-primary-color);
+}
+
+.aasfwc-product-link:focus {
+    outline: 2px solid var(--aasfwc-primary-color);
+    outline-offset: -2px;
+}
+
+/* Product Image */
+.aasfwc-product-image {
+    width: 50px;
+    height: 50px;
+    margin-right: var(--aasfwc-spacing-sm);
+    object-fit: cover;
+    border-radius: var(--aasfwc-border-radius);
+    flex-shrink: 0;
+}
+
+/* Product Info */
+.aasfwc-product-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.aasfwc-product-title {
+    display: block;
+    font-weight: 500;
+    margin-bottom: var(--aasfwc-spacing-xs);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.aasfwc-product-price {
+    display: block;
+    color: #666;
+    font-size: 0.9em;
+}
+
+/* Messages */
+.aasfwc-no-results-message,
+.aasfwc-error-message {
+    padding: var(--aasfwc-spacing-md);
+    margin: 0;
+    text-align: center;
+    color: #666;
+    font-style: italic;
+}
+
+.aasfwc-error-message {
+    color: #d63638;
+    background-color: #fef7f7;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .aasfwc-ajax-search-container {
+        max-width: 100%;
+    }
+    
+    .aasfwc-search-results {
+        max-height: 300px;
+    }
+    
+    .aasfwc-product-image {
+        width: 40px;
+        height: 40px;
+    }
+}
+
+@media (max-width: 480px) {
+    .aasfwc-product-link {
+        padding: var(--aasfwc-spacing-xs);
+    }
+    
+    .aasfwc-product-image {
+        width: 35px;
+        height: 35px;
+    }
+    
+    .aasfwc-product-title {
+        font-size: 0.9em;
+    }
+    
+    .aasfwc-product-price {
+        font-size: 0.8em;
+    }
+}
+
+/* High Contrast Mode Support */
+@media (prefers-contrast: high) {
+    .aasfwc-product-search {
+        border-width: 2px;
+    }
+    
+    .aasfwc-search-results {
+        border-width: 2px;
+    }
+}
+
+/* Reduced Motion Support */
+@media (prefers-reduced-motion: reduce) {
+    .aasfwc-product-search,
+    .aasfwc-product-link {
+        transition: none;
+    }
+}
+
+/* Dark Mode Support */
+@media (prefers-color-scheme: dark) {
+    .aasfwc-search-results {
+        background: #1a1a1a;
+        border-color: #444;
+        color: #fff;
+    }
+    
+    .aasfwc-product-link {
+        color: #fff;
+    }
+    
+    .aasfwc-product-link:hover {
+        background-color: #2a2a2a;
+    }
+    
+    .aasfwc-product-price {
+        color: #ccc;
+    }
+    
+    .aasfwc-no-results-message {
+        color: #ccc;
+    }
+}

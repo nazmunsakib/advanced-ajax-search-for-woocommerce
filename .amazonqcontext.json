@@ -1,0 +1,7 @@
+{
+  "project_type": "WordPress Plugin",
+  "goal": "Build AI-powered AJAX product search for WooCommerce like FiboSearch Plugin",
+  "phase": "MVP",
+  "frameworks": ["WordPress", "WooCommerce"],
+  "language": ["PHP", "JavaScript"]
+}

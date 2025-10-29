@@ -102,16 +102,20 @@ class Gutenberg_Block {
             $border_color
         );
         
-        $icon_html = $show_icon ? '<span class="aasfwc-search-icon">🔍</span>' : '';
+        $icon_html = $show_icon ? '<svg class="aasfwc-search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>' : '';
         
         return sprintf(
             '<div class="aasfwc-ajax-search-container aasfwc-block">
-                <div class="aasfwc-search-wrapper" style="%s">
-                    %s
-                    <input type="text" class="aasfwc-product-search" placeholder="%s" style="%s">
-                </div>
+                <form class="aasfwc-search-form" role="search" method="get" action="%s">
+                    <div class="aasfwc-search-wrapper" style="%s">
+                        %s
+                        <input type="text" class="aasfwc-product-search" name="s" placeholder="%s" style="%s" autocomplete="off">
+                        <span class="aasfwc-clear-search" style="display:none;">&times;</span>
+                    </div>
+                </form>
                 <div class="aasfwc-search-results"></div>
             </div>',
+            esc_url(wc_get_page_permalink('shop')),
             $style,
             $icon_html,
             $placeholder,

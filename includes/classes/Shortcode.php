@@ -47,20 +47,24 @@ class Shortcode {
         ], $atts, 'aasfwc_ajax_search');
         
         $show_icon = $atts['show_icon'] === 'true';
-        $icon_html = $show_icon ? '<span class="aasfwc-search-icon">🔍</span>' : '';
+        $icon_html = $show_icon ? '<svg class="aasfwc-search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>' : '';
         $style_attr = !empty($atts['style']) ? ' style="' . esc_attr($atts['style']) . '"' : '';
         
         // Build HTML
         $html = sprintf(
             '<div class="%s"%s>
-                <div class="aasfwc-search-wrapper">
-                    %s
-                    <input type="text" class="%s" placeholder="%s">
-                </div>
+                <form class="aasfwc-search-form" role="search" method="get" action="%s">
+                    <div class="aasfwc-search-wrapper">
+                        %s
+                        <input type="text" class="%s" name="s" placeholder="%s" autocomplete="off">
+                        <span class="aasfwc-clear-search" style="display:none;">&times;</span>
+                    </div>
+                </form>
                 <div class="%s"></div>
             </div>',
             esc_attr($atts['container_class']),
             $style_attr,
+            esc_url(wc_get_page_permalink('shop')),
             $icon_html,
             esc_attr($atts['input_class']),
             esc_attr($atts['placeholder']),

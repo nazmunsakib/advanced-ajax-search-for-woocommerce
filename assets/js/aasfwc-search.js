@@ -1,298 +1,389 @@
 /**
  * Advanced AJAX Search for WooCommerce
  * 
- * Professional JavaScript implementation with extensible architecture
+ * Professional vanilla JavaScript implementation
  * 
  * @package AASFWC
  * @since 1.0.0
  */
 
-(function($, window, document) {
+(function (window, document) {
     'use strict';
-    
+
+    // Configuration
+    const config = {
+        selectors: {
+            input: '.aasfwc-product-search',
+            results: '.aasfwc-search-results',
+            container: '.aasfwc-ajax-search-container'
+        },
+        classes: {
+            loading: 'aasfwc-loading',
+            hasResults: 'aasfwc-has-results',
+            noResults: 'aasfwc-no-results',
+            focused: 'aasfwc-focused'
+        },
+        settings: {
+            minLength: (window.aasfwc_ajax_search && window.aasfwc_ajax_search.settings.min_length) || 2,
+            delay: (window.aasfwc_ajax_search && window.aasfwc_ajax_search.settings.delay) || 300,
+            maxResults: (window.aasfwc_ajax_search && window.aasfwc_ajax_search.settings.max_results) || 10
+        },
+        strings: (window.aasfwc_ajax_search && window.aasfwc_ajax_search.strings) || {}
+    };
+
+    // State
+    let searchTimeout = null;
+    let currentRequest = null;
+
     /**
-     * AASFWC Search Class
-     * 
-     * @since 1.0.0
+     * Find closest parent element with selector
      */
-    class AAsfwcSearch {
-        
-        /**
-         * Constructor
-         * 
-         * @since 1.0.0
-         * @param {Object} options Configuration options
-         */
-        constructor(options = {}) {
-            this.config = $.extend(true, {
-                selectors: {
-                    input: '.aasfwc-product-search',
-                    results: '.aasfwc-search-results',
-                    container: '.aasfwc-ajax-search-container'
-                },
-                classes: {
-                    loading: 'aasfwc-loading',
-                    hasResults: 'aasfwc-has-results',
-                    noResults: 'aasfwc-no-results'
-                },
-                settings: {
-                    minLength: aasfwc_ajax_search.settings.min_length || 2,
-                    delay: aasfwc_ajax_search.settings.delay || 300,
-                    maxResults: aasfwc_ajax_search.settings.max_results || 10
-                },
-                strings: aasfwc_ajax_search.strings || {}
-            }, options);
-            
-            this.searchTimeout = null;
-            this.currentRequest = null;
-            
-            this.init();
-        }
-        
-        /**
-         * Initialize the search functionality
-         * 
-         * @since 1.0.0
-         */
-        init() {
-            this.bindEvents();
-            this.triggerEvent('init', this);
-        }
-        
-        /**
-         * Bind event handlers
-         * 
-         * @since 1.0.0
-         */
-        bindEvents() {
-            $(document).on('input', this.config.selectors.input, (e) => {
-                this.handleInput(e);
-            });
-            
-            $(document).on('focus', this.config.selectors.input, (e) => {
-                this.handleFocus(e);
-            });
-            
-            $(document).on('blur', this.config.selectors.input, (e) => {
-                setTimeout(() => this.handleBlur(e), 200);
-            });
-        }
-        
-        /**
-         * Handle input events
-         * 
-         * @since 1.0.0
-         * @param {Event} e Input event
-         */
-        handleInput(e) {
-            const $input = $(e.target);
-            const query = $input.val().trim();
-            const $container = $input.closest(this.config.selectors.container);
-            const $results = $container.find(this.config.selectors.results);
-            
-            clearTimeout(this.searchTimeout);
-            
-            if (this.currentRequest) {
-                this.currentRequest.abort();
+    function closest(element, selector) {
+        while (element && element !== document) {
+            if (element.matches && element.matches(selector)) {
+                return element;
             }
-            
-            if (query.length < this.config.settings.minLength) {
-                this.clearResults($results, $container);
-                return;
+            element = element.parentElement;
+        }
+        return null;
+    }
+
+    /**
+     * Add class to element
+     */
+    function addClass(element, className) {
+        if (element && element.classList) {
+            element.classList.add(className);
+        }
+    }
+
+    /**
+     * Remove class from element
+     */
+    function removeClass(element, className) {
+        if (element && element.classList) {
+            element.classList.remove(className);
+        }
+    }
+
+    /**
+     * Trigger custom event
+     */
+    function triggerEvent(eventName, data = {}) {
+        const event = new CustomEvent(`aasfwc:${eventName}`, {
+            detail: data,
+            bubbles: true
+        });
+        document.dispatchEvent(event);
+    }
+
+    /**
+     * Handle input events
+     */
+    function handleInput(event) {
+        const input = event.target;
+        const query = input.value.trim();
+        const container = closest(input, config.selectors.container);
+        const results = container ? container.querySelector(config.selectors.results) : null;
+
+        if (!container || !results) return;
+
+        clearTimeout(searchTimeout);
+
+        if (currentRequest) {
+            currentRequest.abort();
+        }
+
+        if (query.length < config.settings.minLength) {
+            clearResults(results, container);
+            return;
+        }
+
+        searchTimeout = setTimeout(() => {
+            performSearch(query, results, container);
+        }, config.settings.delay);
+    }
+
+    /**
+     * Handle focus events
+     */
+    function handleFocus(event) {
+        const input = event.target;
+        const container = closest(input, config.selectors.container);
+
+        if (container) {
+            addClass(container, config.classes.focused);
+            triggerEvent('focus', { input, container });
+        }
+    }
+
+    /**
+     * Handle blur events
+     */
+    function handleBlur(event) {
+        const input = event.target;
+        const container = closest(input, config.selectors.container);
+
+        setTimeout(() => {
+            if (container) {
+                removeClass(container, config.classes.focused);
+                triggerEvent('blur', { input, container });
             }
-            
-            this.searchTimeout = setTimeout(() => {
-                this.performSearch(query, $results, $container);
-            }, this.config.settings.delay);
-        }
+        }, 200);
+    }
+
+    /**
+     * Perform AJAX search
+     */
+    function performSearch(query, results, container) {
+        addClass(container, config.classes.loading);
+
+        const formData = new FormData();
+        formData.append('s', query);
         
-        /**
-         * Handle focus events
-         * 
-         * @since 1.0.0
-         * @param {Event} e Focus event
-         */
-        handleFocus(e) {
-            const $input = $(e.target);
-            const $container = $input.closest(this.config.selectors.container);
-            
-            $container.addClass('aasfwc-focused');
-            this.triggerEvent('focus', { input: $input, container: $container });
-        }
+        // Use WooCommerce AJAX if available
+        const useWcAjax = window.aasfwc_ajax_search.wc_ajax_url;
+        const ajaxUrl = useWcAjax ? window.aasfwc_ajax_search.wc_ajax_url : window.aasfwc_ajax_search.ajax_url;
         
-        /**
-         * Handle blur events
-         * 
-         * @since 1.0.0
-         * @param {Event} e Blur event
-         */
-        handleBlur(e) {
-            const $input = $(e.target);
-            const $container = $input.closest(this.config.selectors.container);
-            
-            $container.removeClass('aasfwc-focused');
-            this.triggerEvent('blur', { input: $input, container: $container });
+        if (!useWcAjax) {
+            formData.append('action', 'aasfwc_ajax_search');
+            formData.append('nonce', window.aasfwc_ajax_search.nonce);
         }
-        
-        /**
-         * Perform AJAX search
-         * 
-         * @since 1.0.0
-         * @param {string} query Search query
-         * @param {jQuery} $results Results container
-         * @param {jQuery} $container Main container
-         */
-        performSearch(query, $results, $container) {
-            $container.addClass(this.config.classes.loading);
-            
-            const requestData = {
-                action: 'aasfwc_live_product_search',
-                query: query,
-                nonce: aasfwc_ajax_search.nonce
-            };
-            
-            // Allow filtering of request data
-            this.triggerEvent('beforeSearch', { query, requestData, results: $results, container: $container });
-            
-            this.currentRequest = $.ajax({
-                url: aasfwc_ajax_search.ajax_url,
-                type: 'POST',
-                data: requestData,
-                success: (response) => {
-                    $container.removeClass(this.config.classes.loading);
-                    
+
+        triggerEvent('beforeSearch', { query, results, container });
+
+        currentRequest = new XMLHttpRequest();
+        currentRequest.open('POST', ajaxUrl);
+
+        currentRequest.onload = function () {
+            removeClass(container, config.classes.loading);
+
+            if (currentRequest.status === 200) {
+                try {
+                    const response = JSON.parse(currentRequest.responseText);
                     if (response.success) {
-                        this.displayResults(response.data, $results, $container, query);
+                        displayResults(response.data, results, container, query);
                     } else {
-                        this.displayError(response.data?.message || this.config.strings.error, $results, $container);
+                        displayError(
+                            (response.data && response.data.message) || config.strings.error,
+                            results,
+                            container
+                        );
                     }
-                },
-                error: (xhr, status, error) => {
-                    $container.removeClass(this.config.classes.loading);
-                    
-                    if (status !== 'abort') {
-                        this.displayError(this.config.strings.error, $results, $container);
-                    }
-                },
-                complete: () => {
-                    this.currentRequest = null;
+                } catch (error) {
+                    displayError(config.strings.error, results, container);
                 }
-            });
-        }
-        
-        /**
-         * Display search results
-         * 
-         * @since 1.0.0
-         * @param {Array} products Product results
-         * @param {jQuery} $results Results container
-         * @param {jQuery} $container Main container
-         * @param {string} query Search query
-         */
-        displayResults(products, $results, $container, query) {
-            // Ensure products is an array
-            if (!Array.isArray(products)) {
-                products = [];
+            } else {
+                displayError(config.strings.error, results, container);
             }
-            
-            if (products.length === 0) {
-                this.displayNoResults($results, $container);
-                return;
-            }
-            
-            let html = '<ul class="aasfwc-search-results-list">';
-            
-            products.forEach((product) => {
-                html += this.renderProductItem(product);
-            });
-            
-            html += '</ul>';
-            
-            $results.html(html);
-            $container.addClass(this.config.classes.hasResults);
-            
-            this.triggerEvent('resultsDisplayed', { products, results: $results, container: $container, query });
+        };
+
+        currentRequest.onerror = function () {
+            removeClass(container, config.classes.loading);
+            displayError(config.strings.error, results, container);
+        };
+
+        currentRequest.onabort = function () {
+            removeClass(container, config.classes.loading);
+        };
+
+        currentRequest.send(formData);
+    }
+
+    /**
+     * Display search results
+     */
+    function displayResults(products, results, container, query) {
+        if (!Array.isArray(products)) {
+            products = [];
         }
+
+        if (products.length === 0) {
+            displayNoResults(results, container);
+            return;
+        }
+
+        const settings = window.aasfwc_ajax_search && window.aasfwc_ajax_search.settings ? window.aasfwc_ajax_search.settings : {};
+        const resultsStyle = `
+            border: ${settings.results_border_width || 1}px solid ${settings.results_border_color || '#ddd'};
+            border-radius: ${settings.results_border_radius || 4}px;
+            background-color: ${settings.results_bg_color || '#ffffff'};
+            padding: ${settings.results_padding || 10}px;
+        `;
+
+        let html = `<ul class="aasfwc-search-results-list" style="${resultsStyle}">`;
+
+        products.forEach(function (product) {
+            html += renderProductItem(product, query);
+        });
+
+        html += '</ul>';
+
+        results.innerHTML = html;
+        addClass(container, config.classes.hasResults);
+
+        triggerEvent('resultsDisplayed', { products, results, container, query });
+    }
+
+    /**
+     * Highlight matching keywords
+     */
+    function highlightKeywords(text, query) {
+        if (!text || !query) return text;
+        const regex = new RegExp(`(${query})`, 'gi');
+        return text.replace(regex, '<span class="aasfwc-highlight">$1</span>');
+    }
+
+    /**
+     * Render individual product item
+     */
+    function renderProductItem(product, query) {
+        const settings = window.aasfwc_ajax_search && window.aasfwc_ajax_search.settings ? window.aasfwc_ajax_search.settings : {};
         
-        /**
-         * Render individual product item
-         * 
-         * @since 1.0.0
-         * @param {Object} product Product data
-         * @return {string} HTML string
-         */
-        renderProductItem(product) {
-            const imageHtml = product.image ? 
-                `<img src="${product.image}" alt="${product.title}" class="aasfwc-product-image">` : '';
-            
-            return `<li class="aasfwc-search-result-item">
+        const showImages = settings.show_images !== undefined ? settings.show_images : 1;
+        const showPrice = settings.show_price !== undefined ? settings.show_price : 1;
+        const showSku = settings.show_sku !== undefined ? settings.show_sku : 0;
+        const showDescription = settings.show_description !== undefined ? settings.show_description : 1;
+        
+        const imageHtml = (showImages && product.image)
+            ? `<img src="${product.image}" alt="${product.title}" class="aasfwc-product-image">`
+            : '';
+
+        const highlightedTitle = highlightKeywords(product.title, query);
+        const skuHtml = (showSku && product.sku) ? ` <strong>(${product.sku})</strong>` : '';
+        const priceHtml = (showPrice && product.price) ? `<span class="aasfwc-product-price">${product.price}</span>` : '';
+        
+        const titleSkuHtml = `<div class="aasfwc-product-title-row">
+            <span class="aasfwc-product-title">${highlightedTitle}${skuHtml}</span>
+            ${priceHtml}
+        </div>`;
+
+        const descHtml = (showDescription && product.short_description) 
+            ? `<span class="aasfwc-product-description">${highlightKeywords(product.short_description, query)}</span>` 
+            : '';
+
+        return `<li class="aasfwc-search-result-item">
                 <a href="${product.url}" class="aasfwc-product-link">
                     ${imageHtml}
                     <div class="aasfwc-product-info">
-                        <span class="aasfwc-product-title">${product.title}</span>
-                        <span class="aasfwc-product-price">${product.price}</span>
+                        ${titleSkuHtml}
+                        ${descHtml}
                     </div>
                 </a>
             </li>`;
+    }
+
+    /**
+     * Display no results message
+     */
+    function displayNoResults(results, container) {
+        results.innerHTML = `<p class="aasfwc-no-results-message">${config.strings.no_results}</p>`;
+        addClass(container, config.classes.noResults);
+
+        triggerEvent('noResults', { results, container });
+    }
+
+    /**
+     * Display error message
+     */
+    function displayError(message, results, container) {
+        results.innerHTML = `<p class="aasfwc-error-message">${message}</p>`;
+
+        triggerEvent('error', { message, results, container });
+    }
+
+    /**
+     * Clear results
+     */
+    function clearResults(results, container) {
+        results.innerHTML = '';
+        removeClass(container, config.classes.hasResults);
+        removeClass(container, config.classes.noResults);
+
+        triggerEvent('resultsCleared', { results, container });
+    }
+
+    /**
+     * Handle clear button click
+     */
+    function handleClear(event) {
+        const clearBtn = event.target;
+        const container = closest(clearBtn, config.selectors.container);
+        if (!container) return;
+
+        const input = container.querySelector(config.selectors.input);
+        const results = container.querySelector(config.selectors.results);
+
+        if (input) {
+            input.value = '';
+            input.focus();
+            clearBtn.style.display = 'none';
         }
-        
-        /**
-         * Display no results message
-         * 
-         * @since 1.0.0
-         * @param {jQuery} $results Results container
-         * @param {jQuery} $container Main container
-         */
-        displayNoResults($results, $container) {
-            $results.html(`<p class="aasfwc-no-results-message">${this.config.strings.no_results}</p>`);
-            $container.addClass(this.config.classes.noResults);
-            
-            this.triggerEvent('noResults', { results: $results, container: $container });
-        }
-        
-        /**
-         * Display error message
-         * 
-         * @since 1.0.0
-         * @param {string} message Error message
-         * @param {jQuery} $results Results container
-         * @param {jQuery} $container Main container
-         */
-        displayError(message, $results, $container) {
-            $results.html(`<p class="aasfwc-error-message">${message}</p>`);
-            
-            this.triggerEvent('error', { message, results: $results, container: $container });
-        }
-        
-        /**
-         * Clear results
-         * 
-         * @since 1.0.0
-         * @param {jQuery} $results Results container
-         * @param {jQuery} $container Main container
-         */
-        clearResults($results, $container) {
-            $results.empty();
-            $container.removeClass(`${this.config.classes.hasResults} ${this.config.classes.noResults}`);
-            
-            this.triggerEvent('resultsCleared', { results: $results, container: $container });
-        }
-        
-        /**
-         * Trigger custom event
-         * 
-         * @since 1.0.0
-         * @param {string} eventName Event name
-         * @param {Object} data Event data
-         */
-        triggerEvent(eventName, data = {}) {
-            $(document).trigger(`aasfwc:${eventName}`, data);
+        if (results) {
+            clearResults(results, container);
         }
     }
-    
+
+    /**
+     * Toggle clear button visibility
+     */
+    function toggleClearButton(input) {
+        const container = closest(input, config.selectors.container);
+        if (!container) return;
+
+        const clearBtn = container.querySelector('.aasfwc-clear-search');
+        if (clearBtn) {
+            clearBtn.style.display = input.value.length > 0 ? 'block' : 'none';
+        }
+    }
+
+    /**
+     * Initialize search functionality
+     */
+    function init() {
+        // Event delegation for input events
+        document.addEventListener('input', function (event) {
+            if (event.target.matches && event.target.matches(config.selectors.input)) {
+                handleInput(event);
+                toggleClearButton(event.target);
+            }
+        });
+
+        // Event delegation for focus events
+        document.addEventListener('focus', function (event) {
+            if (event.target.matches && event.target.matches(config.selectors.input)) {
+                handleFocus(event);
+            }
+        }, true);
+
+        // Event delegation for blur events
+        document.addEventListener('blur', function (event) {
+            if (event.target.matches && event.target.matches(config.selectors.input)) {
+                handleBlur(event);
+            }
+        }, true);
+
+        // Event delegation for clear button
+        document.addEventListener('click', function (event) {
+            if (event.target.matches && event.target.matches('.aasfwc-clear-search')) {
+                handleClear(event);
+            }
+        });
+
+        triggerEvent('init');
+    }
+
     // Initialize when DOM is ready
-    $(document).ready(() => {
-        window.aasfwcSearch = new AAsfwcSearch();
-    });
-    
-})(jQuery, window, document);
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+    } else {
+        init();
+    }
+
+    // Expose public API
+    window.aasfwcSearch = {
+        config: config,
+        triggerEvent: triggerEvent
+    };
+
+})(window, document);

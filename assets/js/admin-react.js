@@ -1,11 +1,12 @@
 /**
- * Modern React Admin Settings
+ * WordPress React Admin Settings
  *
  * @package AASFWC
  * @since 1.0.0
  */
 
-const { useState, useEffect } = React;
+const { useState, useEffect, render } = wp.element;
+const { __ } = wp.i18n;
 
 const SettingsApp = () => {
     const [settings, setSettings] = useState({});
@@ -67,243 +68,317 @@ const SettingsApp = () => {
         setSettings(prev => ({ ...prev, [key]: value }));
     };
 
+    const renderToggle = (key, checked) => {
+        return wp.element.createElement(
+            'label',
+            { className: 'aasfwc-toggle' },
+            wp.element.createElement('input', {
+                type: 'checkbox',
+                checked: checked || false,
+                onChange: (e) => updateSetting(key, e.target.checked)
+            }),
+            wp.element.createElement('span', { className: 'aasfwc-toggle-slider' })
+        );
+    };
+
+    const renderRange = (key, value, min, max, step = 1) => {
+        return wp.element.createElement(
+            'div',
+            { className: 'aasfwc-range-control' },
+            wp.element.createElement('input', {
+                type: 'range',
+                className: 'aasfwc-range-slider',
+                min: min,
+                max: max,
+                step: step,
+                value: value || min,
+                onChange: (e) => updateSetting(key, parseInt(e.target.value))
+            }),
+            wp.element.createElement('input', {
+                type: 'number',
+                className: 'aasfwc-range-value',
+                min: min,
+                max: max,
+                value: value || min,
+                onChange: (e) => updateSetting(key, parseInt(e.target.value))
+            })
+        );
+    };
+
+    const renderTextInput = (key, value, placeholder = '') => {
+        return wp.element.createElement('input', {
+            type: 'text',
+            className: 'aasfwc-text-input',
+            value: value || '',
+            placeholder: placeholder,
+            onChange: (e) => updateSetting(key, e.target.value)
+        });
+    };
+
+    const renderColorPicker = (key, value) => {
+        return wp.element.createElement('input', {
+            type: 'color',
+            className: 'aasfwc-color-picker',
+            value: value || '#000000',
+            onChange: (e) => updateSetting(key, e.target.value)
+        });
+    };
+
+    const renderSettingRow = (label, description, control) => {
+        return wp.element.createElement(
+            'div',
+            { className: 'aasfwc-setting-row' },
+            wp.element.createElement(
+                'div',
+                { className: 'aasfwc-setting-info' },
+                wp.element.createElement('div', { className: 'aasfwc-setting-label' }, label),
+                wp.element.createElement('div', { className: 'aasfwc-setting-description' }, description)
+            ),
+            wp.element.createElement('div', { className: 'aasfwc-setting-control' }, control)
+        );
+    };
+
+    const renderSearchBarPreview = () => {
+        const searchBarStyle = {
+            width: (settings.search_bar_width || 600) + 'px',
+            maxWidth: '100%',
+            borderRadius: (settings.border_radius || 4) + 'px',
+            border: `${settings.border_width || 1}px solid ${settings.border_color || '#ddd'}`,
+            backgroundColor: settings.bg_color || '#fff',
+            padding: `${settings.padding_vertical || 10}px ${settings.padding_horizontal || 15}px`,
+            margin: `${settings.margin_vertical || 0}px ${settings.margin_horizontal || 0}px`,
+            display: 'flex',
+            alignItems: 'center',
+            pointerEvents: 'none'
+        };
+
+        const searchIcon = wp.element.createElement('svg', {
+            key: 'icon',
+            width: '18',
+            height: '18',
+            viewBox: '0 0 24 24',
+            fill: 'none',
+            stroke: 'currentColor',
+            strokeWidth: '2',
+            strokeLinecap: 'round',
+            strokeLinejoin: 'round',
+            style: { marginRight: '8px', color: '#666' }
+        }, [
+            wp.element.createElement('circle', { key: 'c', cx: '11', cy: '11', r: '8' }),
+            wp.element.createElement('path', { key: 'p', d: 'm21 21-4.35-4.35' })
+        ]);
+
+        const barChildren = [];
+        if (settings.show_search_icon) {
+            barChildren.push(searchIcon);
+        }
+        barChildren.push(wp.element.createElement('input', {
+            key: 'input',
+            type: 'text',
+            placeholder: settings.placeholder_text || 'Search products...',
+            readOnly: true,
+            style: { border: 'none', outline: 'none', flex: 1, background: 'transparent', pointerEvents: 'none' }
+        }));
+
+        return wp.element.createElement(
+            'div',
+            { className: 'aasfwc-live-preview' },
+            wp.element.createElement('h3', {}, __('Search Bar Preview', 'advanced-ajax-search-for-woocommerce')),
+            wp.element.createElement('p', { className: 'aasfwc-preview-note' }, __('Preview only - not interactive', 'advanced-ajax-search-for-woocommerce')),
+            wp.element.createElement(
+                'div',
+                { className: 'aasfwc-preview-container' },
+                wp.element.createElement('div', { className: 'aasfwc-preview-search-bar', style: searchBarStyle }, barChildren)
+            )
+        );
+    };
+
+    const renderSearchResultsPreview = () => {
+        const resultsStyle = {
+            borderRadius: (settings.results_border_radius || 4) + 'px',
+            border: `${settings.results_border_width || 1}px solid ${settings.results_border_color || '#ddd'}`,
+            backgroundColor: settings.results_bg_color || '#fff',
+            padding: `${settings.results_padding || 10}px`,
+            pointerEvents: 'none'
+        };
+
+        const renderPreviewItem = (title, price, sku) => {
+            if (!settings.show_images && !settings.show_price && !settings.show_sku && !settings.show_description) {
+                return wp.element.createElement(
+                    'div',
+                    { className: 'aasfwc-preview-result-item', style: { padding: '10px', borderBottom: '1px solid #eee' } },
+                    wp.element.createElement('div', { style: { fontWeight: 'bold' } }, title)
+                );
+            }
+
+            const itemChildren = [];
+            
+            if (settings.show_images) {
+                itemChildren.push(wp.element.createElement('div', { key: 'img', style: { width: '50px', height: '50px', background: '#ddd', borderRadius: '4px', flexShrink: 0 } }));
+            }
+            
+            const infoChildren = [];
+            const titleRowChildren = [];
+            const titleContent = [wp.element.createElement('span', { key: 'title', style: { fontWeight: 'bold' } }, title)];
+            
+            if (settings.show_sku) {
+                titleContent.push(wp.element.createElement('strong', { key: 'sku', style: { marginLeft: '8px', color: '#999', fontSize: '13px' } }, `(${sku})`));
+            }
+            
+            titleRowChildren.push(wp.element.createElement('div', { key: 'title-wrap' }, titleContent));
+            
+            if (settings.show_price) {
+                titleRowChildren.push(wp.element.createElement('div', { key: 'price', style: { color: '#666', fontSize: '14px', fontWeight: '600' } }, price));
+            }
+            
+            infoChildren.push(wp.element.createElement('div', { key: 'title-row', style: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '4px' } }, titleRowChildren));
+            
+            if (settings.show_description) {
+                infoChildren.push(wp.element.createElement('div', { key: 'desc', style: { color: '#666', fontSize: '13px', marginTop: '4px' } }, 'Sample product description...'));
+            }
+            
+            itemChildren.push(wp.element.createElement('div', { key: 'info', style: { flex: 1 } }, infoChildren));
+            
+            return wp.element.createElement('div', { className: 'aasfwc-preview-result-item', style: { display: 'flex', gap: '10px', padding: '10px', borderBottom: '1px solid #eee' } }, itemChildren);
+        };
+
+        return wp.element.createElement(
+            'div',
+            { className: 'aasfwc-live-preview' },
+            wp.element.createElement('h3', {}, __('Search Results Preview', 'advanced-ajax-search-for-woocommerce')),
+            wp.element.createElement('p', { className: 'aasfwc-preview-note' }, __('Preview only - not interactive', 'advanced-ajax-search-for-woocommerce')),
+            wp.element.createElement(
+                'div',
+                { className: 'aasfwc-preview-container' },
+                wp.element.createElement(
+                    'div',
+                    { className: 'aasfwc-preview-results', style: resultsStyle },
+                    renderPreviewItem('Sample Product 1', '$29.99', 'SKU-001'),
+                    renderPreviewItem('Sample Product 2', '$39.99', 'SKU-002'),
+                    renderPreviewItem('Sample Product 3', '$49.99', 'SKU-003')
+                )
+            )
+        );
+    };
+
     if (loading) {
-        return React.createElement('div', { className: 'min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 flex items-center justify-center' },
-            React.createElement('div', { className: 'text-center' },
-                React.createElement('div', { className: 'animate-spin rounded-full h-16 w-16 border-4 border-blue-200 border-t-blue-600 mx-auto mb-4' }),
-                React.createElement('p', { className: 'text-slate-600 font-medium' }, 'Loading settings...')
+        return wp.element.createElement(
+            'div',
+            { className: 'aasfwc-loading-screen' },
+            wp.element.createElement(
+                'div',
+                { className: 'aasfwc-loading-content' },
+                wp.element.createElement('div', { className: 'aasfwc-spinner' }),
+                wp.element.createElement('p', { className: 'aasfwc-loading-text' }, 'Loading settings...')
             )
         );
     }
 
-    return React.createElement('div', { className: 'min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50' },
-        React.createElement('div', { className: 'bg-white shadow-sm border-b border-slate-200' },
-            React.createElement('div', { className: 'max-w-7xl mx-auto px-6 py-8' },
-                React.createElement('h1', { className: 'text-4xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent mb-2' }, aasfwcAdmin.strings.title),
-                React.createElement('p', { className: 'text-slate-600 text-lg' }, 'Configure your AJAX search with intelligent features')
+    return wp.element.createElement(
+        'div',
+        { className: 'aasfwc-settings-container' },
+        wp.element.createElement(
+            'div',
+            { className: 'aasfwc-settings-header' },
+            wp.element.createElement('h1', {}, aasfwcAdmin.strings.title),
+            wp.element.createElement('p', { className: 'description' }, __('Configure your AJAX search with intelligent features', 'advanced-ajax-search-for-woocommerce'))
+        ),
+
+        message && wp.element.createElement(
+            'div',
+            { className: 'aasfwc-notice aasfwc-notice-success' },
+            wp.element.createElement('span', { className: 'aasfwc-notice-icon' }, '✓'),
+            wp.element.createElement('p', {}, message)
+        ),
+
+        wp.element.createElement(
+            'div',
+            { className: 'aasfwc-tab-nav' },
+            wp.element.createElement('button', { className: activeTab === 'general' ? 'active' : '', onClick: () => setActiveTab('general') }, __('General', 'advanced-ajax-search-for-woocommerce')),
+            wp.element.createElement('button', { className: activeTab === 'search' ? 'active' : '', onClick: () => setActiveTab('search') }, __('Search Scope', 'advanced-ajax-search-for-woocommerce')),
+            wp.element.createElement('button', { className: activeTab === 'searchbar' ? 'active' : '', onClick: () => setActiveTab('searchbar') }, __('Search Bar', 'advanced-ajax-search-for-woocommerce')),
+            wp.element.createElement('button', { className: activeTab === 'results' ? 'active' : '', onClick: () => setActiveTab('results') }, __('Search Results', 'advanced-ajax-search-for-woocommerce')),
+            wp.element.createElement('button', { className: activeTab === 'ai' ? 'active' : '', onClick: () => setActiveTab('ai') }, __('AI Features', 'advanced-ajax-search-for-woocommerce'))
+        ),
+
+        wp.element.createElement(
+            'div',
+            { className: 'aasfwc-tab-content' + ((activeTab === 'searchbar' || activeTab === 'results') ? ' aasfwc-with-preview' : '') },
+            
+            activeTab === 'searchbar' && wp.element.createElement(
+                'div',
+                { className: 'aasfwc-preview-layout' },
+                wp.element.createElement(
+                    'div',
+                    { className: 'aasfwc-controls-panel' },
+                    wp.element.createElement('div', { className: 'aasfwc-setting-group' },
+                        renderSettingRow(__('Placeholder Text', 'advanced-ajax-search-for-woocommerce'), __('Text shown in empty search field', 'advanced-ajax-search-for-woocommerce'), renderTextInput('placeholder_text', settings.placeholder_text, 'Search products...')),
+                        renderSettingRow(__('Width', 'advanced-ajax-search-for-woocommerce'), __('Maximum width in pixels', 'advanced-ajax-search-for-woocommerce'), renderRange('search_bar_width', settings.search_bar_width, 200, 1200, 50)),
+                        renderSettingRow(__('Border Width', 'advanced-ajax-search-for-woocommerce'), __('Border thickness', 'advanced-ajax-search-for-woocommerce'), renderRange('border_width', settings.border_width, 0, 10, 1)),
+                        renderSettingRow(__('Border Color', 'advanced-ajax-search-for-woocommerce'), __('Border color', 'advanced-ajax-search-for-woocommerce'), renderColorPicker('border_color', settings.border_color)),
+                        renderSettingRow(__('Border Radius', 'advanced-ajax-search-for-woocommerce'), __('Rounded corners', 'advanced-ajax-search-for-woocommerce'), renderRange('border_radius', settings.border_radius, 0, 50, 1)),
+                        renderSettingRow(__('Background Color', 'advanced-ajax-search-for-woocommerce'), __('Background', 'advanced-ajax-search-for-woocommerce'), renderColorPicker('bg_color', settings.bg_color)),
+                        renderSettingRow(__('Padding Vertical', 'advanced-ajax-search-for-woocommerce'), __('Top/bottom padding', 'advanced-ajax-search-for-woocommerce'), renderRange('padding_vertical', settings.padding_vertical, 0, 50, 1)),
+                        renderSettingRow(__('Padding Horizontal', 'advanced-ajax-search-for-woocommerce'), __('Left/right padding', 'advanced-ajax-search-for-woocommerce'), renderRange('padding_horizontal', settings.padding_horizontal, 0, 50, 1)),
+                        renderSettingRow(__('Margin Vertical', 'advanced-ajax-search-for-woocommerce'), __('Top/bottom margin', 'advanced-ajax-search-for-woocommerce'), renderRange('margin_vertical', settings.margin_vertical, 0, 50, 1)),
+                        renderSettingRow(__('Margin Horizontal', 'advanced-ajax-search-for-woocommerce'), __('Left/right margin', 'advanced-ajax-search-for-woocommerce'), renderRange('margin_horizontal', settings.margin_horizontal, 0, 50, 1)),
+                        renderSettingRow(__('Show Search Icon', 'advanced-ajax-search-for-woocommerce'), __('Display search icon', 'advanced-ajax-search-for-woocommerce'), renderToggle('show_search_icon', settings.show_search_icon))
+                    )
+                ),
+                renderSearchBarPreview()
+            ),
+
+            activeTab === 'results' && wp.element.createElement(
+                'div',
+                { className: 'aasfwc-preview-layout' },
+                wp.element.createElement(
+                    'div',
+                    { className: 'aasfwc-controls-panel' },
+                    wp.element.createElement('div', { className: 'aasfwc-setting-group' },
+                        wp.element.createElement('h3', { style: { marginTop: 0 } }, __('Display Options', 'advanced-ajax-search-for-woocommerce')),
+                        renderSettingRow(__('Show Thumbnail', 'advanced-ajax-search-for-woocommerce'), __('Display product images', 'advanced-ajax-search-for-woocommerce'), renderToggle('show_images', settings.show_images)),
+                        renderSettingRow(__('Show Price', 'advanced-ajax-search-for-woocommerce'), __('Display product price', 'advanced-ajax-search-for-woocommerce'), renderToggle('show_price', settings.show_price)),
+                        renderSettingRow(__('Show Short Description', 'advanced-ajax-search-for-woocommerce'), __('Display product excerpt', 'advanced-ajax-search-for-woocommerce'), renderToggle('show_description', settings.show_description)),
+                        renderSettingRow(__('Show SKU', 'advanced-ajax-search-for-woocommerce'), __('Display product SKU', 'advanced-ajax-search-for-woocommerce'), renderToggle('show_sku', settings.show_sku)),
+                        wp.element.createElement('h3', {}, __('Styling', 'advanced-ajax-search-for-woocommerce')),
+                        renderSettingRow(__('Border Width', 'advanced-ajax-search-for-woocommerce'), __('Border thickness', 'advanced-ajax-search-for-woocommerce'), renderRange('results_border_width', settings.results_border_width, 0, 10, 1)),
+                        renderSettingRow(__('Border Color', 'advanced-ajax-search-for-woocommerce'), __('Border color', 'advanced-ajax-search-for-woocommerce'), renderColorPicker('results_border_color', settings.results_border_color)),
+                        renderSettingRow(__('Border Radius', 'advanced-ajax-search-for-woocommerce'), __('Rounded corners', 'advanced-ajax-search-for-woocommerce'), renderRange('results_border_radius', settings.results_border_radius, 0, 50, 1)),
+                        renderSettingRow(__('Background Color', 'advanced-ajax-search-for-woocommerce'), __('Background', 'advanced-ajax-search-for-woocommerce'), renderColorPicker('results_bg_color', settings.results_bg_color)),
+                        renderSettingRow(__('Padding', 'advanced-ajax-search-for-woocommerce'), __('Inner padding', 'advanced-ajax-search-for-woocommerce'), renderRange('results_padding', settings.results_padding, 0, 50, 1))
+                    )
+                ),
+                renderSearchResultsPreview()
+            ),
+
+            activeTab === 'general' && wp.element.createElement('div', { className: 'aasfwc-setting-group' },
+                renderSettingRow(__('Enable AJAX Search', 'advanced-ajax-search-for-woocommerce'), __('Enable real-time search', 'advanced-ajax-search-for-woocommerce'), renderToggle('enable_ajax', settings.enable_ajax)),
+                renderSettingRow(__('Results Limit', 'advanced-ajax-search-for-woocommerce'), __('Maximum results', 'advanced-ajax-search-for-woocommerce'), renderRange('search_limit', settings.search_limit, 1, 50)),
+                renderSettingRow(__('Minimum Characters', 'advanced-ajax-search-for-woocommerce'), __('Trigger threshold', 'advanced-ajax-search-for-woocommerce'), renderRange('min_chars', settings.min_chars, 1, 5)),
+                renderSettingRow(__('Search Delay (ms)', 'advanced-ajax-search-for-woocommerce'), __('Debounce delay', 'advanced-ajax-search-for-woocommerce'), renderRange('search_delay', settings.search_delay, 100, 1000, 100))
+            ),
+
+            activeTab === 'search' && wp.element.createElement('div', { className: 'aasfwc-setting-group' },
+                renderSettingRow(__('Search in Title', 'advanced-ajax-search-for-woocommerce'), __('Search product titles', 'advanced-ajax-search-for-woocommerce'), renderToggle('search_in_title', settings.search_in_title)),
+                renderSettingRow(__('Search in SKU', 'advanced-ajax-search-for-woocommerce'), __('Search product SKUs', 'advanced-ajax-search-for-woocommerce'), renderToggle('search_in_sku', settings.search_in_sku)),
+                renderSettingRow(__('Search in Content', 'advanced-ajax-search-for-woocommerce'), __('Search descriptions', 'advanced-ajax-search-for-woocommerce'), renderToggle('search_in_content', settings.search_in_content)),
+                renderSettingRow(__('Search in Excerpt', 'advanced-ajax-search-for-woocommerce'), __('Search short descriptions', 'advanced-ajax-search-for-woocommerce'), renderToggle('search_in_excerpt', settings.search_in_excerpt)),
+                renderSettingRow(__('Search in Categories', 'advanced-ajax-search-for-woocommerce'), __('Search categories', 'advanced-ajax-search-for-woocommerce'), renderToggle('search_in_categories', settings.search_in_categories))
+            ),
+
+            activeTab === 'ai' && wp.element.createElement('div', { className: 'aasfwc-setting-group' },
+                renderSettingRow(__('Typo Correction', 'advanced-ajax-search-for-woocommerce'), __('Auto-fix spelling mistakes', 'advanced-ajax-search-for-woocommerce'), renderToggle('enable_typo_correction', settings.enable_typo_correction)),
+                renderSettingRow(__('Synonym Support', 'advanced-ajax-search-for-woocommerce'), __('Expand with related terms', 'advanced-ajax-search-for-woocommerce'), renderToggle('enable_synonyms', settings.enable_synonyms))
             )
         ),
 
-        React.createElement('div', { className: 'max-w-7xl mx-auto px-6 py-8' },
-            message && React.createElement('div', { className: 'mb-8 p-4 bg-gradient-to-r from-green-50 to-emerald-50 border border-green-200 rounded-xl shadow-sm' },
-                React.createElement('p', { className: 'text-green-800 font-medium' }, message)
-            ),
-
-            React.createElement('div', { className: 'mb-8' },
-                React.createElement('div', { className: 'border-b border-slate-200 bg-white rounded-t-xl' },
-                    React.createElement('nav', { className: 'flex space-x-8 px-6' },
-                        React.createElement('button', {
-                            onClick: () => setActiveTab('general'),
-                            className: activeTab === 'general' ? 'py-4 px-1 border-b-2 border-blue-500 text-blue-600 font-medium text-sm' : 'py-4 px-1 border-b-2 border-transparent text-slate-500 hover:text-slate-700 font-medium text-sm'
-                        }, '⚙️ General Settings'),
-                        React.createElement('button', {
-                            onClick: () => setActiveTab('display'),
-                            className: activeTab === 'display' ? 'py-4 px-1 border-b-2 border-blue-500 text-blue-600 font-medium text-sm' : 'py-4 px-1 border-b-2 border-transparent text-slate-500 hover:text-slate-700 font-medium text-sm'
-                        }, '🎨 Display Options'),
-                        React.createElement('button', {
-                            onClick: () => setActiveTab('ai'),
-                            className: activeTab === 'ai' ? 'py-4 px-1 border-b-2 border-blue-500 text-blue-600 font-medium text-sm' : 'py-4 px-1 border-b-2 border-transparent text-slate-500 hover:text-slate-700 font-medium text-sm'
-                        }, '🤖 AI Features')
-                    )
-                )
-            ),
-
-            React.createElement('div', { className: 'bg-white rounded-b-xl shadow-sm border border-slate-200' },
-                activeTab === 'general' && React.createElement('div', { className: 'p-8' },
-                    React.createElement('div', { className: 'grid grid-cols-1 lg:grid-cols-2 gap-8' },
-                        React.createElement('div', { className: 'space-y-8' },
-                            React.createElement('div', { className: 'bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-6 border border-blue-100' },
-                                React.createElement('h3', { className: 'text-lg font-semibold text-slate-900 mb-2' }, '🚀 AJAX Search'),
-                                React.createElement('p', { className: 'text-sm text-slate-600 mb-4' }, 'Enable real-time search functionality'),
-                                React.createElement('label', { className: 'relative inline-flex items-center cursor-pointer' },
-                                    React.createElement('input', {
-                                        type: 'checkbox',
-                                        checked: settings.enable_ajax || false,
-                                        onChange: (e) => updateSetting('enable_ajax', e.target.checked),
-                                        className: 'sr-only peer'
-                                    }),
-                                    React.createElement('div', { className: 'relative w-14 h-7 bg-slate-200 rounded-full peer peer-checked:bg-blue-600' },
-                                        React.createElement('div', { className: 'absolute top-0.5 left-0.5 w-6 h-6 bg-white rounded-full transition-transform peer-checked:translate-x-7' })
-                                    )
-                                )
-                            ),
-                            React.createElement('div', { className: 'bg-gradient-to-r from-purple-50 to-pink-50 rounded-xl p-6 border border-purple-100' },
-                                React.createElement('h3', { className: 'text-lg font-semibold text-slate-900 mb-2' }, '🤖 AI-Powered Search'),
-                                React.createElement('p', { className: 'text-sm text-slate-600 mb-4' }, 'Enhanced search with intelligent algorithms'),
-                                React.createElement('label', { className: 'relative inline-flex items-center cursor-pointer' },
-                                    React.createElement('input', {
-                                        type: 'checkbox',
-                                        checked: settings.enable_ai || false,
-                                        onChange: (e) => updateSetting('enable_ai', e.target.checked),
-                                        className: 'sr-only peer'
-                                    }),
-                                    React.createElement('div', { className: 'relative w-14 h-7 bg-slate-200 rounded-full peer peer-checked:bg-purple-600' },
-                                        React.createElement('div', { className: 'absolute top-0.5 left-0.5 w-6 h-6 bg-white rounded-full transition-transform peer-checked:translate-x-7' })
-                                    )
-                                )
-                            )
-                        ),
-                        React.createElement('div', { className: 'space-y-6' },
-                            React.createElement('div', { className: 'bg-white rounded-xl p-6 border border-slate-200 shadow-sm' },
-                                React.createElement('label', { className: 'block text-sm font-semibold text-slate-700 mb-3' }, '📊 Search Results Limit'),
-                                React.createElement('input', {
-                                    type: 'number',
-                                    min: 1,
-                                    max: 50,
-                                    value: settings.search_limit || 10,
-                                    onChange: (e) => updateSetting('search_limit', parseInt(e.target.value)),
-                                    className: 'w-full px-4 py-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500'
-                                }),
-                                React.createElement('p', { className: 'text-sm text-slate-500 mt-2' }, 'Maximum number of results to display (1-50)')
-                            ),
-                            React.createElement('div', { className: 'bg-white rounded-xl p-6 border border-slate-200 shadow-sm' },
-                                React.createElement('label', { className: 'block text-sm font-semibold text-slate-700 mb-3' }, '✏️ Minimum Characters'),
-                                React.createElement('input', {
-                                    type: 'number',
-                                    min: 1,
-                                    max: 5,
-                                    value: settings.min_chars || 2,
-                                    onChange: (e) => updateSetting('min_chars', parseInt(e.target.value)),
-                                    className: 'w-full px-4 py-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500'
-                                }),
-                                React.createElement('p', { className: 'text-sm text-slate-500 mt-2' }, 'Characters needed to trigger search (1-5)')
-                            ),
-                            React.createElement('div', { className: 'bg-white rounded-xl p-6 border border-slate-200 shadow-sm' },
-                                React.createElement('label', { className: 'block text-sm font-semibold text-slate-700 mb-3' }, '⏱️ Search Delay (ms)'),
-                                React.createElement('input', {
-                                    type: 'number',
-                                    min: 100,
-                                    max: 1000,
-                                    step: 100,
-                                    value: settings.search_delay || 300,
-                                    onChange: (e) => updateSetting('search_delay', parseInt(e.target.value)),
-                                    className: 'w-full px-4 py-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500'
-                                }),
-                                React.createElement('p', { className: 'text-sm text-slate-500 mt-2' }, 'Debounce delay in milliseconds (100-1000)')
-                            )
-                        )
-                    )
-                ),
-
-                activeTab === 'display' && React.createElement('div', { className: 'p-8' },
-                    React.createElement('div', { className: 'grid grid-cols-1 md:grid-cols-3 gap-6' },
-                        React.createElement('div', { className: 'bg-gradient-to-br from-emerald-50 to-teal-50 rounded-xl p-6 border border-emerald-100' },
-                            React.createElement('h3', { className: 'font-semibold text-slate-900 mb-2' }, '🖼️ Product Images'),
-                            React.createElement('p', { className: 'text-sm text-slate-600 mb-4' }, 'Show thumbnails'),
-                            React.createElement('label', { className: 'relative inline-flex items-center cursor-pointer' },
-                                React.createElement('input', {
-                                    type: 'checkbox',
-                                    checked: settings.show_images || false,
-                                    onChange: (e) => updateSetting('show_images', e.target.checked),
-                                    className: 'sr-only peer'
-                                }),
-                                React.createElement('div', { className: 'relative w-11 h-6 bg-slate-200 rounded-full peer peer-checked:bg-emerald-600' },
-                                    React.createElement('div', { className: 'absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full transition-transform peer-checked:translate-x-5' })
-                                )
-                            )
-                        ),
-                        React.createElement('div', { className: 'bg-gradient-to-br from-amber-50 to-orange-50 rounded-xl p-6 border border-amber-100' },
-                            React.createElement('h3', { className: 'font-semibold text-slate-900 mb-2' }, '💰 Product Prices'),
-                            React.createElement('p', { className: 'text-sm text-slate-600 mb-4' }, 'Display pricing'),
-                            React.createElement('label', { className: 'relative inline-flex items-center cursor-pointer' },
-                                React.createElement('input', {
-                                    type: 'checkbox',
-                                    checked: settings.show_price || false,
-                                    onChange: (e) => updateSetting('show_price', e.target.checked),
-                                    className: 'sr-only peer'
-                                }),
-                                React.createElement('div', { className: 'relative w-11 h-6 bg-slate-200 rounded-full peer peer-checked:bg-amber-600' },
-                                    React.createElement('div', { className: 'absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full transition-transform peer-checked:translate-x-5' })
-                                )
-                            )
-                        ),
-                        React.createElement('div', { className: 'bg-gradient-to-br from-rose-50 to-pink-50 rounded-xl p-6 border border-rose-100' },
-                            React.createElement('h3', { className: 'font-semibold text-slate-900 mb-2' }, '🛒 Add to Cart'),
-                            React.createElement('p', { className: 'text-sm text-slate-600 mb-4' }, 'Quick purchase'),
-                            React.createElement('label', { className: 'relative inline-flex items-center cursor-pointer' },
-                                React.createElement('input', {
-                                    type: 'checkbox',
-                                    checked: settings.show_add_to_cart || false,
-                                    onChange: (e) => updateSetting('show_add_to_cart', e.target.checked),
-                                    className: 'sr-only peer'
-                                }),
-                                React.createElement('div', { className: 'relative w-11 h-6 bg-slate-200 rounded-full peer peer-checked:bg-rose-600' },
-                                    React.createElement('div', { className: 'absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full transition-transform peer-checked:translate-x-5' })
-                                )
-                            )
-                        )
-                    )
-                ),
-
-                activeTab === 'ai' && React.createElement('div', { className: 'p-8' },
-                    React.createElement('div', { className: 'grid grid-cols-1 md:grid-cols-2 gap-8' },
-                        React.createElement('div', { className: 'bg-gradient-to-br from-violet-50 to-purple-50 rounded-xl p-8 border border-violet-100' },
-                            React.createElement('h3', { className: 'text-xl font-semibold text-slate-900 mb-2' }, '✨ Typo Correction'),
-                            React.createElement('p', { className: 'text-slate-600 mb-4' }, 'Automatically correct common spelling mistakes'),
-                            React.createElement('label', { className: 'relative inline-flex items-center cursor-pointer mb-4' },
-                                React.createElement('input', {
-                                    type: 'checkbox',
-                                    checked: settings.enable_typo_correction || false,
-                                    onChange: (e) => updateSetting('enable_typo_correction', e.target.checked),
-                                    className: 'sr-only peer'
-                                }),
-                                React.createElement('div', { className: 'relative w-14 h-7 bg-slate-200 rounded-full peer peer-checked:bg-violet-600' },
-                                    React.createElement('div', { className: 'absolute top-0.5 left-0.5 w-6 h-6 bg-white rounded-full transition-transform peer-checked:translate-x-7' })
-                                )
-                            ),
-                            React.createElement('div', { className: 'bg-white rounded-lg p-4' },
-                                React.createElement('p', { className: 'text-sm text-slate-700 font-medium mb-2' }, 'Examples:'),
-                                React.createElement('ul', { className: 'text-sm text-slate-600 space-y-1' },
-                                    React.createElement('li', {}, '• "tshirt" → "t-shirt"'),
-                                    React.createElement('li', {}, '• "shose" → "shoes"'),
-                                    React.createElement('li', {}, '• "jens" → "jeans"')
-                                )
-                            )
-                        ),
-                        React.createElement('div', { className: 'bg-gradient-to-br from-cyan-50 to-blue-50 rounded-xl p-8 border border-cyan-100' },
-                            React.createElement('h3', { className: 'text-xl font-semibold text-slate-900 mb-2' }, '🔄 Synonym Support'),
-                            React.createElement('p', { className: 'text-slate-600 mb-4' }, 'Expand searches with related terms'),
-                            React.createElement('label', { className: 'relative inline-flex items-center cursor-pointer mb-4' },
-                                React.createElement('input', {
-                                    type: 'checkbox',
-                                    checked: settings.enable_synonyms || false,
-                                    onChange: (e) => updateSetting('enable_synonyms', e.target.checked),
-                                    className: 'sr-only peer'
-                                }),
-                                React.createElement('div', { className: 'relative w-14 h-7 bg-slate-200 rounded-full peer peer-checked:bg-cyan-600' },
-                                    React.createElement('div', { className: 'absolute top-0.5 left-0.5 w-6 h-6 bg-white rounded-full transition-transform peer-checked:translate-x-7' })
-                                )
-                            ),
-                            React.createElement('div', { className: 'bg-white rounded-lg p-4' },
-                                React.createElement('p', { className: 'text-sm text-slate-700 font-medium mb-2' }, 'Examples:'),
-                                React.createElement('ul', { className: 'text-sm text-slate-600 space-y-1' },
-                                    React.createElement('li', {}, '• "shirt" includes "top", "blouse"'),
-                                    React.createElement('li', {}, '• "pants" includes "trousers"'),
-                                    React.createElement('li', {}, '• "shoes" includes "footwear"')
-                                )
-                            )
-                        )
-                    )
-                )
-            ),
-
-            React.createElement('div', { className: 'fixed bottom-8 right-8 z-50' },
-                React.createElement('button', {
-                    onClick: saveSettings,
-                    disabled: saving,
-                    className: 'px-8 py-4 bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-semibold rounded-full shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200'
-                },
-                    saving ? 'Saving...' : 'Save Settings 💾'
-                )
-            )
-        )
+        wp.element.createElement('button', { className: 'aasfwc-save-button', disabled: saving, onClick: saveSettings }, saving ? aasfwcAdmin.strings.saving : aasfwcAdmin.strings.save)
     );
 };
 
-// Initialize React app when DOM is ready
 document.addEventListener('DOMContentLoaded', () => {
     const root = document.getElementById('aasfwc-settings-root');
     if (root) {
-        ReactDOM.render(React.createElement(SettingsApp), root);
+        render(wp.element.createElement(SettingsApp), root);
     }
 });

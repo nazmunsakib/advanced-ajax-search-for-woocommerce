@@ -55,7 +55,7 @@
 ```
 
 #### Gutenberg Block
-Search for "AJAX Product Search" in the block editor and customize via inspector panel.
+Search for "Advanced AJAX Search" in the block editor and customize via inspector panel.
 
 ## 📋 Requirements
 
@@ -175,29 +175,6 @@ advanced-ajax-search-for-woocommerce/
 - **`Gutenberg_Block`** - Block editor integration
 - **`Admin_Settings`** - Configuration interface
 
-## 🎨 Customization
-
-### CSS Variables
-```css
-:root {
-    --aasfwc-primary-color: #0073aa;
-    --aasfwc-border-color: #ddd;
-    --aasfwc-border-radius: 4px;
-    --aasfwc-box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-}
-```
-
-### Custom Styling
-```css
-.aasfwc-ajax-search-container {
-    /* Your custom styles */
-}
-
-.aasfwc-search-results-list {
-    /* Results container styles */
-}
-```
-
 ## 🐛 Troubleshooting
 
 ### Common Issues
@@ -250,7 +227,6 @@ This project is licensed under the GPL v2 License - see the [LICENSE](LICENSE) f
 - WordPress community for excellent documentation
 - WooCommerce team for robust e-commerce platform
 - React team for modern UI framework
-- Tailwind CSS for utility-first styling
 
 ---
 

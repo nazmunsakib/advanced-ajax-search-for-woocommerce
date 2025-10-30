@@ -46,7 +46,7 @@ function aasfwc_init() {
     }
     
     // Initialize main plugin class
-    AASFWC\Plugin::get_instance();
+    AASFWC\Advanced_Ajax_Search::get_instance();
 }
 
 // Hook initialization

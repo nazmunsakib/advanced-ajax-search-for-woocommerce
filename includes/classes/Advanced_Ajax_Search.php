@@ -11,20 +11,20 @@ namespace AASFWC;
 defined( 'ABSPATH' ) || exit;
 
 /**
- * Main Plugin Class
+ * Main Advanced_Ajax_Search Class
  *
  * Handles the core functionality of the Advanced AJAX Search plugin.
  * Uses singleton pattern for scalability and extensibility.
  *
  * @since 1.0.0
  */
-class Plugin {
+final class Advanced_Ajax_Search {
 
 	/**
 	 * Plugin instance
 	 *
 	 * @since 1.0.0
-	 * @var Plugin|null
+	 * @var Advanced_Ajax_Search|null
 	 */
 	private static $instance = null;
 
@@ -80,7 +80,7 @@ class Plugin {
 	 * Get plugin instance (Singleton)
 	 *
 	 * @since 1.0.0
-	 * @return Plugin
+	 * @return Advanced_Ajax_Search
 	 */
 	public static function get_instance() {
 		if ( null === self::$instance ) {

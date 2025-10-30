@@ -34,6 +34,18 @@ define('AASFWC_PLUGIN_URL', plugin_dir_url(__FILE__));
 define('AASFWC_PLUGIN_BASENAME', plugin_basename(__FILE__));
 
 /**
+ * Declare WooCommerce HPOS compatibility
+ *
+ * @since 1.0.0
+ * @return void
+ */
+add_action('before_woocommerce_init', function() {
+    if (class_exists('\Automattic\WooCommerce\Utilities\FeaturesUtil')) {
+        \Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility('custom_order_tables', __FILE__, true);
+    }
+});
+
+/**
  * Initialize the plugin
  *
  * @since 1.0.0

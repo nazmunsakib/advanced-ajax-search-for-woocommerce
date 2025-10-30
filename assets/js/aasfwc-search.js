@@ -208,13 +208,14 @@
             border: ${settings.results_border_width || 1}px solid ${settings.results_border_color || '#ddd'};
             border-radius: ${settings.results_border_radius || 4}px;
             background-color: ${settings.results_bg_color || '#ffffff'};
-            padding: ${settings.results_padding || 10}px;
         `;
 
-        let html = `<ul class="aasfwc-search-results-list" style="${resultsStyle}">`;
+        results.style.cssText = resultsStyle;
+
+        let html = '<ul class="aasfwc-search-results-list">';
 
         products.forEach(function (product) {
-            html += renderProductItem(product, query);
+            html += renderProductItem(product, query, settings);
         });
 
         html += '</ul>';
@@ -237,20 +238,19 @@
     /**
      * Render individual product item
      */
-    function renderProductItem(product, query) {
-        const settings = window.aasfwc_ajax_search && window.aasfwc_ajax_search.settings ? window.aasfwc_ajax_search.settings : {};
-        
-        const showImages = settings.show_images !== undefined ? settings.show_images : 1;
-        const showPrice = settings.show_price !== undefined ? settings.show_price : 1;
-        const showSku = settings.show_sku !== undefined ? settings.show_sku : 0;
-        const showDescription = settings.show_description !== undefined ? settings.show_description : 1;
+    function renderProductItem(product, query, settings) {
+        const showImages = settings.show_images === 1;
+        const showPrice = settings.show_price === 1;
+        const showSku = settings.show_sku === 1;
+        const showDescription = settings.show_description === 1;
+        const padding = settings.results_padding || 10;
         
         const imageHtml = (showImages && product.image)
             ? `<img src="${product.image}" alt="${product.title}" class="aasfwc-product-image">`
             : '';
 
         const highlightedTitle = highlightKeywords(product.title, query);
-        const skuHtml = (showSku && product.sku) ? ` <strong>(${product.sku})</strong>` : '';
+        const skuHtml = (showSku && product.sku) ? ` <strong>(SKU: ${product.sku})</strong>` : '';
         const priceHtml = (showPrice && product.price) ? `<span class="aasfwc-product-price">${product.price}</span>` : '';
         
         const titleSkuHtml = `<div class="aasfwc-product-title-row">
@@ -262,7 +262,7 @@
             ? `<span class="aasfwc-product-description">${highlightKeywords(product.short_description, query)}</span>` 
             : '';
 
-        return `<li class="aasfwc-search-result-item">
+        return `<li class="aasfwc-search-result-item" style="padding: ${padding}px;">
                 <a href="${product.url}" class="aasfwc-product-link">
                     ${imageHtml}
                     <div class="aasfwc-product-info">
@@ -277,9 +277,15 @@
      * Display no results message
      */
     function displayNoResults(results, container) {
+        const settings = window.aasfwc_ajax_search && window.aasfwc_ajax_search.settings ? window.aasfwc_ajax_search.settings : {};
+        const resultsStyle = `
+            border: ${settings.results_border_width || 1}px solid ${settings.results_border_color || '#ddd'};
+            border-radius: ${settings.results_border_radius || 4}px;
+            background-color: ${settings.results_bg_color || '#ffffff'};
+        `;
+        results.style.cssText = resultsStyle;
         results.innerHTML = `<p class="aasfwc-no-results-message">${config.strings.no_results}</p>`;
         addClass(container, config.classes.noResults);
-
         triggerEvent('noResults', { results, container });
     }
 

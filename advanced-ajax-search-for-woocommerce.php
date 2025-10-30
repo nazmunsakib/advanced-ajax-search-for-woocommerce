@@ -53,6 +53,19 @@ function aasfwc_init() {
 add_action('plugins_loaded', 'aasfwc_init');
 
 /**
+ * Add settings link to plugin action links
+ *
+ * @since 1.0.0
+ * @param array $links Plugin action links
+ * @return array Modified plugin action links
+ */
+add_filter('plugin_action_links_' . AASFWC_PLUGIN_BASENAME, function($links) {
+    $settings_link = '<a href="' . admin_url('admin.php?page=aasfwc-settings') . '">' . __('Settings', 'advanced-ajax-search-for-woocommerce') . '</a>';
+    array_unshift($links, $settings_link);
+    return $links;
+});
+
+/**
  * Plugin activation hook
  *
  * @since 1.0.0
@@ -75,3 +88,19 @@ register_activation_hook(__FILE__, function() {
 register_deactivation_hook(__FILE__, function() {
     // Cleanup if needed
 });
+
+/**
+ * Add plugin meta links
+ *
+ * @since 1.0.0
+ * @param array $links Plugin meta links
+ * @param string $file Plugin file
+ * @return array Modified plugin meta links
+ */
+add_filter('plugin_row_meta', function($links, $file) {
+    if ($file === AASFWC_PLUGIN_BASENAME) {
+        $links[] = '<a href="https://github.com/nazmunsakib/advanced-ajax-search-for-woocommerce" target="_blank">' . __('Documentation', 'advanced-ajax-search-for-woocommerce') . '</a>';
+        $links[] = '<a href="https://github.com/nazmunsakib/advanced-ajax-search-for-woocommerce/issues" target="_blank">' . __('Support', 'advanced-ajax-search-for-woocommerce') . '</a>';
+    }
+    return $links;
+}, 10, 2);

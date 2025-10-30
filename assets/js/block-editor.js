@@ -12,7 +12,7 @@
     const { createElement: el } = wp.element;
 
     registerBlockType('aasfwc/ajax-search', {
-        title: 'AJAX Product Search',
+        title: 'Advanced AJAX Search',
         icon: 'search',
         category: 'woocommerce',
         description: 'Add an AJAX-powered product search box',
@@ -76,28 +76,72 @@
                         })
                     )
                 ),
-                el('div', {
-                    className: 'aasfwc-ajax-search-container aasfwc-block-preview',
-                    style: {
-                        backgroundColor: backgroundColor,
-                        border: `1px solid ${borderColor}`,
-                        borderRadius: '4px',
-                        padding: '10px'
-                    }
-                },
-                    showIcon && el('span', { className: 'aasfwc-search-icon' }, '🔍'),
-                    el('input', {
-                        type: 'text',
-                        placeholder: placeholder,
+                el('div', {},
+                    el('div', {
+                        style: {
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '8px',
+                            marginBottom: '10px',
+                            padding: '8px',
+                            background: '#f0f0f0',
+                            borderRadius: '4px'
+                        }
+                    },
+                        el('svg', {
+                            width: '20',
+                            height: '20',
+                            viewBox: '0 0 24 24',
+                            fill: 'none',
+                            stroke: '#667eea',
+                            strokeWidth: '2',
+                            strokeLinecap: 'round',
+                            strokeLinejoin: 'round'
+                        },
+                            el('circle', { cx: '11', cy: '11', r: '8' }),
+                            el('path', { d: 'm21 21-4.35-4.35' })
+                        ),
+                        el('strong', { style: { color: '#667eea', fontSize: '14px' } }, 'Advanced AJAX Search')
+                    ),
+                    el('div', {
+                        className: 'aasfwc-ajax-search-container aasfwc-block-preview',
                         style: {
                             backgroundColor: backgroundColor,
-                            color: textColor,
-                            border: 'none',
-                            outline: 'none',
-                            width: '100%'
+                            border: `1px solid ${borderColor}`,
+                            borderRadius: '4px',
+                            padding: '10px',
+                            display: 'flex',
+                            alignItems: 'center'
+                        }
+                    },
+                        showIcon && el('svg', { 
+                            className: 'aasfwc-search-icon',
+                            width: '18',
+                            height: '18',
+                            viewBox: '0 0 24 24',
+                            fill: 'none',
+                            stroke: 'currentColor',
+                            strokeWidth: '2',
+                            strokeLinecap: 'round',
+                            strokeLinejoin: 'round',
+                            style: { marginRight: '8px', color: textColor, flexShrink: 0 }
                         },
-                        disabled: true
-                    })
+                            el('circle', { cx: '11', cy: '11', r: '8' }),
+                            el('path', { d: 'm21 21-4.35-4.35' })
+                        ),
+                        el('input', {
+                            type: 'text',
+                            placeholder: placeholder,
+                            style: {
+                                backgroundColor: backgroundColor,
+                                color: textColor,
+                                border: 'none',
+                                outline: 'none',
+                                width: '100%'
+                            },
+                            disabled: true
+                        })
+                    )
                 )
             ];
         },

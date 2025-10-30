@@ -87,13 +87,10 @@ class Search_Algorithm {
         
         // 2. SKU search
         if (get_option('aasfwc_search_in_sku', 1)) {
-            $sku_products = wc_get_products(array_merge($search_args, [
-                'meta_query' => [[
-                    'key' => '_sku',
-                    'value' => $query,
-                    'compare' => 'LIKE'
-                ]]
-            ]));
+            $sku_args = $search_args;
+            $sku_args['sku'] = $query;
+            unset($sku_args['s']); // Remove title search
+            $sku_products = wc_get_products($sku_args);
             $all_products = array_merge($all_products, $sku_products);
         }
         

@@ -64,6 +64,33 @@ const SettingsApp = () => {
         }
     };
 
+    const resetSettings = async () => {
+        if (!confirm(__('Are you sure you want to reset all settings to default values?', 'advanced-ajax-search-for-woocommerce'))) {
+            return;
+        }
+        setSaving(true);
+        try {
+            const response = await fetch(aasfwcAdmin.ajax_url, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: new URLSearchParams({
+                    action: 'aasfwc_reset_settings',
+                    nonce: aasfwcAdmin.nonce
+                })
+            });
+            const data = await response.json();
+            if (data.success) {
+                setSettings(data.data.settings);
+                setMessage(__('Settings reset to defaults successfully!', 'advanced-ajax-search-for-woocommerce'));
+                setTimeout(() => setMessage(''), 3000);
+            }
+        } catch (error) {
+            console.error('Error resetting settings:', error);
+        } finally {
+            setSaving(false);
+        }
+    };
+
     const updateSetting = (key, value) => {
         setSettings(prev => ({ ...prev, [key]: value }));
     };
@@ -74,8 +101,8 @@ const SettingsApp = () => {
             { className: 'aasfwc-toggle' },
             wp.element.createElement('input', {
                 type: 'checkbox',
-                checked: checked || false,
-                onChange: (e) => updateSetting(key, e.target.checked)
+                checked: !!checked,
+                onChange: (e) => updateSetting(key, e.target.checked ? 1 : 0)
             }),
             wp.element.createElement('span', { className: 'aasfwc-toggle-slider' })
         );
@@ -145,8 +172,8 @@ const SettingsApp = () => {
             borderRadius: (settings.border_radius || 4) + 'px',
             border: `${settings.border_width || 1}px solid ${settings.border_color || '#ddd'}`,
             backgroundColor: settings.bg_color || '#fff',
-            padding: `${settings.padding_vertical || 10}px ${settings.padding_horizontal || 15}px`,
-            margin: `${settings.margin_vertical || 0}px ${settings.margin_horizontal || 0}px`,
+            padding: `${settings.padding_vertical || 10}px 45px`,
+            margin: settings.center_align ? '0 auto' : '0',
             display: 'flex',
             alignItems: 'center',
             pointerEvents: 'none'
@@ -222,7 +249,7 @@ const SettingsApp = () => {
             const titleContent = [wp.element.createElement('span', { key: 'title', style: { fontWeight: 'bold' } }, title)];
             
             if (settings.show_sku) {
-                titleContent.push(wp.element.createElement('strong', { key: 'sku', style: { marginLeft: '8px', color: '#999', fontSize: '13px' } }, `(${sku})`));
+                titleContent.push(wp.element.createElement('strong', { key: 'sku', style: { marginLeft: '8px', color: '#999', fontSize: '13px' } }, `(SKU: ${sku})`));
             }
             
             titleRowChildren.push(wp.element.createElement('div', { key: 'title-wrap' }, titleContent));
@@ -253,9 +280,9 @@ const SettingsApp = () => {
                 wp.element.createElement(
                     'div',
                     { className: 'aasfwc-preview-results', style: resultsStyle },
-                    renderPreviewItem('Sample Product 1', '$29.99', 'SKU-001'),
-                    renderPreviewItem('Sample Product 2', '$39.99', 'SKU-002'),
-                    renderPreviewItem('Sample Product 3', '$49.99', 'SKU-003')
+                    renderPreviewItem('Sample Product 1', '$29.99', '001'),
+                    renderPreviewItem('Sample Product 2', '$39.99', '002'),
+                    renderPreviewItem('Sample Product 3', '$39.99', '003')
                 )
             )
         );
@@ -280,8 +307,18 @@ const SettingsApp = () => {
         wp.element.createElement(
             'div',
             { className: 'aasfwc-settings-header' },
-            wp.element.createElement('h1', {}, aasfwcAdmin.strings.title),
-            wp.element.createElement('p', { className: 'description' }, __('Configure your AJAX search with intelligent features', 'advanced-ajax-search-for-woocommerce'))
+            wp.element.createElement(
+                'div',
+                {},
+                wp.element.createElement('h1', {}, aasfwcAdmin.strings.title),
+                wp.element.createElement('p', { className: 'description' }, __('Configure your AJAX search with intelligent features', 'advanced-ajax-search-for-woocommerce'))
+            ),
+            wp.element.createElement(
+                'div',
+                { style: { display: 'flex', gap: '10px' } },
+                wp.element.createElement('button', { className: 'aasfwc-reset-button', disabled: saving, onClick: resetSettings }, __('Reset Settings', 'advanced-ajax-search-for-woocommerce')),
+                wp.element.createElement('button', { className: 'aasfwc-save-button', disabled: saving, onClick: saveSettings }, saving ? aasfwcAdmin.strings.saving : aasfwcAdmin.strings.save)
+            )
         ),
 
         message && wp.element.createElement(
@@ -319,9 +356,7 @@ const SettingsApp = () => {
                         renderSettingRow(__('Border Radius', 'advanced-ajax-search-for-woocommerce'), __('Rounded corners', 'advanced-ajax-search-for-woocommerce'), renderRange('border_radius', settings.border_radius, 0, 50, 1)),
                         renderSettingRow(__('Background Color', 'advanced-ajax-search-for-woocommerce'), __('Background', 'advanced-ajax-search-for-woocommerce'), renderColorPicker('bg_color', settings.bg_color)),
                         renderSettingRow(__('Padding Vertical', 'advanced-ajax-search-for-woocommerce'), __('Top/bottom padding', 'advanced-ajax-search-for-woocommerce'), renderRange('padding_vertical', settings.padding_vertical, 0, 50, 1)),
-                        renderSettingRow(__('Padding Horizontal', 'advanced-ajax-search-for-woocommerce'), __('Left/right padding', 'advanced-ajax-search-for-woocommerce'), renderRange('padding_horizontal', settings.padding_horizontal, 0, 50, 1)),
-                        renderSettingRow(__('Margin Vertical', 'advanced-ajax-search-for-woocommerce'), __('Top/bottom margin', 'advanced-ajax-search-for-woocommerce'), renderRange('margin_vertical', settings.margin_vertical, 0, 50, 1)),
-                        renderSettingRow(__('Margin Horizontal', 'advanced-ajax-search-for-woocommerce'), __('Left/right margin', 'advanced-ajax-search-for-woocommerce'), renderRange('margin_horizontal', settings.margin_horizontal, 0, 50, 1)),
+                        renderSettingRow(__('Center Align', 'advanced-ajax-search-for-woocommerce'), __('Center the search bar', 'advanced-ajax-search-for-woocommerce'), renderToggle('center_align', settings.center_align)),
                         renderSettingRow(__('Show Search Icon', 'advanced-ajax-search-for-woocommerce'), __('Display search icon', 'advanced-ajax-search-for-woocommerce'), renderToggle('show_search_icon', settings.show_search_icon))
                     )
                 ),
@@ -355,14 +390,51 @@ const SettingsApp = () => {
                 renderSettingRow(__('Enable AJAX Search', 'advanced-ajax-search-for-woocommerce'), __('Enable real-time search', 'advanced-ajax-search-for-woocommerce'), renderToggle('enable_ajax', settings.enable_ajax)),
                 renderSettingRow(__('Results Limit', 'advanced-ajax-search-for-woocommerce'), __('Maximum results', 'advanced-ajax-search-for-woocommerce'), renderRange('search_limit', settings.search_limit, 1, 50)),
                 renderSettingRow(__('Minimum Characters', 'advanced-ajax-search-for-woocommerce'), __('Trigger threshold', 'advanced-ajax-search-for-woocommerce'), renderRange('min_chars', settings.min_chars, 1, 5)),
-                renderSettingRow(__('Search Delay (ms)', 'advanced-ajax-search-for-woocommerce'), __('Debounce delay', 'advanced-ajax-search-for-woocommerce'), renderRange('search_delay', settings.search_delay, 100, 1000, 100))
+                renderSettingRow(__('Search Delay (ms)', 'advanced-ajax-search-for-woocommerce'), __('Debounce delay', 'advanced-ajax-search-for-woocommerce'), renderRange('search_delay', settings.search_delay, 100, 1000, 100)),
+                wp.element.createElement('div', { className: 'aasfwc-shortcode-box', style: { background: '#f0f6fc', border: '1px solid #0073aa', borderRadius: '8px', padding: '20px', marginTop: '20px', gridColumn: '1 / -1' } },
+                    wp.element.createElement('h3', { style: { margin: '0 0 10px 0', color: '#0073aa' } }, __('How to Use', 'advanced-ajax-search-for-woocommerce')),
+                    wp.element.createElement('p', { style: { margin: '0 0 15px 0', color: '#646970' } }, __('Use shortcode or Gutenberg block to display the search form:', 'advanced-ajax-search-for-woocommerce')),
+                    wp.element.createElement('div', { style: { marginBottom: '15px' } },
+                        wp.element.createElement('strong', { style: { display: 'block', marginBottom: '8px', color: '#1d2327' } }, __('Shortcode:', 'advanced-ajax-search-for-woocommerce')),
+                        wp.element.createElement('div', { style: { display: 'flex', gap: '10px', alignItems: 'center' } },
+                            wp.element.createElement('code', { style: { flex: 1, background: '#fff', padding: '12px 15px', borderRadius: '4px', fontSize: '14px', fontFamily: 'monospace', border: '1px solid #ddd' } }, '[aasfwc_ajax_search]'),
+                            wp.element.createElement('button', { 
+                                type: 'button',
+                                className: 'button button-primary',
+                                style: { padding: '10px 20px' },
+                                onClick: (e) => {
+                                    const btn = e.target;
+                                    const originalText = btn.textContent;
+                                    const textarea = document.createElement('textarea');
+                                    textarea.value = '[aasfwc_ajax_search]';
+                                    textarea.style.position = 'fixed';
+                                    textarea.style.opacity = '0';
+                                    document.body.appendChild(textarea);
+                                    textarea.select();
+                                    try {
+                                        document.execCommand('copy');
+                                        btn.textContent = __('Copied!', 'advanced-ajax-search-for-woocommerce');
+                                        setTimeout(() => { btn.textContent = originalText; }, 2000);
+                                    } catch (err) {
+                                        console.error('Copy failed:', err);
+                                    }
+                                    document.body.removeChild(textarea);
+                                }
+                            }, __('Copy', 'advanced-ajax-search-for-woocommerce'))
+                        )
+                    ),
+                    wp.element.createElement('div', {},
+                        wp.element.createElement('strong', { style: { display: 'block', marginBottom: '8px', color: '#1d2327' } }, __('Gutenberg Block:', 'advanced-ajax-search-for-woocommerce')),
+                        wp.element.createElement('p', { style: { margin: 0, color: '#646970' } }, __('Search for "Advanced AJAX Search" block in the block editor.', 'advanced-ajax-search-for-woocommerce'))
+                    )
+                )
             ),
 
             activeTab === 'search' && wp.element.createElement('div', { className: 'aasfwc-setting-group' },
                 renderSettingRow(__('Search in Title', 'advanced-ajax-search-for-woocommerce'), __('Search product titles', 'advanced-ajax-search-for-woocommerce'), renderToggle('search_in_title', settings.search_in_title)),
                 renderSettingRow(__('Search in SKU', 'advanced-ajax-search-for-woocommerce'), __('Search product SKUs', 'advanced-ajax-search-for-woocommerce'), renderToggle('search_in_sku', settings.search_in_sku)),
-                renderSettingRow(__('Search in Content', 'advanced-ajax-search-for-woocommerce'), __('Search descriptions', 'advanced-ajax-search-for-woocommerce'), renderToggle('search_in_content', settings.search_in_content)),
-                renderSettingRow(__('Search in Excerpt', 'advanced-ajax-search-for-woocommerce'), __('Search short descriptions', 'advanced-ajax-search-for-woocommerce'), renderToggle('search_in_excerpt', settings.search_in_excerpt)),
+                renderSettingRow(__('Search in Description', 'advanced-ajax-search-for-woocommerce'), __('Search full product descriptions', 'advanced-ajax-search-for-woocommerce'), renderToggle('search_in_content', settings.search_in_content)),
+                renderSettingRow(__('Search in Short Description', 'advanced-ajax-search-for-woocommerce'), __('Search product excerpts', 'advanced-ajax-search-for-woocommerce'), renderToggle('search_in_excerpt', settings.search_in_excerpt)),
                 renderSettingRow(__('Search in Categories', 'advanced-ajax-search-for-woocommerce'), __('Search categories', 'advanced-ajax-search-for-woocommerce'), renderToggle('search_in_categories', settings.search_in_categories))
             ),
 
@@ -370,9 +442,7 @@ const SettingsApp = () => {
                 renderSettingRow(__('Typo Correction', 'advanced-ajax-search-for-woocommerce'), __('Auto-fix spelling mistakes', 'advanced-ajax-search-for-woocommerce'), renderToggle('enable_typo_correction', settings.enable_typo_correction)),
                 renderSettingRow(__('Synonym Support', 'advanced-ajax-search-for-woocommerce'), __('Expand with related terms', 'advanced-ajax-search-for-woocommerce'), renderToggle('enable_synonyms', settings.enable_synonyms))
             )
-        ),
-
-        wp.element.createElement('button', { className: 'aasfwc-save-button', disabled: saving, onClick: saveSettings }, saving ? aasfwcAdmin.strings.saving : aasfwcAdmin.strings.save)
+        )
     );
 };
 

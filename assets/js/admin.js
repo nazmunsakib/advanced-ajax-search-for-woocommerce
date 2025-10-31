@@ -1,7 +1,7 @@
 /**
  * Admin JavaScript
  *
- * @package AASFWC
+ * @package NivoSearch
  * @since 1.0.0
  */
 
@@ -9,8 +9,8 @@ jQuery(document).ready(function($) {
     'use strict';
     
     // Toggle AI settings based on AI enable checkbox
-    $('input[name="aasfwc_enable_ai"]').on('change', function() {
-        const $aiSettings = $('.aasfwc-ai-settings');
+    $('input[name="nivo_search_enable_ai"]').on('change', function() {
+        const $aiSettings = $('.nivo_search-ai-settings');
         if ($(this).is(':checked')) {
             $aiSettings.show();
         } else {
@@ -25,14 +25,14 @@ jQuery(document).ready(function($) {
         let isValid = true;
         
         // Validate search limit
-        const searchLimit = parseInt($('input[name="aasfwc_search_limit"]').val());
+        const searchLimit = parseInt($('input[name="nivo_search_limit"]').val());
         if (searchLimit < 1 || searchLimit > 50) {
             alert('Search limit must be between 1 and 50');
             isValid = false;
         }
         
         // Validate minimum characters
-        const minChars = parseInt($('input[name="aasfwc_min_chars"]').val());
+        const minChars = parseInt($('input[name="nivo_search_min_chars"]').val());
         if (minChars < 1 || minChars > 5) {
             alert('Minimum characters must be between 1 and 5');
             isValid = false;

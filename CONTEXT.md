@@ -1,8 +1,8 @@
 # Plugin Context for AI Assistant
 
 ## Quick Facts
-- **Name**: Advanced AJAX Search for WooCommerce
-- **Prefix**: aasfwc_
+- **Name**: Nivo AJAX Search for WooCommerce
+- **Prefix**: nivo_search_
 - **Version**: 1.0.0
 - **Status**: Production ready
 

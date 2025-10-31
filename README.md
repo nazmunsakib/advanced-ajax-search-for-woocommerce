@@ -1,6 +1,6 @@
-# Advanced AJAX Search for WooCommerce
+# AJAX Product Search for WooCommerce - Nivo Search
 
-🚀 **Professional live product search with AI-powered features for WooCommerce stores**
+🚀 **Professional live product search with AI-powered autocomplete and smart suggestions for WooCommerce stores**
 
 [![WordPress](https://img.shields.io/badge/WordPress-5.0+-blue.svg)](https://wordpress.org/)
 [![WooCommerce](https://img.shields.io/badge/WooCommerce-5.0+-purple.svg)](https://woocommerce.com/)
@@ -28,7 +28,7 @@
 - **Accessibility Ready** - WCAG compliant
 
 ### ⚙️ **Easy Integration**
-- **Shortcode Support** - `[aasfwc_ajax_search]`
+- **Shortcode Support** - `[nivo_search]`
 - **Gutenberg Block** - Visual block editor integration
 - **Widget Ready** - Add to any widget area
 - **Developer Friendly** - Extensive hooks and filters
@@ -37,25 +37,25 @@
 
 ### Installation
 
-1. **Upload** the plugin files to `/wp-content/plugins/advanced-ajax-search-for-woocommerce/`
+1. **Upload** the plugin files to `/wp-content/plugins/nivo-ajax-search-for-woocommerce/`
 2. **Activate** the plugin through WordPress admin
-3. **Configure** settings in WooCommerce → Advanced AJAX Search
+3. **Configure** settings in WooCommerce → NivoSearch
 4. **Add** search form using shortcode or Gutenberg block
 
 ### Basic Usage
 
 #### Shortcode
 ```php
-[aasfwc_ajax_search]
+[nivo_search]
 ```
 
 #### With Custom Options
 ```php
-[aasfwc_ajax_search placeholder="Find products..." show_icon="true" style="width: 100%;"]
+[nivo_search placeholder="Find products..." show_icon="true" style="width: 100%;"]
 ```
 
 #### Gutenberg Block
-Search for "Advanced AJAX Search" in the block editor and customize via inspector panel.
+Search for "Nivo Search" in the block editor and customize via inspector panel.
 
 ## 📋 Requirements
 
@@ -87,9 +87,9 @@ Search for "Advanced AJAX Search" in the block editor and customize via inspecto
 | Attribute | Type | Default | Description |
 |-----------|------|---------|-------------|
 | `placeholder` | string | "Search products..." | Input placeholder text |
-| `container_class` | string | "aasfwc-ajax-search-container" | Container CSS class |
-| `input_class` | string | "aasfwc-product-search" | Input CSS class |
-| `results_class` | string | "aasfwc-search-results" | Results CSS class |
+| `container_class` | string | "nivo-ajax-search-container" | Container CSS class |
+| `input_class` | string | "nivo_search-product-search" | Input CSS class |
+| `results_class` | string | "nivo_search-results" | Results CSS class |
 | `show_icon` | boolean | true | Display search icon |
 | `style` | string | "" | Inline CSS styles |
 
@@ -98,17 +98,17 @@ Search for "Advanced AJAX Search" in the block editor and customize via inspecto
 ### Filters
 ```php
 // Modify search arguments
-add_filter('aasfwc_search_args', function($args, $query) {
+add_filter('nivo_search_args', function($args, $query) {
     return $args;
 }, 10, 2);
 
 // Customize search results
-add_filter('aasfwc_search_results', function($results, $query) {
+add_filter('nivo_search_results', function($results, $query) {
     return $results;
 }, 10, 2);
 
 // Modify individual result items
-add_filter('aasfwc_search_result_item', function($result, $product, $query) {
+add_filter('nivo_search_result_item', function($result, $product, $query) {
     return $result;
 }, 10, 3);
 ```
@@ -116,12 +116,12 @@ add_filter('aasfwc_search_result_item', function($result, $product, $query) {
 ### Actions
 ```php
 // Plugin loaded
-add_action('aasfwc_plugin_loaded', function($plugin) {
+add_action('nivo_search_plugin_loaded', function($plugin) {
     // Custom initialization
 });
 
 // Components loaded
-add_action('aasfwc_components_loaded', function($plugin) {
+add_action('nivo_search_components_loaded', function($plugin) {
     // Add custom components
 });
 ```
@@ -129,12 +129,12 @@ add_action('aasfwc_components_loaded', function($plugin) {
 ### JavaScript Events
 ```javascript
 // Search initialized
-$(document).on('aasfwc:init', function(e, data) {
+$(document).on('nivo_search:init', function(e, data) {
     console.log('Search initialized');
 });
 
 // Results displayed
-$(document).on('aasfwc:resultsDisplayed', function(e, data) {
+$(document).on('nivo_search:resultsDisplayed', function(e, data) {
     console.log('Results:', data.products);
 });
 ```
@@ -143,13 +143,13 @@ $(document).on('aasfwc:resultsDisplayed', function(e, data) {
 
 ### File Structure
 ```
-advanced-ajax-search-for-woocommerce/
+nivo-ajax-search-for-woocommerce/
 ├── assets/
 │   ├── css/
-│   │   ├── aasfwc-search.css
+│   │   ├── nivo_search.css
 │   │   └── admin.css
 │   └── js/
-│       ├── aasfwc-search.js
+│       ├── nivo_search.js
 │       ├── admin.js
 │       ├── admin-react.js
 │       └── block-editor.js
@@ -164,7 +164,7 @@ advanced-ajax-search-for-woocommerce/
 │       └── Shortcode.php
 ├── vendor/ (Composer autoloader)
 ├── composer.json
-└── advanced-ajax-search-for-woocommerce.php
+└── nivo-ajax-search-for-woocommerce.php
 ```
 
 ### Key Classes

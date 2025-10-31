@@ -2,11 +2,11 @@
 /**
  * Gutenberg Block Handler
  *
- * @package AASFWC
+ * @package NivoSearch
  * @since 1.0.0
  */
 
-namespace AASFWC;
+namespace NivoSearch;
 
 defined('ABSPATH') || exit;
 
@@ -39,29 +39,7 @@ class Gutenberg_Block {
             return;
         }
         
-        register_block_type('aasfwc/ajax-search', [
-            'attributes' => [
-                'placeholder' => [
-                    'type' => 'string',
-                    'default' => __('Search products...', 'advanced-ajax-search-for-woocommerce')
-                ],
-                'backgroundColor' => [
-                    'type' => 'string',
-                    'default' => '#ffffff'
-                ],
-                'textColor' => [
-                    'type' => 'string',
-                    'default' => '#333333'
-                ],
-                'borderColor' => [
-                    'type' => 'string',
-                    'default' => '#dddddd'
-                ],
-                'showIcon' => [
-                    'type' => 'boolean',
-                    'default' => true
-                ]
-            ],
+        register_block_type('nivo-search/ajax-search', [
             'render_callback' => [$this, 'render_block']
         ]);
     }
@@ -73,10 +51,10 @@ class Gutenberg_Block {
      */
     public function enqueue_block_assets() {
         wp_enqueue_script(
-            'aasfwc-block-editor',
-            AASFWC_PLUGIN_URL . 'assets/js/block-editor.js',
+            'nivo-search-block-editor',
+            NIVO_SEARCH_PLUGIN_URL . 'assets/js/block-editor.js',
             ['wp-blocks', 'wp-element', 'wp-editor', 'wp-components'],
-            AASFWC_VERSION,
+            NIVO_SEARCH_VERSION,
             true
         );
     }
@@ -88,38 +66,27 @@ class Gutenberg_Block {
      * @param array $attributes Block attributes
      * @return string Block HTML
      */
-    public function render_block($attributes) {
-        $placeholder = esc_attr($attributes['placeholder'] ?? __('Search products...', 'advanced-ajax-search-for-woocommerce'));
-        $bg_color = esc_attr($attributes['backgroundColor'] ?? '#ffffff');
-        $text_color = esc_attr($attributes['textColor'] ?? '#333333');
-        $border_color = esc_attr($attributes['borderColor'] ?? '#dddddd');
-        $show_icon = $attributes['showIcon'] ?? true;
+    public function render_block($attributes = []) {
+        // Use global settings for all styling
+        $placeholder = get_option('nivo_search_placeholder_text', __('Search products...', 'nivo-ajax-search-for-woocommerce'));
+        $show_icon = get_option('nivo_search_show_search_icon', 1);
         
-        $style = sprintf(
-            'background-color: %s; color: %s; border-color: %s;',
-            $bg_color,
-            $text_color,
-            $border_color
-        );
-        
-        $icon_html = $show_icon ? '<svg class="aasfwc-search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>' : '';
+        $icon_html = $show_icon ? '<svg class="nivo_search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>' : '';
         
         return sprintf(
-            '<div class="aasfwc-ajax-search-container aasfwc-block">
-                <form class="aasfwc-search-form" role="search" method="get" action="%s">
-                    <div class="aasfwc-search-wrapper" style="%s">
+            '<div class="nivo-ajax-search-container nivo_search-block">
+                <form class="nivo_search-form" role="search" method="get" action="%s">
+                    <div class="nivo_search-wrapper">
                         %s
-                        <input type="text" class="aasfwc-product-search" name="s" placeholder="%s" style="%s" autocomplete="off">
-                        <span class="aasfwc-clear-search" style="display:none;">&times;</span>
+                        <input type="text" class="nivo_search-product-search" name="s" placeholder="%s" autocomplete="off">
+                        <span class="nivo_search-clear-search" style="display:none;">&times;</span>
                     </div>
                 </form>
-                <div class="aasfwc-search-results"></div>
+                <div class="nivo_search-results"></div>
             </div>',
             esc_url(wc_get_page_permalink('shop')),
-            $style,
             $icon_html,
-            $placeholder,
-            $style
+            esc_attr($placeholder)
         );
     }
 }

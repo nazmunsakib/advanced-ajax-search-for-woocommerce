@@ -1,6 +1,6 @@
 <?php return array(
     'root' => array(
-        'name' => 'nazmunsakib/advanced-ajax-search-for-woocommerce',
+        'name' => 'nazmunsakib/nivo-ajax-search-for-woocommerce',
         'pretty_version' => '1.0.0+no-version-set',
         'version' => '1.0.0.0',
         'reference' => null,
@@ -10,7 +10,7 @@
         'dev' => false,
     ),
     'versions' => array(
-        'nazmunsakib/advanced-ajax-search-for-woocommerce' => array(
+        'nazmunsakib/nivo-ajax-search-for-woocommerce' => array(
             'pretty_version' => '1.0.0+no-version-set',
             'version' => '1.0.0.0',
             'reference' => null,

@@ -1,55 +1,55 @@
 /**
- * Advanced AJAX Search for WooCommerce - Styles
+ * Nivo AJAX Search for WooCommerce - Styles
  * 
  * Professional CSS with scalable architecture and customization support
  * 
- * @package AASFWC
+ * @package NivoSearch
  * @since 1.0.0
  */
 
 /* CSS Custom Properties for easy customization */
 :root {
-    --aasfwc-primary-color: #0073aa;
-    --aasfwc-border-color: #ddd;
-    --aasfwc-border-radius: 4px;
-    --aasfwc-box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    --aasfwc-transition: all 0.3s ease;
-    --aasfwc-font-size-base: 15px;
-    --aasfwc-spacing-xs: 5px;
-    --aasfwc-spacing-sm: 10px;
-    --aasfwc-spacing-md: 15px;
-    --aasfwc-spacing-lg: 20px;
-    --aasfwc-z-index-dropdown: 1000;
+    --nivo_search-primary-color: #0073aa;
+    --nivo_search-border-color: #ddd;
+    --nivo_search-border-radius: 4px;
+    --nivo_search-box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    --nivo_search-transition: all 0.3s ease;
+    --nivo_search-font-size-base: 15px;
+    --nivo_search-spacing-xs: 5px;
+    --nivo_search-spacing-sm: 10px;
+    --nivo_search-spacing-md: 15px;
+    --nivo_search-spacing-lg: 20px;
+    --nivo_search-z-index-dropdown: 1000;
     
     /* Theme inheritance - can be overridden by settings */
-    --aasfwc-font-family: inherit;
-    --aasfwc-text-color: inherit;
-    --aasfwc-hover-color: inherit;
-    --aasfwc-hover-bg: rgba(0, 0, 0, 0.05);
+    --nivo_search-font-family: inherit;
+    --nivo_search-text-color: inherit;
+    --nivo_search-hover-color: inherit;
+    --nivo_search-hover-bg: rgba(0, 0, 0, 0.05);
 }
 
 /* Main Container */
-.aasfwc-ajax-search-container {
+.nivo-ajax-search-container {
     position: relative;
     max-width: 600px;
     width: 100%;
-    font-family: var(--aasfwc-font-family);
-    font-size: var(--aasfwc-font-size-base);
-    color: var(--aasfwc-text-color);
+    font-family: var(--nivo_search-font-family);
+    font-size: var(--nivo_search-font-size-base);
+    color: var(--nivo_search-text-color);
 }
 
-.aasfwc-search-wrapper {
+.nivo_search-wrapper {
     position: relative;
     display: flex;
     align-items: center;
 }
 
-.aasfwc-search-form {
+.nivo_search-form {
     margin: 0;
     width: 100%;
 }
 
-.aasfwc-search-icon {
+.nivo_search-icon {
     position: absolute;
     left: 15px;
     top: 50%;
@@ -59,7 +59,7 @@
     z-index: 5;
 }
 
-.aasfwc-clear-search {
+.nivo_search-clear-search {
     position: absolute;
     right: 15px;
     top: 50%;
@@ -75,36 +75,36 @@
     transition: color 0.2s;
 }
 
-.aasfwc-clear-search:hover {
+.nivo_search-clear-search:hover {
     color: #333;
 }
 
 /* Search Input */
-.aasfwc-product-search {
+.nivo_search-product-search {
     width: 100%;
     padding: 15px 45px 15px 45px;
     border: 1px solid #dfdfdf;
     border-radius: 30px;
     font-size: 15px;
-    transition: var(--aasfwc-transition);
+    transition: var(--nivo_search-transition);
     box-sizing: border-box;
     outline: none;
     background: #dfdfdf;
     font-family: inherit;
 }
 
-.aasfwc-product-search:focus {
+.nivo_search-product-search:focus {
     background: #fff;
     border-color: #666;
     box-shadow: none;
 }
 
-.aasfwc-product-search::placeholder {
+.nivo_search-product-search::placeholder {
     color: #999;
 }
 
 /* Loading State */
-.aasfwc-ajax-search-container.aasfwc-loading .aasfwc-search-wrapper::after {
+.nivo-ajax-search-container.nivo_search-loading .nivo_search-wrapper::after {
     content: '';
     position: absolute;
     right: 45px;
@@ -113,7 +113,7 @@
     width: 16px;
     height: 16px;
     border: 2px solid #e0e0e0;
-    border-top-color: var(--aasfwc-primary-color);
+    border-top-color: var(--nivo_search-primary-color);
     border-radius: 50%;
     animation: spin 0.6s linear infinite;
 }
@@ -123,7 +123,7 @@
 }
 
 /* Results Container */
-.aasfwc-search-results {
+.nivo_search-results {
     padding: 5px;
     position: absolute;
     top: calc(100% + 8px);
@@ -131,63 +131,63 @@
     right: 0;
     max-height: 450px;
     overflow-y: auto;
-    z-index: var(--aasfwc-z-index-dropdown);
+    z-index: var(--nivo_search-z-index-dropdown);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     display: none;
 }
 
-.aasfwc-ajax-search-container.aasfwc-has-results .aasfwc-search-results,
-.aasfwc-ajax-search-container.aasfwc-no-results .aasfwc-search-results {
+.nivo-ajax-search-container.nivo_search-has-results .nivo_search-results,
+.nivo-ajax-search-container.nivo_search-no-results .nivo_search-results {
     display: block;
 }
 
 /* Results List */
-.aasfwc-search-results-list {
+.nivo_search-results-list {
     list-style: none;
     margin: 0;
     padding: 0;
 }
 
-.aasfwc-search-result-item {
+.nivo_search-result-item {
     border-bottom: 1px solid #eee;
     transition: background-color 0.2s ease;
 }
 
-.aasfwc-search-result-item:last-child {
+.nivo_search-result-item:last-child {
     border-bottom: none;
 }
 
-.aasfwc-search-result-item:hover {
-    background-color: var(--aasfwc-hover-bg);
+.nivo_search-result-item:hover {
+    background-color: var(--nivo_search-hover-bg);
 }
 
 /* Product Link */
-.aasfwc-product-link {
+.nivo_search-product-link {
     display: flex;
     align-items: center;
     text-decoration: none;
-    color: var(--aasfwc-text-color);
+    color: var(--nivo_search-text-color);
     transition: all 0.2s ease;
     gap: 10px;
     padding: 5px;
     border-radius: 4px;
 }
 
-.aasfwc-product-link:hover {
-    color: var(--aasfwc-hover-color);
+.nivo_search-product-link:hover {
+    color: var(--nivo_search-hover-color);
 }
 
-.aasfwc-product-link:hover .aasfwc-product-title {
-    color: var(--aasfwc-hover-color, var(--aasfwc-primary-color));
+.nivo_search-product-link:hover .nivo_search-product-title {
+    color: var(--nivo_search-hover-color, var(--nivo_search-primary-color));
 }
 
-.aasfwc-product-link:focus {
-    outline: 2px solid var(--aasfwc-primary-color);
+.nivo_search-product-link:focus {
+    outline: 2px solid var(--nivo_search-primary-color);
     outline-offset: -2px;
 }
 
 /* Product Image */
-.aasfwc-product-image {
+.nivo_search-product-image {
     width: 50px;
     height: 50px;
     object-fit: cover;
@@ -197,12 +197,12 @@
 }
 
 /* Product Info */
-.aasfwc-product-info {
+.nivo_search-product-info {
     flex: 1;
     min-width: 0;
 }
 
-.aasfwc-product-title-row {
+.nivo_search-product-title-row {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -210,7 +210,7 @@
     margin-bottom: 4px;
 }
 
-.aasfwc-product-title {
+.nivo_search-product-title {
     font-size: 15px;
     line-height: 1.4;
     color: inherit;
@@ -218,14 +218,14 @@
     transition: color 0.2s ease;
 }
 
-.aasfwc-product-title strong {
+.nivo_search-product-title strong {
     color: #999;
     font-size: 13px;
     font-weight: 600;
     margin-left: 4px;
 }
 
-.aasfwc-product-price {
+.nivo_search-product-price {
     color: inherit;
     opacity: 0.8;
     font-size: 15px;
@@ -233,7 +233,7 @@
     white-space: nowrap;
 }
 
-.aasfwc-product-description {
+.nivo_search-product-description {
     display: block;
     color: inherit;
     opacity: 0.7;
@@ -242,8 +242,8 @@
     margin-top: 4px;
 }
 
-.aasfwc-product-categories,
-.aasfwc-product-tags {
+.nivo_search-product-categories,
+.nivo_search-product-tags {
     display: inline-block;
     color: inherit;
     opacity: 0.6;
@@ -252,7 +252,7 @@
 }
 
 /* Keyword Highlighting */
-.aasfwc-highlight {
+.nivo_search-highlight {
     background-color: #fff3cd;
     color: #856404;
     font-weight: 600;
@@ -261,8 +261,8 @@
 }
 
 /* Messages */
-.aasfwc-no-results-message,
-.aasfwc-error-message {
+.nivo_search-no-results-message,
+.nivo_search-error-message {
     padding: 20px;
     margin: 0;
     text-align: center;
@@ -270,12 +270,12 @@
     font-size: 15px;
 }
 
-.aasfwc-no-results-message {
+.nivo_search-no-results-message {
     background: #f8f9fa;
     border-radius: 4px;
 }
 
-.aasfwc-error-message {
+.nivo_search-error-message {
     color: #d63638;
     background-color: #fef7f7;
     border-radius: 4px;
@@ -283,35 +283,35 @@
 
 /* Responsive Design */
 @media (max-width: 768px) {
-    .aasfwc-ajax-search-container {
+    .nivo-ajax-search-container {
         max-width: 100%;
     }
     
-    .aasfwc-search-results {
+    .nivo_search-results {
         max-height: 300px;
     }
     
-    .aasfwc-product-image {
+    .nivo_search-product-image {
         width: 40px;
         height: 40px;
     }
 }
 
 @media (max-width: 480px) {
-    .aasfwc-product-link {
-        padding: var(--aasfwc-spacing-xs);
+    .nivo_search-product-link {
+        padding: var(--nivo_search-spacing-xs);
     }
     
-    .aasfwc-product-image {
+    .nivo_search-product-image {
         width: 35px;
         height: 35px;
     }
     
-    .aasfwc-product-title {
+    .nivo_search-product-title {
         font-size: 0.9em;
     }
     
-    .aasfwc-product-price {
+    .nivo_search-product-price {
         font-size: 0.8em;
     }
 }

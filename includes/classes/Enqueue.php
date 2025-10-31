@@ -301,4 +301,11 @@ class Enqueue {
 		// Allow filtering.
 		return apply_filters( 'nivo_search_should_enqueue_assets', $should_enqueue );
 	}
+}eue_assets() {
+		// Always enqueue for now - can be optimized later.
+		$should_enqueue = true;
+
+		// Allow filtering.
+		return apply_filters( 'nivo_search_should_enqueue_assets', $should_enqueue );
+	}
 }

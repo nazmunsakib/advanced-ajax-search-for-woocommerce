@@ -10,7 +10,7 @@ jQuery(document).ready(function($) {
     
     // Toggle AI settings based on AI enable checkbox
     $('input[name="nivo_search_enable_ai"]').on('change', function() {
-        const $aiSettings = $('.nivo_search-ai-settings');
+        const $aiSettings = $('.nivo-search-ai-settings');
         if ($(this).is(':checked')) {
             $aiSettings.show();
         } else {

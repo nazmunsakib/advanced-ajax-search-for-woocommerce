@@ -1,17 +1,9 @@
-<<<<<<<< HEAD:assets/js/nivo-search.js
 /**
-========
-﻿/**
->>>>>>>> 643a01bd53cd81e4a6e0b6db43d1b2086a4ddc58:assets/js/nasfwc-search.js
  * Nivo AJAX Search for WooCommerce
  * 
  * Professional vanilla JavaScript implementation
  * 
-<<<<<<<< HEAD:assets/js/nivo-search.js
  * @package NivoSearch
-========
- * @package NASFWC
->>>>>>>> 643a01bd53cd81e4a6e0b6db43d1b2086a4ddc58:assets/js/nasfwc-search.js
  * @since 1.0.0
  */
 
@@ -21,7 +13,6 @@
     // Configuration
     const config = {
         selectors: {
-<<<<<<<< HEAD:assets/js/nivo-search.js
             input: '.nivo_search-product-search',
             results: '.nivo_search-results',
             container: '.nivo-ajax-search-container'
@@ -38,24 +29,6 @@
             maxResults: (window.nivo_search && window.nivo_search.settings.max_results) || 10
         },
         strings: (window.nivo_search && window.nivo_search.strings) || {}
-========
-            input: '.nasfwc-product-search',
-            results: '.nasfwc-search-results',
-            container: '.nasfwc-ajax-search-container'
-        },
-        classes: {
-            loading: 'nasfwc-loading',
-            hasResults: 'nasfwc-has-results',
-            noResults: 'nasfwc-no-results',
-            focused: 'nasfwc-focused'
-        },
-        settings: {
-            minLength: (window.NASFWC_ajax_search && window.NASFWC_ajax_search.settings.min_length) || 2,
-            delay: (window.NASFWC_ajax_search && window.NASFWC_ajax_search.settings.delay) || 300,
-            maxResults: (window.NASFWC_ajax_search && window.NASFWC_ajax_search.settings.max_results) || 10
-        },
-        strings: (window.NASFWC_ajax_search && window.NASFWC_ajax_search.strings) || {}
->>>>>>>> 643a01bd53cd81e4a6e0b6db43d1b2086a4ddc58:assets/js/nasfwc-search.js
     };
 
     // State
@@ -97,11 +70,7 @@
      * Trigger custom event
      */
     function triggerEvent(eventName, data = {}) {
-<<<<<<<< HEAD:assets/js/nivo-search.js
         const event = new CustomEvent(`nivo_search:${eventName}`, {
-========
-        const event = new CustomEvent(`NASFWC:${eventName}`, {
->>>>>>>> 643a01bd53cd81e4a6e0b6db43d1b2086a4ddc58:assets/js/nasfwc-search.js
             detail: data,
             bubbles: true
         });
@@ -173,21 +142,12 @@
         formData.append('s', query);
         
         // Use WooCommerce AJAX if available
-<<<<<<<< HEAD:assets/js/nivo-search.js
         const useWcAjax = window.nivo_search.wc_ajax_url;
         const ajaxUrl = useWcAjax ? window.nivo_search.wc_ajax_url : window.nivo_search.ajax_url;
         
         if (!useWcAjax) {
             formData.append('action', 'nivo_search');
             formData.append('nonce', window.nivo_search.nonce);
-========
-        const useWcAjax = window.NASFWC_ajax_search.wc_ajax_url;
-        const ajaxUrl = useWcAjax ? window.NASFWC_ajax_search.wc_ajax_url : window.NASFWC_ajax_search.ajax_url;
-        
-        if (!useWcAjax) {
-            formData.append('action', 'NASFWC_ajax_search');
-            formData.append('nonce', window.NASFWC_ajax_search.nonce);
->>>>>>>> 643a01bd53cd81e4a6e0b6db43d1b2086a4ddc58:assets/js/nasfwc-search.js
         }
 
         triggerEvent('beforeSearch', { query, results, container });
@@ -243,11 +203,7 @@
             return;
         }
 
-<<<<<<<< HEAD:assets/js/nivo-search.js
         const settings = window.nivo_search && window.nivo_search.settings ? window.nivo_search.settings : {};
-========
-        const settings = window.NASFWC_ajax_search && window.NASFWC_ajax_search.settings ? window.NASFWC_ajax_search.settings : {};
->>>>>>>> 643a01bd53cd81e4a6e0b6db43d1b2086a4ddc58:assets/js/nasfwc-search.js
         const resultsStyle = `
             border: ${settings.results_border_width || 1}px solid ${settings.results_border_color || '#ddd'};
             border-radius: ${settings.results_border_radius || 4}px;
@@ -256,11 +212,7 @@
 
         results.style.cssText = resultsStyle;
 
-<<<<<<<< HEAD:assets/js/nivo-search.js
         let html = '<ul class="nivo_search-results-list">';
-========
-        let html = '<ul class="nasfwc-search-results-list">';
->>>>>>>> 643a01bd53cd81e4a6e0b6db43d1b2086a4ddc58:assets/js/nasfwc-search.js
 
         products.forEach(function (product) {
             html += renderProductItem(product, query, settings);
@@ -280,11 +232,7 @@
     function highlightKeywords(text, query) {
         if (!text || !query) return text;
         const regex = new RegExp(`(${query})`, 'gi');
-<<<<<<<< HEAD:assets/js/nivo-search.js
         return text.replace(regex, '<span class="nivo_search-highlight">$1</span>');
-========
-        return text.replace(regex, '<span class="nasfwc-highlight">$1</span>');
->>>>>>>> 643a01bd53cd81e4a6e0b6db43d1b2086a4ddc58:assets/js/nasfwc-search.js
     }
 
     /**
@@ -298,31 +246,19 @@
         const padding = settings.results_padding || 10;
         
         const imageHtml = (showImages && product.image)
-<<<<<<<< HEAD:assets/js/nivo-search.js
             ? `<img src="${product.image}" alt="${product.title}" class="nivo_search-product-image">`
-========
-            ? `<img src="${product.image}" alt="${product.title}" class="nasfwc-product-image">`
->>>>>>>> 643a01bd53cd81e4a6e0b6db43d1b2086a4ddc58:assets/js/nasfwc-search.js
             : '';
 
         const highlightedTitle = highlightKeywords(product.title, query);
         const skuHtml = (showSku && product.sku) ? ` <strong>(SKU: ${product.sku})</strong>` : '';
-<<<<<<<< HEAD:assets/js/nivo-search.js
         const priceHtml = (showPrice && product.price) ? `<span class="nivo_search-product-price">${product.price}</span>` : '';
         
         const titleSkuHtml = `<div class="nivo_search-product-title-row">
             <span class="nivo_search-product-title">${highlightedTitle}${skuHtml}</span>
-========
-        const priceHtml = (showPrice && product.price) ? `<span class="nasfwc-product-price">${product.price}</span>` : '';
-        
-        const titleSkuHtml = `<div class="nasfwc-product-title-row">
-            <span class="nasfwc-product-title">${highlightedTitle}${skuHtml}</span>
->>>>>>>> 643a01bd53cd81e4a6e0b6db43d1b2086a4ddc58:assets/js/nasfwc-search.js
             ${priceHtml}
         </div>`;
 
         const descHtml = (showDescription && product.short_description) 
-<<<<<<<< HEAD:assets/js/nivo-search.js
             ? `<span class="nivo_search-product-description">${highlightKeywords(product.short_description, query)}</span>` 
             : '';
 
@@ -330,15 +266,6 @@
                 <a href="${product.url}" class="nivo_search-product-link">
                     ${imageHtml}
                     <div class="nivo_search-product-info">
-========
-            ? `<span class="nasfwc-product-description">${highlightKeywords(product.short_description, query)}</span>` 
-            : '';
-
-        return `<li class="nasfwc-search-result-item" style="padding: ${padding}px;">
-                <a href="${product.url}" class="nasfwc-product-link">
-                    ${imageHtml}
-                    <div class="nasfwc-product-info">
->>>>>>>> 643a01bd53cd81e4a6e0b6db43d1b2086a4ddc58:assets/js/nasfwc-search.js
                         ${titleSkuHtml}
                         ${descHtml}
                     </div>
@@ -350,22 +277,14 @@
      * Display no results message
      */
     function displayNoResults(results, container) {
-<<<<<<<< HEAD:assets/js/nivo-search.js
         const settings = window.nivo_search && window.nivo_search.settings ? window.nivo_search.settings : {};
-========
-        const settings = window.NASFWC_ajax_search && window.NASFWC_ajax_search.settings ? window.NASFWC_ajax_search.settings : {};
->>>>>>>> 643a01bd53cd81e4a6e0b6db43d1b2086a4ddc58:assets/js/nasfwc-search.js
         const resultsStyle = `
             border: ${settings.results_border_width || 1}px solid ${settings.results_border_color || '#ddd'};
             border-radius: ${settings.results_border_radius || 4}px;
             background-color: ${settings.results_bg_color || '#ffffff'};
         `;
         results.style.cssText = resultsStyle;
-<<<<<<<< HEAD:assets/js/nivo-search.js
         results.innerHTML = `<p class="nivo_search-no-results-message">${config.strings.no_results}</p>`;
-========
-        results.innerHTML = `<p class="nasfwc-no-results-message">${config.strings.no_results}</p>`;
->>>>>>>> 643a01bd53cd81e4a6e0b6db43d1b2086a4ddc58:assets/js/nasfwc-search.js
         addClass(container, config.classes.noResults);
         triggerEvent('noResults', { results, container });
     }
@@ -374,11 +293,7 @@
      * Display error message
      */
     function displayError(message, results, container) {
-<<<<<<<< HEAD:assets/js/nivo-search.js
         results.innerHTML = `<p class="nivo_search-error-message">${message}</p>`;
-========
-        results.innerHTML = `<p class="nasfwc-error-message">${message}</p>`;
->>>>>>>> 643a01bd53cd81e4a6e0b6db43d1b2086a4ddc58:assets/js/nasfwc-search.js
 
         triggerEvent('error', { message, results, container });
     }
@@ -422,11 +337,7 @@
         const container = closest(input, config.selectors.container);
         if (!container) return;
 
-<<<<<<<< HEAD:assets/js/nivo-search.js
         const clearBtn = container.querySelector('.nivo_search-clear-search');
-========
-        const clearBtn = container.querySelector('.nasfwc-clear-search');
->>>>>>>> 643a01bd53cd81e4a6e0b6db43d1b2086a4ddc58:assets/js/nasfwc-search.js
         if (clearBtn) {
             clearBtn.style.display = input.value.length > 0 ? 'block' : 'none';
         }
@@ -460,11 +371,7 @@
 
         // Event delegation for clear button
         document.addEventListener('click', function (event) {
-<<<<<<<< HEAD:assets/js/nivo-search.js
             if (event.target.matches && event.target.matches('.nivo_search-clear-search')) {
-========
-            if (event.target.matches && event.target.matches('.nasfwc-clear-search')) {
->>>>>>>> 643a01bd53cd81e4a6e0b6db43d1b2086a4ddc58:assets/js/nasfwc-search.js
                 handleClear(event);
             }
         });
@@ -480,11 +387,7 @@
     }
 
     // Expose public API
-<<<<<<<< HEAD:assets/js/nivo-search.js
-    window.nivo_searchSearch = {
-========
-    window.NASFWCSearch = {
->>>>>>>> 643a01bd53cd81e4a6e0b6db43d1b2086a4ddc58:assets/js/nasfwc-search.js
+    window.nivoSearchAPI = {
         config: config,
         triggerEvent: triggerEvent
     };

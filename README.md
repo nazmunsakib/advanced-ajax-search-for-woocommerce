@@ -88,8 +88,8 @@ Search for "Nivo Search" in the block editor and customize via inspector panel.
 |-----------|------|---------|-------------|
 | `placeholder` | string | "Search products..." | Input placeholder text |
 | `container_class` | string | "nivo-ajax-search-container" | Container CSS class |
-| `input_class` | string | "nivo_search-product-search" | Input CSS class |
-| `results_class` | string | "nivo_search-results" | Results CSS class |
+| `input_class` | string | "nivo-search-product-search" | Input CSS class |
+| `results_class` | string | "nivo-search-results" | Results CSS class |
 | `show_icon` | boolean | true | Display search icon |
 | `style` | string | "" | Inline CSS styles |
 

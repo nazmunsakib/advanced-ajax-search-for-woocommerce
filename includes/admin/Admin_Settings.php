@@ -46,7 +46,7 @@ class Admin_Settings {
             __('AJAX Search Settings', 'nivo-ajax-search-for-woocommerce'),
             __('NivoSearch', 'nivo-ajax-search-for-woocommerce'),
             'manage_woocommerce',
-            'nivo_search-settings',
+            'nivo-search-settings',
             array( $this, 'settings_page' )
         );
     }
@@ -121,7 +121,7 @@ class Admin_Settings {
     public function settings_page() {
         ?>
         <div class="wrap">
-            <div id="nivo_search-settings-root"></div>
+            <div id="nivo-search-settings-root"></div>
         </div>
         <?php
     }

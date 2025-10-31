@@ -146,10 +146,10 @@ $(document).on('nivo_search:resultsDisplayed', function(e, data) {
 nivo-ajax-search-for-woocommerce/
 ├── assets/
 │   ├── css/
-│   │   ├── nivo_search.css
+│   │   ├── nivo-search.css
 │   │   └── admin.css
 │   └── js/
-│       ├── nivo_search.js
+│       ├── nivo-search.js
 │       ├── admin.js
 │       ├── admin-react.js
 │       └── block-editor.js
@@ -159,16 +159,17 @@ nivo-ajax-search-for-woocommerce/
 │   └── classes/
 │       ├── Enqueue.php
 │       ├── Gutenberg_Block.php
-│       ├── Plugin.php
+│       ├── Nivo_Ajax_Search.php
 │       ├── Search_Algorithm.php
 │       └── Shortcode.php
 ├── vendor/ (Composer autoloader)
 ├── composer.json
+├── readme.txt
 └── nivo-ajax-search-for-woocommerce.php
 ```
 
 ### Key Classes
-- **`Plugin`** - Main plugin controller (Singleton)
+- **`Nivo_Ajax_Search`** - Main plugin controller (Singleton)
 - **`Search_Algorithm`** - AI-powered search logic
 - **`Enqueue`** - Asset management
 - **`Shortcode`** - Shortcode functionality

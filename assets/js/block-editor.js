@@ -1,7 +1,7 @@
-/**
+﻿/**
  * Gutenberg Block Editor Script
  *
- * @package AASFWC
+ * @package NASFWC
  * @since 1.0.0
  */
 
@@ -11,8 +11,8 @@
     const { PanelBody, TextControl, ColorPicker, ToggleControl } = wp.components;
     const { createElement: el } = wp.element;
 
-    registerBlockType('aasfwc/ajax-search', {
-        title: 'Advanced AJAX Search',
+    registerBlockType('NASFWC/ajax-search', {
+        title: 'Nivo AJAX Search',
         icon: 'search',
         category: 'woocommerce',
         description: 'Add an AJAX-powered product search box',
@@ -101,10 +101,10 @@
                             el('circle', { cx: '11', cy: '11', r: '8' }),
                             el('path', { d: 'm21 21-4.35-4.35' })
                         ),
-                        el('strong', { style: { color: '#667eea', fontSize: '14px' } }, 'Advanced AJAX Search')
+                        el('strong', { style: { color: '#667eea', fontSize: '14px' } }, 'Nivo AJAX Search')
                     ),
                     el('div', {
-                        className: 'aasfwc-ajax-search-container aasfwc-block-preview',
+                        className: 'NASFWC-ajax-search-container NASFWC-block-preview',
                         style: {
                             backgroundColor: backgroundColor,
                             border: `1px solid ${borderColor}`,
@@ -115,7 +115,7 @@
                         }
                     },
                         showIcon && el('svg', { 
-                            className: 'aasfwc-search-icon',
+                            className: 'NASFWC-search-icon',
                             width: '18',
                             height: '18',
                             viewBox: '0 0 24 24',

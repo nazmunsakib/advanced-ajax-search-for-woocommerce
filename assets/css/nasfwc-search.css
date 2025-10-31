@@ -1,55 +1,55 @@
-/**
- * Advanced AJAX Search for WooCommerce - Styles
+﻿/**
+ * Nivo AJAX Search for WooCommerce - Styles
  * 
  * Professional CSS with scalable architecture and customization support
  * 
- * @package AASFWC
+ * @package NASFWC
  * @since 1.0.0
  */
 
 /* CSS Custom Properties for easy customization */
 :root {
-    --aasfwc-primary-color: #0073aa;
-    --aasfwc-border-color: #ddd;
-    --aasfwc-border-radius: 4px;
-    --aasfwc-box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    --aasfwc-transition: all 0.3s ease;
-    --aasfwc-font-size-base: 15px;
-    --aasfwc-spacing-xs: 5px;
-    --aasfwc-spacing-sm: 10px;
-    --aasfwc-spacing-md: 15px;
-    --aasfwc-spacing-lg: 20px;
-    --aasfwc-z-index-dropdown: 1000;
+    --NASFWC-primary-color: #0073aa;
+    --NASFWC-border-color: #ddd;
+    --NASFWC-border-radius: 4px;
+    --NASFWC-box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    --NASFWC-transition: all 0.3s ease;
+    --NASFWC-font-size-base: 15px;
+    --NASFWC-spacing-xs: 5px;
+    --NASFWC-spacing-sm: 10px;
+    --NASFWC-spacing-md: 15px;
+    --NASFWC-spacing-lg: 20px;
+    --NASFWC-z-index-dropdown: 1000;
     
     /* Theme inheritance - can be overridden by settings */
-    --aasfwc-font-family: inherit;
-    --aasfwc-text-color: inherit;
-    --aasfwc-hover-color: inherit;
-    --aasfwc-hover-bg: rgba(0, 0, 0, 0.05);
+    --NASFWC-font-family: inherit;
+    --NASFWC-text-color: inherit;
+    --NASFWC-hover-color: inherit;
+    --NASFWC-hover-bg: rgba(0, 0, 0, 0.05);
 }
 
 /* Main Container */
-.aasfwc-ajax-search-container {
+.NASFWC-ajax-search-container {
     position: relative;
     max-width: 600px;
     width: 100%;
-    font-family: var(--aasfwc-font-family);
-    font-size: var(--aasfwc-font-size-base);
-    color: var(--aasfwc-text-color);
+    font-family: var(--NASFWC-font-family);
+    font-size: var(--NASFWC-font-size-base);
+    color: var(--NASFWC-text-color);
 }
 
-.aasfwc-search-wrapper {
+.NASFWC-search-wrapper {
     position: relative;
     display: flex;
     align-items: center;
 }
 
-.aasfwc-search-form {
+.NASFWC-search-form {
     margin: 0;
     width: 100%;
 }
 
-.aasfwc-search-icon {
+.NASFWC-search-icon {
     position: absolute;
     left: 15px;
     top: 50%;
@@ -59,7 +59,7 @@
     z-index: 5;
 }
 
-.aasfwc-clear-search {
+.NASFWC-clear-search {
     position: absolute;
     right: 15px;
     top: 50%;
@@ -75,36 +75,36 @@
     transition: color 0.2s;
 }
 
-.aasfwc-clear-search:hover {
+.NASFWC-clear-search:hover {
     color: #333;
 }
 
 /* Search Input */
-.aasfwc-product-search {
+.NASFWC-product-search {
     width: 100%;
     padding: 15px 45px 15px 45px;
     border: 1px solid #dfdfdf;
     border-radius: 30px;
     font-size: 15px;
-    transition: var(--aasfwc-transition);
+    transition: var(--NASFWC-transition);
     box-sizing: border-box;
     outline: none;
     background: #dfdfdf;
     font-family: inherit;
 }
 
-.aasfwc-product-search:focus {
+.NASFWC-product-search:focus {
     background: #fff;
     border-color: #666;
     box-shadow: none;
 }
 
-.aasfwc-product-search::placeholder {
+.NASFWC-product-search::placeholder {
     color: #999;
 }
 
 /* Loading State */
-.aasfwc-ajax-search-container.aasfwc-loading .aasfwc-search-wrapper::after {
+.NASFWC-ajax-search-container.NASFWC-loading .NASFWC-search-wrapper::after {
     content: '';
     position: absolute;
     right: 45px;
@@ -113,7 +113,7 @@
     width: 16px;
     height: 16px;
     border: 2px solid #e0e0e0;
-    border-top-color: var(--aasfwc-primary-color);
+    border-top-color: var(--NASFWC-primary-color);
     border-radius: 50%;
     animation: spin 0.6s linear infinite;
 }
@@ -123,7 +123,7 @@
 }
 
 /* Results Container */
-.aasfwc-search-results {
+.NASFWC-search-results {
     padding: 5px;
     position: absolute;
     top: calc(100% + 8px);
@@ -131,63 +131,63 @@
     right: 0;
     max-height: 450px;
     overflow-y: auto;
-    z-index: var(--aasfwc-z-index-dropdown);
+    z-index: var(--NASFWC-z-index-dropdown);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     display: none;
 }
 
-.aasfwc-ajax-search-container.aasfwc-has-results .aasfwc-search-results,
-.aasfwc-ajax-search-container.aasfwc-no-results .aasfwc-search-results {
+.NASFWC-ajax-search-container.NASFWC-has-results .NASFWC-search-results,
+.NASFWC-ajax-search-container.NASFWC-no-results .NASFWC-search-results {
     display: block;
 }
 
 /* Results List */
-.aasfwc-search-results-list {
+.NASFWC-search-results-list {
     list-style: none;
     margin: 0;
     padding: 0;
 }
 
-.aasfwc-search-result-item {
+.NASFWC-search-result-item {
     border-bottom: 1px solid #eee;
     transition: background-color 0.2s ease;
 }
 
-.aasfwc-search-result-item:last-child {
+.NASFWC-search-result-item:last-child {
     border-bottom: none;
 }
 
-.aasfwc-search-result-item:hover {
-    background-color: var(--aasfwc-hover-bg);
+.NASFWC-search-result-item:hover {
+    background-color: var(--NASFWC-hover-bg);
 }
 
 /* Product Link */
-.aasfwc-product-link {
+.NASFWC-product-link {
     display: flex;
     align-items: center;
     text-decoration: none;
-    color: var(--aasfwc-text-color);
+    color: var(--NASFWC-text-color);
     transition: all 0.2s ease;
     gap: 10px;
     padding: 5px;
     border-radius: 4px;
 }
 
-.aasfwc-product-link:hover {
-    color: var(--aasfwc-hover-color);
+.NASFWC-product-link:hover {
+    color: var(--NASFWC-hover-color);
 }
 
-.aasfwc-product-link:hover .aasfwc-product-title {
-    color: var(--aasfwc-hover-color, var(--aasfwc-primary-color));
+.NASFWC-product-link:hover .NASFWC-product-title {
+    color: var(--NASFWC-hover-color, var(--NASFWC-primary-color));
 }
 
-.aasfwc-product-link:focus {
-    outline: 2px solid var(--aasfwc-primary-color);
+.NASFWC-product-link:focus {
+    outline: 2px solid var(--NASFWC-primary-color);
     outline-offset: -2px;
 }
 
 /* Product Image */
-.aasfwc-product-image {
+.NASFWC-product-image {
     width: 50px;
     height: 50px;
     object-fit: cover;
@@ -197,12 +197,12 @@
 }
 
 /* Product Info */
-.aasfwc-product-info {
+.NASFWC-product-info {
     flex: 1;
     min-width: 0;
 }
 
-.aasfwc-product-title-row {
+.NASFWC-product-title-row {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -210,7 +210,7 @@
     margin-bottom: 4px;
 }
 
-.aasfwc-product-title {
+.NASFWC-product-title {
     font-size: 15px;
     line-height: 1.4;
     color: inherit;
@@ -218,14 +218,14 @@
     transition: color 0.2s ease;
 }
 
-.aasfwc-product-title strong {
+.NASFWC-product-title strong {
     color: #999;
     font-size: 13px;
     font-weight: 600;
     margin-left: 4px;
 }
 
-.aasfwc-product-price {
+.NASFWC-product-price {
     color: inherit;
     opacity: 0.8;
     font-size: 15px;
@@ -233,7 +233,7 @@
     white-space: nowrap;
 }
 
-.aasfwc-product-description {
+.NASFWC-product-description {
     display: block;
     color: inherit;
     opacity: 0.7;
@@ -242,8 +242,8 @@
     margin-top: 4px;
 }
 
-.aasfwc-product-categories,
-.aasfwc-product-tags {
+.NASFWC-product-categories,
+.NASFWC-product-tags {
     display: inline-block;
     color: inherit;
     opacity: 0.6;
@@ -252,7 +252,7 @@
 }
 
 /* Keyword Highlighting */
-.aasfwc-highlight {
+.NASFWC-highlight {
     background-color: #fff3cd;
     color: #856404;
     font-weight: 600;
@@ -261,8 +261,8 @@
 }
 
 /* Messages */
-.aasfwc-no-results-message,
-.aasfwc-error-message {
+.NASFWC-no-results-message,
+.NASFWC-error-message {
     padding: 20px;
     margin: 0;
     text-align: center;
@@ -270,12 +270,12 @@
     font-size: 15px;
 }
 
-.aasfwc-no-results-message {
+.NASFWC-no-results-message {
     background: #f8f9fa;
     border-radius: 4px;
 }
 
-.aasfwc-error-message {
+.NASFWC-error-message {
     color: #d63638;
     background-color: #fef7f7;
     border-radius: 4px;
@@ -283,35 +283,35 @@
 
 /* Responsive Design */
 @media (max-width: 768px) {
-    .aasfwc-ajax-search-container {
+    .NASFWC-ajax-search-container {
         max-width: 100%;
     }
     
-    .aasfwc-search-results {
+    .NASFWC-search-results {
         max-height: 300px;
     }
     
-    .aasfwc-product-image {
+    .NASFWC-product-image {
         width: 40px;
         height: 40px;
     }
 }
 
 @media (max-width: 480px) {
-    .aasfwc-product-link {
-        padding: var(--aasfwc-spacing-xs);
+    .NASFWC-product-link {
+        padding: var(--NASFWC-spacing-xs);
     }
     
-    .aasfwc-product-image {
+    .NASFWC-product-image {
         width: 35px;
         height: 35px;
     }
     
-    .aasfwc-product-title {
+    .NASFWC-product-title {
         font-size: 0.9em;
     }
     
-    .aasfwc-product-price {
+    .NASFWC-product-price {
         font-size: 0.8em;
     }
 }

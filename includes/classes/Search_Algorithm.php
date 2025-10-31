@@ -1,12 +1,12 @@
-<?php
+﻿<?php
 /**
  * Search Algorithm with AI Layer
  *
- * @package AASFWC
+ * @package NASFWC
  * @since 1.0.0
  */
 
-namespace AASFWC;
+namespace NASFWC;
 
 defined('ABSPATH') || exit;
 
@@ -49,7 +49,7 @@ class Search_Algorithm {
         $query = $this->correct_typos($query);
         $query = $this->expand_synonyms($query);
         
-        return apply_filters('aasfwc_processed_query', $query);
+        return apply_filters('NASFWC_processed_query', $query);
     }
     
     /**
@@ -63,13 +63,13 @@ class Search_Algorithm {
     private function get_products($query, $args) {
         $search_args = wp_parse_args($args, [
             'status' => 'publish',
-            'limit' => get_option('aasfwc_search_limit', 10),
+            'limit' => get_option('NASFWC_search_limit', 10),
             'meta_query' => [],
             'tax_query' => []
         ]);
         
         // Exclude out of stock if enabled
-        if (get_option('aasfwc_exclude_out_of_stock', 0)) {
+        if (get_option('NASFWC_exclude_out_of_stock', 0)) {
             $search_args['meta_query'][] = [
                 'key' => '_stock_status',
                 'value' => 'instock',
@@ -80,13 +80,13 @@ class Search_Algorithm {
         $all_products = [];
         
         // 1. Title search (highest priority)
-        if (get_option('aasfwc_search_in_title', 1)) {
+        if (get_option('NASFWC_search_in_title', 1)) {
             $title_products = wc_get_products(array_merge($search_args, ['s' => $query]));
             $all_products = array_merge($all_products, $title_products);
         }
         
         // 2. SKU search
-        if (get_option('aasfwc_search_in_sku', 1)) {
+        if (get_option('NASFWC_search_in_sku', 1)) {
             $sku_args = $search_args;
             $sku_args['sku'] = $query;
             unset($sku_args['s']); // Remove title search
@@ -95,31 +95,31 @@ class Search_Algorithm {
         }
         
         // 3. Description search
-        if (get_option('aasfwc_search_in_content', 0)) {
+        if (get_option('NASFWC_search_in_content', 0)) {
             $desc_products = $this->search_in_content($query, $search_args);
             $all_products = array_merge($all_products, $desc_products);
         }
         
         // 4. Short description search
-        if (get_option('aasfwc_search_in_excerpt', 0)) {
+        if (get_option('NASFWC_search_in_excerpt', 0)) {
             $excerpt_products = $this->search_in_excerpt($query, $search_args);
             $all_products = array_merge($all_products, $excerpt_products);
         }
         
         // 5. Category search
-        if (get_option('aasfwc_search_in_categories', 1)) {
+        if (get_option('NASFWC_search_in_categories', 1)) {
             $cat_products = $this->search_in_categories($query, $search_args);
             $all_products = array_merge($all_products, $cat_products);
         }
         
         // 6. Tag search
-        if (get_option('aasfwc_search_in_tags', 1)) {
+        if (get_option('NASFWC_search_in_tags', 1)) {
             $tag_products = $this->search_in_tags($query, $search_args);
             $all_products = array_merge($all_products, $tag_products);
         }
         
         // 7. Attribute search
-        if (get_option('aasfwc_search_in_attributes', 0)) {
+        if (get_option('NASFWC_search_in_attributes', 0)) {
             $attr_products = $this->search_in_attributes($query, $search_args);
             $all_products = array_merge($all_products, $attr_products);
         }
@@ -354,7 +354,7 @@ class Search_Algorithm {
             $score += 15;
         }
         
-        return apply_filters('aasfwc_relevance_score', $score, $product, $query);
+        return apply_filters('NASFWC_relevance_score', $score, $product, $query);
     }
     
     /**
@@ -365,12 +365,12 @@ class Search_Algorithm {
      * @return string Corrected query
      */
     private function correct_typos($query) {
-        if (!get_option('aasfwc_enable_typo_correction', 1)) {
+        if (!get_option('NASFWC_enable_typo_correction', 1)) {
             return $query;
         }
         
         // Enhanced typo corrections
-        $corrections = apply_filters('aasfwc_typo_corrections', [
+        $corrections = apply_filters('NASFWC_typo_corrections', [
             // Common product typos
             'tshirt' => 't-shirt',
             'tee shirt' => 't-shirt',
@@ -448,11 +448,11 @@ class Search_Algorithm {
      * @return string Expanded query
      */
     private function expand_synonyms($query) {
-        if (!get_option('aasfwc_enable_synonyms', 1)) {
+        if (!get_option('NASFWC_enable_synonyms', 1)) {
             return $query;
         }
         
-        $synonyms = apply_filters('aasfwc_synonyms', [
+        $synonyms = apply_filters('NASFWC_synonyms', [
             'shirt' => ['top', 'blouse', 'tee', 'polo', 'tank'],
             'pants' => ['trousers', 'jeans', 'slacks', 'bottoms'],
             'shoes' => ['footwear', 'sneakers', 'boots', 'sandals'],

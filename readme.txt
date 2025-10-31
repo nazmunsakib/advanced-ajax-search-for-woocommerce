@@ -1,4 +1,4 @@
-=== Advanced AJAX Search for WooCommerce ===
+﻿=== Nivo AJAX Search for WooCommerce ===
 Contributors: nazmunsakib
 Tags: woocommerce, ajax search, product search, live search, fuzzy search
 Requires at least: 5.0
@@ -12,7 +12,7 @@ Professional live product search with AI-powered fuzzy search and typo correctio
 
 == Description ==
 
-**Advanced AJAX Search for WooCommerce** is a lightweight, modern, and powerful search plugin that enhances your WooCommerce store with real-time AJAX search functionality. Built with modern technologies and AI-powered algorithms, it provides the best search experience for your customers.
+**Nivo AJAX Search for WooCommerce** is a lightweight, modern, and powerful search plugin that enhances your WooCommerce store with real-time AJAX search functionality. Built with modern technologies and AI-powered algorithms, it provides the best search experience for your customers.
 
 = 🚀 KEY FEATURES =
 
@@ -22,7 +22,7 @@ Professional live product search with AI-powered fuzzy search and typo correctio
 * **Smart Relevance Ranking** - Intelligent result ordering
 * **Multi-field Search** - Search in title, SKU, description, categories
 * **Modern React Admin** - Beautiful interface with live preview
-* **Gutenberg Block** - "Advanced AJAX Search" block included
+* **Gutenberg Block** - "Nivo AJAX Search" block included
 * **Fully Customizable** - Colors, borders, padding, and more
 * **Lightweight & Fast** - Optimized performance
 * **Mobile Responsive** - Works perfectly on all devices
@@ -73,31 +73,31 @@ Professional live product search with AI-powered fuzzy search and typo correctio
 = 💻 USAGE =
 
 **Shortcode:**
-`[aasfwc_ajax_search]`
+`[NASFWC_ajax_search]`
 
 **Gutenberg Block:**
-Search for "Advanced AJAX Search" in the block editor.
+Search for "Nivo AJAX Search" in the block editor.
 
 **PHP Template:**
-`<?php echo do_shortcode('[aasfwc_ajax_search]'); ?>`
+`<?php echo do_shortcode('[NASFWC_ajax_search]'); ?>`
 
 = 🛠️ DEVELOPER FEATURES =
 
 **Filters:**
-* `aasfwc_search_args` - Modify search arguments
-* `aasfwc_search_results` - Customize search results
-* `aasfwc_search_result_item` - Modify individual items
-* `aasfwc_typo_corrections` - Add custom typo corrections
-* `aasfwc_synonyms` - Add custom synonyms
+* `NASFWC_search_args` - Modify search arguments
+* `NASFWC_search_results` - Customize search results
+* `NASFWC_search_result_item` - Modify individual items
+* `NASFWC_typo_corrections` - Add custom typo corrections
+* `NASFWC_synonyms` - Add custom synonyms
 
 **Actions:**
-* `aasfwc_plugin_loaded` - Plugin initialization
-* `aasfwc_components_loaded` - Components loaded
+* `NASFWC_plugin_loaded` - Plugin initialization
+* `NASFWC_components_loaded` - Components loaded
 
 **JavaScript Events:**
-* `aasfwc:init` - Search initialized
-* `aasfwc:resultsDisplayed` - Results displayed
-* `aasfwc:noResults` - No results found
+* `NASFWC:init` - Search initialized
+* `NASFWC:resultsDisplayed` - Results displayed
+* `NASFWC:noResults` - No results found
 
 = 🌐 TRANSLATIONS =
 
@@ -108,12 +108,12 @@ The plugin is translation ready and includes:
 
 = 📚 DOCUMENTATION =
 
-Full documentation available at [GitHub](https://github.com/nazmunsakib/advanced-ajax-search-for-woocommerce)
+Full documentation available at [GitHub](https://github.com/nazmunsakib/nivo-ajax-search-for-woocommerce)
 
 = 💬 SUPPORT =
 
-* [Support Forum](https://wordpress.org/support/plugin/advanced-ajax-search-for-woocommerce/)
-* [GitHub Issues](https://github.com/nazmunsakib/advanced-ajax-search-for-woocommerce/issues)
+* [Support Forum](https://wordpress.org/support/plugin/nivo-ajax-search-for-woocommerce/)
+* [GitHub Issues](https://github.com/nazmunsakib/nivo-ajax-search-for-woocommerce/issues)
 
 == Installation ==
 
@@ -121,9 +121,9 @@ Full documentation available at [GitHub](https://github.com/nazmunsakib/advanced
 
 1. Log in to your WordPress admin panel
 2. Go to Plugins → Add New
-3. Search for "Advanced AJAX Search for WooCommerce"
+3. Search for "Nivo AJAX Search for WooCommerce"
 4. Click "Install Now" and then "Activate"
-5. Go to WooCommerce → Advanced AJAX Search to configure
+5. Go to WooCommerce → Nivo AJAX Search to configure
 
 = Manual Installation =
 
@@ -132,15 +132,15 @@ Full documentation available at [GitHub](https://github.com/nazmunsakib/advanced
 3. Go to Plugins → Add New → Upload Plugin
 4. Choose the ZIP file and click "Install Now"
 5. Activate the plugin
-6. Go to WooCommerce → Advanced AJAX Search to configure
+6. Go to WooCommerce → Nivo AJAX Search to configure
 
 = After Installation =
 
-1. Go to WooCommerce → Advanced AJAX Search
+1. Go to WooCommerce → Nivo AJAX Search
 2. Configure your search settings
-3. Copy the shortcode `[aasfwc_ajax_search]`
+3. Copy the shortcode `[NASFWC_ajax_search]`
 4. Paste it into any page, post, or widget
-5. Or use the "Advanced AJAX Search" Gutenberg block
+5. Or use the "Nivo AJAX Search" Gutenberg block
 
 == Frequently Asked Questions ==
 
@@ -190,7 +190,7 @@ Yes! The plugin includes extensive hooks, filters, and JavaScript events for cus
 
 = How do I display the search form? =
 
-Use the shortcode `[aasfwc_ajax_search]` or the "Advanced AJAX Search" Gutenberg block.
+Use the shortcode `[NASFWC_ajax_search]` or the "Nivo AJAX Search" Gutenberg block.
 
 == Screenshots ==
 
@@ -212,8 +212,8 @@ Use the shortcode `[aasfwc_ajax_search]` or the "Advanced AJAX Search" Gutenberg
 * Automatic typo correction
 * Modern React-based admin interface
 * Live preview for search bar and results
-* Gutenberg block "Advanced AJAX Search"
-* Shortcode `[aasfwc_ajax_search]` with one-click copy
+* Gutenberg block "Nivo AJAX Search"
+* Shortcode `[NASFWC_ajax_search]` with one-click copy
 * Multi-field search (Title, SKU, Description, Categories)
 * Smart relevance ranking algorithm
 * Fully customizable styling options
@@ -229,7 +229,7 @@ Use the shortcode `[aasfwc_ajax_search]` or the "Advanced AJAX Search" Gutenberg
 == Upgrade Notice ==
 
 = 1.0.0 =
-Initial release of Advanced AJAX Search for WooCommerce. Install now to enhance your store's search experience!
+Initial release of Nivo AJAX Search for WooCommerce. Install now to enhance your store's search experience!
 
 == Additional Info ==
 
@@ -238,10 +238,10 @@ Initial release of Advanced AJAX Search for WooCommerce. Install now to enhance 
 * Built with React, WordPress REST API, and modern JavaScript
 
 **Links:**
-* [Plugin Homepage](https://github.com/nazmunsakib/advanced-ajax-search-for-woocommerce)
-* [Documentation](https://github.com/nazmunsakib/advanced-ajax-search-for-woocommerce/wiki)
-* [Support](https://wordpress.org/support/plugin/advanced-ajax-search-for-woocommerce/)
-* [GitHub Repository](https://github.com/nazmunsakib/advanced-ajax-search-for-woocommerce)
+* [Plugin Homepage](https://github.com/nazmunsakib/nivo-ajax-search-for-woocommerce)
+* [Documentation](https://github.com/nazmunsakib/nivo-ajax-search-for-woocommerce/wiki)
+* [Support](https://wordpress.org/support/plugin/nivo-ajax-search-for-woocommerce/)
+* [GitHub Repository](https://github.com/nazmunsakib/nivo-ajax-search-for-woocommerce)
 
 **Privacy:**
 This plugin does not collect or store any personal data. All search queries are processed locally on your server.

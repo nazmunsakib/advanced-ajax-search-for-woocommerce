@@ -2,29 +2,29 @@
 /**
  * Main Plugin Class
  *
- * @package AASFWC
+ * @package NASFWC
  * @since 1.0.0
  */
 
-namespace AASFWC;
+namespace NASFWC;
 
 defined( 'ABSPATH' ) || exit;
 
 /**
- * Main Advanced_Ajax_Search Class
+ * Main Nivo_Ajax_Search Class
  *
- * Handles the core functionality of the Advanced AJAX Search plugin.
+ * Handles the core functionality of the Nivo AJAX Search plugin.
  * Uses singleton pattern for scalability and extensibility.
  *
  * @since 1.0.0
  */
-final class Advanced_Ajax_Search {
+final class Nivo_Ajax_Search {
 
 	/**
 	 * Plugin instance
 	 *
 	 * @since 1.0.0
-	 * @var Advanced_Ajax_Search|null
+	 * @var Nivo_Ajax_Search|null
 	 */
 	private static $instance = null;
 
@@ -34,7 +34,7 @@ final class Advanced_Ajax_Search {
 	 * @since 1.0.0
 	 * @var string
 	 */
-	public $version = AASFWC_VERSION;
+	public $version = NASFWC_VERSION;
 
 	/**
 	 * Enqueue handler
@@ -80,7 +80,7 @@ final class Advanced_Ajax_Search {
 	 * Get plugin instance (Singleton)
 	 *
 	 * @since 1.0.0
-	 * @return Advanced_Ajax_Search
+	 * @return Nivo_Ajax_Search
 	 */
 	public static function get_instance() {
 		if ( null === self::$instance ) {
@@ -106,12 +106,12 @@ final class Advanced_Ajax_Search {
 	 * @return void
 	 */
 	private function init_hooks() {
-		add_action( 'wp_ajax_aasfwc_ajax_search', array( $this, 'handle_search' ) );
-		add_action( 'wp_ajax_nopriv_aasfwc_ajax_search', array( $this, 'handle_search' ) );
-		add_action( 'wc_ajax_aasfwc_ajax_search', array( $this, 'handle_search' ) );
+		add_action( 'wp_ajax_nasfwc_ajax_search', array( $this, 'handle_search' ) );
+		add_action( 'wp_ajax_nopriv_nasfwc_ajax_search', array( $this, 'handle_search' ) );
+		add_action( 'wc_ajax_nasfwc_ajax_search', array( $this, 'handle_search' ) );
 
 		// Allow other plugins to hook into our initialization
-		do_action( 'aasfwc_plugin_loaded', $this );
+		do_action( 'nasfwc_plugin_loaded', $this );
 	}
 
 	/**
@@ -136,7 +136,7 @@ final class Advanced_Ajax_Search {
 		$this->shortcode = new Shortcode();
 
 		// Allow other plugins to add components
-		do_action( 'aasfwc_components_loaded', $this );
+		do_action( 'nasfwc_components_loaded', $this );
 	}
 
 	/**
@@ -151,27 +151,27 @@ final class Advanced_Ajax_Search {
 	public function handle_search() {
 		// Verify nonce for security (skip for wc-ajax)
 		if ( ! isset( $_GET['wc-ajax'] ) ) {
-			check_ajax_referer( 'aasfwc_search_nonce', 'nonce' );
+			check_ajax_referer( 'nasfwc_search_nonce', 'nonce' );
 		}
 
 		$query = isset( $_POST['s'] ) ? sanitize_text_field( $_POST['s'] ) : ( isset( $_POST['query'] ) ? sanitize_text_field( $_POST['query'] ) : '' );
 
 		// Check if AJAX search is enabled
-		if ( ! get_option( 'aasfwc_enable_ajax', 1 ) ) {
-			wp_send_json_error( array( 'message' => __( 'AJAX search is disabled', 'advanced-ajax-search-for-woocommerce' ) ) );
+		if ( ! get_option( 'nasfwc_enable_ajax', 1 ) ) {
+			wp_send_json_error( array( 'message' => __( 'AJAX search is disabled', 'nivo-ajax-search-for-woocommerce' ) ) );
 		}
 
 		// Validate minimum query length
-		$min_length = get_option( 'aasfwc_min_chars', 2 );
+		$min_length = get_option( 'nasfwc_min_chars', 2 );
 		if ( strlen( $query ) < $min_length ) {
-			wp_send_json_error( array( 'message' => __( 'Query too short', 'advanced-ajax-search-for-woocommerce' ) ) );
+			wp_send_json_error( array( 'message' => __( 'Query too short', 'nivo-ajax-search-for-woocommerce' ) ) );
 		}
 
 		// Get search parameters
 		$search_args = apply_filters(
-			'aasfwc_search_args',
+			'nasfwc_search_args',
 			array(
-				'limit'   => get_option( 'aasfwc_search_limit', 10 ),
+				'limit'   => get_option( 'nasfwc_search_limit', 10 ),
 				'exclude' => $this->get_excluded_products(),
 			),
 			$query
@@ -184,11 +184,11 @@ final class Advanced_Ajax_Search {
 		$results = array();
 		foreach ( $products as $product ) {
 			$result    = $this->format_search_result( $product, $query );
-			$results[] = apply_filters( 'aasfwc_search_result_item', $result, $product, $query );
+			$results[] = apply_filters( 'nasfwc_search_result_item', $result, $product, $query );
 		}
 
 		// Send results directly for JavaScript compatibility
-		wp_send_json_success( apply_filters( 'aasfwc_search_results', $results, $query ) );
+		wp_send_json_success( apply_filters( 'nasfwc_search_results', $results, $query ) );
 	}
 
 	/**
@@ -221,7 +221,7 @@ final class Advanced_Ajax_Search {
 	 * @return array Excluded product IDs
 	 */
 	private function get_excluded_products() {
-		$excluded = get_option( 'aasfwc_excluded_products', '' );
+		$excluded = get_option( 'nasfwc_excluded_products', '' );
 		if ( empty( $excluded ) ) {
 			return array();
 		}

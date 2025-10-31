@@ -1,9 +1,9 @@
-/**
- * Advanced AJAX Search for WooCommerce
+﻿/**
+ * Nivo AJAX Search for WooCommerce
  * 
  * Professional vanilla JavaScript implementation
  * 
- * @package AASFWC
+ * @package NASFWC
  * @since 1.0.0
  */
 
@@ -13,22 +13,22 @@
     // Configuration
     const config = {
         selectors: {
-            input: '.aasfwc-product-search',
-            results: '.aasfwc-search-results',
-            container: '.aasfwc-ajax-search-container'
+            input: '.NASFWC-product-search',
+            results: '.NASFWC-search-results',
+            container: '.NASFWC-ajax-search-container'
         },
         classes: {
-            loading: 'aasfwc-loading',
-            hasResults: 'aasfwc-has-results',
-            noResults: 'aasfwc-no-results',
-            focused: 'aasfwc-focused'
+            loading: 'NASFWC-loading',
+            hasResults: 'NASFWC-has-results',
+            noResults: 'NASFWC-no-results',
+            focused: 'NASFWC-focused'
         },
         settings: {
-            minLength: (window.aasfwc_ajax_search && window.aasfwc_ajax_search.settings.min_length) || 2,
-            delay: (window.aasfwc_ajax_search && window.aasfwc_ajax_search.settings.delay) || 300,
-            maxResults: (window.aasfwc_ajax_search && window.aasfwc_ajax_search.settings.max_results) || 10
+            minLength: (window.NASFWC_ajax_search && window.NASFWC_ajax_search.settings.min_length) || 2,
+            delay: (window.NASFWC_ajax_search && window.NASFWC_ajax_search.settings.delay) || 300,
+            maxResults: (window.NASFWC_ajax_search && window.NASFWC_ajax_search.settings.max_results) || 10
         },
-        strings: (window.aasfwc_ajax_search && window.aasfwc_ajax_search.strings) || {}
+        strings: (window.NASFWC_ajax_search && window.NASFWC_ajax_search.strings) || {}
     };
 
     // State
@@ -70,7 +70,7 @@
      * Trigger custom event
      */
     function triggerEvent(eventName, data = {}) {
-        const event = new CustomEvent(`aasfwc:${eventName}`, {
+        const event = new CustomEvent(`NASFWC:${eventName}`, {
             detail: data,
             bubbles: true
         });
@@ -142,12 +142,12 @@
         formData.append('s', query);
         
         // Use WooCommerce AJAX if available
-        const useWcAjax = window.aasfwc_ajax_search.wc_ajax_url;
-        const ajaxUrl = useWcAjax ? window.aasfwc_ajax_search.wc_ajax_url : window.aasfwc_ajax_search.ajax_url;
+        const useWcAjax = window.NASFWC_ajax_search.wc_ajax_url;
+        const ajaxUrl = useWcAjax ? window.NASFWC_ajax_search.wc_ajax_url : window.NASFWC_ajax_search.ajax_url;
         
         if (!useWcAjax) {
-            formData.append('action', 'aasfwc_ajax_search');
-            formData.append('nonce', window.aasfwc_ajax_search.nonce);
+            formData.append('action', 'NASFWC_ajax_search');
+            formData.append('nonce', window.NASFWC_ajax_search.nonce);
         }
 
         triggerEvent('beforeSearch', { query, results, container });
@@ -203,7 +203,7 @@
             return;
         }
 
-        const settings = window.aasfwc_ajax_search && window.aasfwc_ajax_search.settings ? window.aasfwc_ajax_search.settings : {};
+        const settings = window.NASFWC_ajax_search && window.NASFWC_ajax_search.settings ? window.NASFWC_ajax_search.settings : {};
         const resultsStyle = `
             border: ${settings.results_border_width || 1}px solid ${settings.results_border_color || '#ddd'};
             border-radius: ${settings.results_border_radius || 4}px;
@@ -212,7 +212,7 @@
 
         results.style.cssText = resultsStyle;
 
-        let html = '<ul class="aasfwc-search-results-list">';
+        let html = '<ul class="NASFWC-search-results-list">';
 
         products.forEach(function (product) {
             html += renderProductItem(product, query, settings);
@@ -232,7 +232,7 @@
     function highlightKeywords(text, query) {
         if (!text || !query) return text;
         const regex = new RegExp(`(${query})`, 'gi');
-        return text.replace(regex, '<span class="aasfwc-highlight">$1</span>');
+        return text.replace(regex, '<span class="NASFWC-highlight">$1</span>');
     }
 
     /**
@@ -246,26 +246,26 @@
         const padding = settings.results_padding || 10;
         
         const imageHtml = (showImages && product.image)
-            ? `<img src="${product.image}" alt="${product.title}" class="aasfwc-product-image">`
+            ? `<img src="${product.image}" alt="${product.title}" class="NASFWC-product-image">`
             : '';
 
         const highlightedTitle = highlightKeywords(product.title, query);
         const skuHtml = (showSku && product.sku) ? ` <strong>(SKU: ${product.sku})</strong>` : '';
-        const priceHtml = (showPrice && product.price) ? `<span class="aasfwc-product-price">${product.price}</span>` : '';
+        const priceHtml = (showPrice && product.price) ? `<span class="NASFWC-product-price">${product.price}</span>` : '';
         
-        const titleSkuHtml = `<div class="aasfwc-product-title-row">
-            <span class="aasfwc-product-title">${highlightedTitle}${skuHtml}</span>
+        const titleSkuHtml = `<div class="NASFWC-product-title-row">
+            <span class="NASFWC-product-title">${highlightedTitle}${skuHtml}</span>
             ${priceHtml}
         </div>`;
 
         const descHtml = (showDescription && product.short_description) 
-            ? `<span class="aasfwc-product-description">${highlightKeywords(product.short_description, query)}</span>` 
+            ? `<span class="NASFWC-product-description">${highlightKeywords(product.short_description, query)}</span>` 
             : '';
 
-        return `<li class="aasfwc-search-result-item" style="padding: ${padding}px;">
-                <a href="${product.url}" class="aasfwc-product-link">
+        return `<li class="NASFWC-search-result-item" style="padding: ${padding}px;">
+                <a href="${product.url}" class="NASFWC-product-link">
                     ${imageHtml}
-                    <div class="aasfwc-product-info">
+                    <div class="NASFWC-product-info">
                         ${titleSkuHtml}
                         ${descHtml}
                     </div>
@@ -277,14 +277,14 @@
      * Display no results message
      */
     function displayNoResults(results, container) {
-        const settings = window.aasfwc_ajax_search && window.aasfwc_ajax_search.settings ? window.aasfwc_ajax_search.settings : {};
+        const settings = window.NASFWC_ajax_search && window.NASFWC_ajax_search.settings ? window.NASFWC_ajax_search.settings : {};
         const resultsStyle = `
             border: ${settings.results_border_width || 1}px solid ${settings.results_border_color || '#ddd'};
             border-radius: ${settings.results_border_radius || 4}px;
             background-color: ${settings.results_bg_color || '#ffffff'};
         `;
         results.style.cssText = resultsStyle;
-        results.innerHTML = `<p class="aasfwc-no-results-message">${config.strings.no_results}</p>`;
+        results.innerHTML = `<p class="NASFWC-no-results-message">${config.strings.no_results}</p>`;
         addClass(container, config.classes.noResults);
         triggerEvent('noResults', { results, container });
     }
@@ -293,7 +293,7 @@
      * Display error message
      */
     function displayError(message, results, container) {
-        results.innerHTML = `<p class="aasfwc-error-message">${message}</p>`;
+        results.innerHTML = `<p class="NASFWC-error-message">${message}</p>`;
 
         triggerEvent('error', { message, results, container });
     }
@@ -337,7 +337,7 @@
         const container = closest(input, config.selectors.container);
         if (!container) return;
 
-        const clearBtn = container.querySelector('.aasfwc-clear-search');
+        const clearBtn = container.querySelector('.NASFWC-clear-search');
         if (clearBtn) {
             clearBtn.style.display = input.value.length > 0 ? 'block' : 'none';
         }
@@ -371,7 +371,7 @@
 
         // Event delegation for clear button
         document.addEventListener('click', function (event) {
-            if (event.target.matches && event.target.matches('.aasfwc-clear-search')) {
+            if (event.target.matches && event.target.matches('.NASFWC-clear-search')) {
                 handleClear(event);
             }
         });
@@ -387,7 +387,7 @@
     }
 
     // Expose public API
-    window.aasfwcSearch = {
+    window.NASFWCSearch = {
         config: config,
         triggerEvent: triggerEvent
     };

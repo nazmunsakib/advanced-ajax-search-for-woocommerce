@@ -1,12 +1,12 @@
-<?php
+﻿<?php
 /**
  * Gutenberg Block Handler
  *
- * @package AASFWC
+ * @package NASFWC
  * @since 1.0.0
  */
 
-namespace AASFWC;
+namespace NASFWC;
 
 defined('ABSPATH') || exit;
 
@@ -39,11 +39,11 @@ class Gutenberg_Block {
             return;
         }
         
-        register_block_type('aasfwc/ajax-search', [
+        register_block_type('NASFWC/ajax-search', [
             'attributes' => [
                 'placeholder' => [
                     'type' => 'string',
-                    'default' => __('Search products...', 'advanced-ajax-search-for-woocommerce')
+                    'default' => __('Search products...', 'nivo-ajax-search-for-woocommerce')
                 ],
                 'backgroundColor' => [
                     'type' => 'string',
@@ -73,10 +73,10 @@ class Gutenberg_Block {
      */
     public function enqueue_block_assets() {
         wp_enqueue_script(
-            'aasfwc-block-editor',
-            AASFWC_PLUGIN_URL . 'assets/js/block-editor.js',
+            'NASFWC-block-editor',
+            NASFWC_PLUGIN_URL . 'assets/js/block-editor.js',
             ['wp-blocks', 'wp-element', 'wp-editor', 'wp-components'],
-            AASFWC_VERSION,
+            NASFWC_VERSION,
             true
         );
     }
@@ -89,7 +89,7 @@ class Gutenberg_Block {
      * @return string Block HTML
      */
     public function render_block($attributes) {
-        $placeholder = esc_attr($attributes['placeholder'] ?? __('Search products...', 'advanced-ajax-search-for-woocommerce'));
+        $placeholder = esc_attr($attributes['placeholder'] ?? __('Search products...', 'nivo-ajax-search-for-woocommerce'));
         $bg_color = esc_attr($attributes['backgroundColor'] ?? '#ffffff');
         $text_color = esc_attr($attributes['textColor'] ?? '#333333');
         $border_color = esc_attr($attributes['borderColor'] ?? '#dddddd');
@@ -102,18 +102,18 @@ class Gutenberg_Block {
             $border_color
         );
         
-        $icon_html = $show_icon ? '<svg class="aasfwc-search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>' : '';
+        $icon_html = $show_icon ? '<svg class="NASFWC-search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>' : '';
         
         return sprintf(
-            '<div class="aasfwc-ajax-search-container aasfwc-block">
-                <form class="aasfwc-search-form" role="search" method="get" action="%s">
-                    <div class="aasfwc-search-wrapper" style="%s">
+            '<div class="NASFWC-ajax-search-container NASFWC-block">
+                <form class="NASFWC-search-form" role="search" method="get" action="%s">
+                    <div class="NASFWC-search-wrapper" style="%s">
                         %s
-                        <input type="text" class="aasfwc-product-search" name="s" placeholder="%s" style="%s" autocomplete="off">
-                        <span class="aasfwc-clear-search" style="display:none;">&times;</span>
+                        <input type="text" class="NASFWC-product-search" name="s" placeholder="%s" style="%s" autocomplete="off">
+                        <span class="NASFWC-clear-search" style="display:none;">&times;</span>
                     </div>
                 </form>
-                <div class="aasfwc-search-results"></div>
+                <div class="NASFWC-search-results"></div>
             </div>',
             esc_url(wc_get_page_permalink('shop')),
             $style,

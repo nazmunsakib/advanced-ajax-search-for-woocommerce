@@ -6,5 +6,5 @@ $vendorDir = dirname(__DIR__);
 $baseDir = dirname($vendorDir);
 
 return array(
-    'AASFWC\\' => array($baseDir . '/includes/classes', $baseDir . '/includes/admin'),
+    'NASFWC\\' => array($baseDir . '/includes/classes', $baseDir . '/includes/admin'),
 );

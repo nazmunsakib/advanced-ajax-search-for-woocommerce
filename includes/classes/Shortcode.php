@@ -1,12 +1,12 @@
-<?php
+﻿<?php
 /**
  * Shortcode Handler
  *
- * @package AASFWC
+ * @package NASFWC
  * @since 1.0.0
  */
 
-namespace AASFWC;
+namespace NASFWC;
 
 defined('ABSPATH') || exit;
 
@@ -25,7 +25,7 @@ class Shortcode {
      * @since 1.0.0
      */
     public function __construct() {
-        add_shortcode('aasfwc_ajax_search', [$this, 'render_search_form']);
+        add_shortcode('NASFWC_ajax_search', [$this, 'render_search_form']);
     }
     
     /**
@@ -38,26 +38,26 @@ class Shortcode {
     public function render_search_form($atts = []) {
         // Parse shortcode attributes
         $atts = shortcode_atts([
-            'placeholder' => __('Search products...', 'advanced-ajax-search-for-woocommerce'),
-            'container_class' => 'aasfwc-ajax-search-container',
-            'input_class' => 'aasfwc-product-search',
-            'results_class' => 'aasfwc-search-results',
+            'placeholder' => __('Search products...', 'nivo-ajax-search-for-woocommerce'),
+            'container_class' => 'NASFWC-ajax-search-container',
+            'input_class' => 'NASFWC-product-search',
+            'results_class' => 'NASFWC-search-results',
             'show_icon' => 'true',
             'style' => ''
-        ], $atts, 'aasfwc_ajax_search');
+        ], $atts, 'NASFWC_ajax_search');
         
         $show_icon = $atts['show_icon'] === 'true';
-        $icon_html = $show_icon ? '<svg class="aasfwc-search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>' : '';
+        $icon_html = $show_icon ? '<svg class="NASFWC-search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>' : '';
         $style_attr = !empty($atts['style']) ? ' style="' . esc_attr($atts['style']) . '"' : '';
         
         // Build HTML
         $html = sprintf(
             '<div class="%s"%s>
-                <form class="aasfwc-search-form" role="search" method="get" action="%s">
-                    <div class="aasfwc-search-wrapper">
+                <form class="NASFWC-search-form" role="search" method="get" action="%s">
+                    <div class="NASFWC-search-wrapper">
                         %s
                         <input type="text" class="%s" name="s" placeholder="%s" autocomplete="off">
-                        <span class="aasfwc-clear-search" style="display:none;">&times;</span>
+                        <span class="NASFWC-clear-search" style="display:none;">&times;</span>
                     </div>
                 </form>
                 <div class="%s"></div>
@@ -71,6 +71,6 @@ class Shortcode {
             esc_attr($atts['results_class'])
         );
         
-        return apply_filters('aasfwc_shortcode_html', $html, $atts);
+        return apply_filters('NASFWC_shortcode_html', $html, $atts);
     }
 }

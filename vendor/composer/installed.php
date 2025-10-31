@@ -1,4 +1,4 @@
-<?php return array(
+﻿<?php return array(
     'root' => array(
         'name' => 'nazmunsakib/nivo-ajax-search-for-woocommerce',
         'pretty_version' => '1.0.0+no-version-set',

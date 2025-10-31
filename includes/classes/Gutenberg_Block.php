@@ -71,18 +71,18 @@ class Gutenberg_Block {
         $placeholder = get_option('nivo_search_placeholder_text', __('Search products...', 'nivo-ajax-search-for-woocommerce'));
         $show_icon = get_option('nivo_search_show_search_icon', 1);
         
-        $icon_html = $show_icon ? '<svg class="nivo-search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>' : '';
+        $icon_html = $show_icon ? '<svg class="nivo_search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>' : '';
         
         return sprintf(
-            '<div class="nivo-ajax-search-container nivo-search-block">
-                <form class="nivo-search-form" role="search" method="get" action="%s">
-                    <div class="nivo-search-wrapper">
+            '<div class="nivo-ajax-search-container nivo_search-block">
+                <form class="nivo_search-form" role="search" method="get" action="%s">
+                    <div class="nivo_search-wrapper">
                         %s
-                        <input type="text" class="nivo-search-product-search" name="s" placeholder="%s" autocomplete="off">
-                        <span class="nivo-search-clear-search" style="display:none;">&times;</span>
+                        <input type="text" class="nivo_search-product-search" name="s" placeholder="%s" autocomplete="off">
+                        <span class="nivo_search-clear-search" style="display:none;">&times;</span>
                     </div>
                 </form>
-                <div class="nivo-search-results"></div>
+                <div class="nivo_search-results"></div>
             </div>',
             esc_url(wc_get_page_permalink('shop')),
             $icon_html,

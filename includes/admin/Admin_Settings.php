@@ -46,7 +46,7 @@ class Admin_Settings {
             __('AJAX Search Settings', 'nivo-ajax-search-for-woocommerce'),
             __('NivoSearch', 'nivo-ajax-search-for-woocommerce'),
             'manage_woocommerce',
-            'nivo-search-settings',
+            'nivo_search-settings',
             array( $this, 'settings_page' )
         );
     }

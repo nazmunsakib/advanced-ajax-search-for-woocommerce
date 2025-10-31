@@ -61,6 +61,7 @@ class Enqueue {
 	private function init_hooks() {
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_frontend_assets' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_admin_assets' ) );
+		add_action( 'enqueue_block_editor_assets', array( $this, 'enqueue_block_editor_assets' ) );
 	}
 
 	/**
@@ -289,19 +290,25 @@ class Enqueue {
 	}
 
 	/**
+	 * Enqueue block editor assets
+	 *
+	 * @since 1.0.0
+	 * @return void
+	 */
+	public function enqueue_block_editor_assets() {
+		// Enqueue frontend styles in block editor
+		$this->enqueue_styles();
+		$this->enqueue_scripts();
+		$this->localize_scripts();
+	}
+
+	/**
 	 * Check if assets should be enqueued
 	 *
 	 * @since 1.0.0
 	 * @return bool
 	 */
 	private function should_enqueue_assets() {
-		// Always enqueue for now - can be optimized later.
-		$should_enqueue = true;
-
-		// Allow filtering.
-		return apply_filters( 'nivo_search_should_enqueue_assets', $should_enqueue );
-	}
-}eue_assets() {
 		// Always enqueue for now - can be optimized later.
 		$should_enqueue = true;
 

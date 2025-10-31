@@ -13,15 +13,15 @@
     // Configuration
     const config = {
         selectors: {
-            input: '.NASFWC-product-search',
-            results: '.NASFWC-search-results',
-            container: '.NASFWC-ajax-search-container'
+            input: '.nasfwc-product-search',
+            results: '.nasfwc-search-results',
+            container: '.nasfwc-ajax-search-container'
         },
         classes: {
-            loading: 'NASFWC-loading',
-            hasResults: 'NASFWC-has-results',
-            noResults: 'NASFWC-no-results',
-            focused: 'NASFWC-focused'
+            loading: 'nasfwc-loading',
+            hasResults: 'nasfwc-has-results',
+            noResults: 'nasfwc-no-results',
+            focused: 'nasfwc-focused'
         },
         settings: {
             minLength: (window.NASFWC_ajax_search && window.NASFWC_ajax_search.settings.min_length) || 2,
@@ -212,7 +212,7 @@
 
         results.style.cssText = resultsStyle;
 
-        let html = '<ul class="NASFWC-search-results-list">';
+        let html = '<ul class="nasfwc-search-results-list">';
 
         products.forEach(function (product) {
             html += renderProductItem(product, query, settings);
@@ -232,7 +232,7 @@
     function highlightKeywords(text, query) {
         if (!text || !query) return text;
         const regex = new RegExp(`(${query})`, 'gi');
-        return text.replace(regex, '<span class="NASFWC-highlight">$1</span>');
+        return text.replace(regex, '<span class="nasfwc-highlight">$1</span>');
     }
 
     /**
@@ -246,26 +246,26 @@
         const padding = settings.results_padding || 10;
         
         const imageHtml = (showImages && product.image)
-            ? `<img src="${product.image}" alt="${product.title}" class="NASFWC-product-image">`
+            ? `<img src="${product.image}" alt="${product.title}" class="nasfwc-product-image">`
             : '';
 
         const highlightedTitle = highlightKeywords(product.title, query);
         const skuHtml = (showSku && product.sku) ? ` <strong>(SKU: ${product.sku})</strong>` : '';
-        const priceHtml = (showPrice && product.price) ? `<span class="NASFWC-product-price">${product.price}</span>` : '';
+        const priceHtml = (showPrice && product.price) ? `<span class="nasfwc-product-price">${product.price}</span>` : '';
         
-        const titleSkuHtml = `<div class="NASFWC-product-title-row">
-            <span class="NASFWC-product-title">${highlightedTitle}${skuHtml}</span>
+        const titleSkuHtml = `<div class="nasfwc-product-title-row">
+            <span class="nasfwc-product-title">${highlightedTitle}${skuHtml}</span>
             ${priceHtml}
         </div>`;
 
         const descHtml = (showDescription && product.short_description) 
-            ? `<span class="NASFWC-product-description">${highlightKeywords(product.short_description, query)}</span>` 
+            ? `<span class="nasfwc-product-description">${highlightKeywords(product.short_description, query)}</span>` 
             : '';
 
-        return `<li class="NASFWC-search-result-item" style="padding: ${padding}px;">
-                <a href="${product.url}" class="NASFWC-product-link">
+        return `<li class="nasfwc-search-result-item" style="padding: ${padding}px;">
+                <a href="${product.url}" class="nasfwc-product-link">
                     ${imageHtml}
-                    <div class="NASFWC-product-info">
+                    <div class="nasfwc-product-info">
                         ${titleSkuHtml}
                         ${descHtml}
                     </div>
@@ -284,7 +284,7 @@
             background-color: ${settings.results_bg_color || '#ffffff'};
         `;
         results.style.cssText = resultsStyle;
-        results.innerHTML = `<p class="NASFWC-no-results-message">${config.strings.no_results}</p>`;
+        results.innerHTML = `<p class="nasfwc-no-results-message">${config.strings.no_results}</p>`;
         addClass(container, config.classes.noResults);
         triggerEvent('noResults', { results, container });
     }
@@ -293,7 +293,7 @@
      * Display error message
      */
     function displayError(message, results, container) {
-        results.innerHTML = `<p class="NASFWC-error-message">${message}</p>`;
+        results.innerHTML = `<p class="nasfwc-error-message">${message}</p>`;
 
         triggerEvent('error', { message, results, container });
     }
@@ -337,7 +337,7 @@
         const container = closest(input, config.selectors.container);
         if (!container) return;
 
-        const clearBtn = container.querySelector('.NASFWC-clear-search');
+        const clearBtn = container.querySelector('.nasfwc-clear-search');
         if (clearBtn) {
             clearBtn.style.display = input.value.length > 0 ? 'block' : 'none';
         }
@@ -371,7 +371,7 @@
 
         // Event delegation for clear button
         document.addEventListener('click', function (event) {
-            if (event.target.matches && event.target.matches('.NASFWC-clear-search')) {
+            if (event.target.matches && event.target.matches('.nasfwc-clear-search')) {
                 handleClear(event);
             }
         });

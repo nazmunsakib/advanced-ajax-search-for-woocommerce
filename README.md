@@ -87,9 +87,9 @@ Search for "Nivo AJAX Search" in the block editor and customize via inspector pa
 | Attribute | Type | Default | Description |
 |-----------|------|---------|-------------|
 | `placeholder` | string | "Search products..." | Input placeholder text |
-| `container_class` | string | "NASFWC-ajax-search-container" | Container CSS class |
-| `input_class` | string | "NASFWC-product-search" | Input CSS class |
-| `results_class` | string | "NASFWC-search-results" | Results CSS class |
+| `container_class` | string | "nasfwc-ajax-search-container" | Container CSS class |
+| `input_class` | string | "nasfwc-product-search" | Input CSS class |
+| `results_class` | string | "nasfwc-search-results" | Results CSS class |
 | `show_icon` | boolean | true | Display search icon |
 | `style` | string | "" | Inline CSS styles |
 
@@ -146,10 +146,10 @@ $(document).on('NASFWC:resultsDisplayed', function(e, data) {
 nivo-ajax-search-for-woocommerce/
 ├── assets/
 │   ├── css/
-│   │   ├── NASFWC-search.css
+│   │   ├── nasfwc-search.css
 │   │   └── admin.css
 │   └── js/
-│       ├── NASFWC-search.js
+│       ├── nasfwc-search.js
 │       ├── admin.js
 │       ├── admin-react.js
 │       └── block-editor.js

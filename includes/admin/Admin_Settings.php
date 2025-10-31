@@ -43,7 +43,7 @@ class Admin_Settings {
             __('AJAX Search Settings', 'nivo-ajax-search-for-woocommerce'),
             __('Nivo AJAX Search', 'nivo-ajax-search-for-woocommerce'),
             'manage_woocommerce',
-            'NASFWC-settings',
+            'nasfwc-settings',
             [$this, 'settings_page']
         );
     }
@@ -118,7 +118,7 @@ class Admin_Settings {
     public function settings_page() {
         ?>
         <div class="wrap">
-            <div id="NASFWC-settings-root"></div>
+            <div id="nasfwc-settings-root"></div>
         </div>
         <?php
     }

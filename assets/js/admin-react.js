@@ -98,23 +98,23 @@ const SettingsApp = () => {
     const renderToggle = (key, checked) => {
         return wp.element.createElement(
             'label',
-            { className: 'NASFWC-toggle' },
+            { className: 'nasfwc-toggle' },
             wp.element.createElement('input', {
                 type: 'checkbox',
                 checked: !!checked,
                 onChange: (e) => updateSetting(key, e.target.checked ? 1 : 0)
             }),
-            wp.element.createElement('span', { className: 'NASFWC-toggle-slider' })
+            wp.element.createElement('span', { className: 'nasfwc-toggle-slider' })
         );
     };
 
     const renderRange = (key, value, min, max, step = 1) => {
         return wp.element.createElement(
             'div',
-            { className: 'NASFWC-range-control' },
+            { className: 'nasfwc-range-control' },
             wp.element.createElement('input', {
                 type: 'range',
-                className: 'NASFWC-range-slider',
+                className: 'nasfwc-range-slider',
                 min: min,
                 max: max,
                 step: step,
@@ -123,7 +123,7 @@ const SettingsApp = () => {
             }),
             wp.element.createElement('input', {
                 type: 'number',
-                className: 'NASFWC-range-value',
+                className: 'nasfwc-range-value',
                 min: min,
                 max: max,
                 value: value || min,
@@ -135,7 +135,7 @@ const SettingsApp = () => {
     const renderTextInput = (key, value, placeholder = '') => {
         return wp.element.createElement('input', {
             type: 'text',
-            className: 'NASFWC-text-input',
+            className: 'nasfwc-text-input',
             value: value || '',
             placeholder: placeholder,
             onChange: (e) => updateSetting(key, e.target.value)
@@ -145,7 +145,7 @@ const SettingsApp = () => {
     const renderColorPicker = (key, value) => {
         return wp.element.createElement('input', {
             type: 'color',
-            className: 'NASFWC-color-picker',
+            className: 'nasfwc-color-picker',
             value: value || '#000000',
             onChange: (e) => updateSetting(key, e.target.value)
         });
@@ -154,14 +154,14 @@ const SettingsApp = () => {
     const renderSettingRow = (label, description, control) => {
         return wp.element.createElement(
             'div',
-            { className: 'NASFWC-setting-row' },
+            { className: 'nasfwc-setting-row' },
             wp.element.createElement(
                 'div',
-                { className: 'NASFWC-setting-info' },
-                wp.element.createElement('div', { className: 'NASFWC-setting-label' }, label),
-                wp.element.createElement('div', { className: 'NASFWC-setting-description' }, description)
+                { className: 'nasfwc-setting-info' },
+                wp.element.createElement('div', { className: 'nasfwc-setting-label' }, label),
+                wp.element.createElement('div', { className: 'nasfwc-setting-description' }, description)
             ),
-            wp.element.createElement('div', { className: 'NASFWC-setting-control' }, control)
+            wp.element.createElement('div', { className: 'nasfwc-setting-control' }, control)
         );
     };
 
@@ -209,13 +209,13 @@ const SettingsApp = () => {
 
         return wp.element.createElement(
             'div',
-            { className: 'NASFWC-live-preview' },
+            { className: 'nasfwc-live-preview' },
             wp.element.createElement('h3', {}, __('Search Bar Preview', 'nivo-ajax-search-for-woocommerce')),
-            wp.element.createElement('p', { className: 'NASFWC-preview-note' }, __('Preview only - not interactive', 'nivo-ajax-search-for-woocommerce')),
+            wp.element.createElement('p', { className: 'nasfwc-preview-note' }, __('Preview only - not interactive', 'nivo-ajax-search-for-woocommerce')),
             wp.element.createElement(
                 'div',
-                { className: 'NASFWC-preview-container' },
-                wp.element.createElement('div', { className: 'NASFWC-preview-search-bar', style: searchBarStyle }, barChildren)
+                { className: 'nasfwc-preview-container' },
+                wp.element.createElement('div', { className: 'nasfwc-preview-search-bar', style: searchBarStyle }, barChildren)
             )
         );
     };
@@ -233,7 +233,7 @@ const SettingsApp = () => {
             if (!settings.show_images && !settings.show_price && !settings.show_sku && !settings.show_description) {
                 return wp.element.createElement(
                     'div',
-                    { className: 'NASFWC-preview-result-item', style: { padding: '10px', borderBottom: '1px solid #eee' } },
+                    { className: 'nasfwc-preview-result-item', style: { padding: '10px', borderBottom: '1px solid #eee' } },
                     wp.element.createElement('div', { style: { fontWeight: 'bold' } }, title)
                 );
             }
@@ -266,20 +266,20 @@ const SettingsApp = () => {
             
             itemChildren.push(wp.element.createElement('div', { key: 'info', style: { flex: 1 } }, infoChildren));
             
-            return wp.element.createElement('div', { className: 'NASFWC-preview-result-item', style: { display: 'flex', gap: '10px', padding: '10px', borderBottom: '1px solid #eee' } }, itemChildren);
+            return wp.element.createElement('div', { className: 'nasfwc-preview-result-item', style: { display: 'flex', gap: '10px', padding: '10px', borderBottom: '1px solid #eee' } }, itemChildren);
         };
 
         return wp.element.createElement(
             'div',
-            { className: 'NASFWC-live-preview' },
+            { className: 'nasfwc-live-preview' },
             wp.element.createElement('h3', {}, __('Search Results Preview', 'nivo-ajax-search-for-woocommerce')),
-            wp.element.createElement('p', { className: 'NASFWC-preview-note' }, __('Preview only - not interactive', 'nivo-ajax-search-for-woocommerce')),
+            wp.element.createElement('p', { className: 'nasfwc-preview-note' }, __('Preview only - not interactive', 'nivo-ajax-search-for-woocommerce')),
             wp.element.createElement(
                 'div',
-                { className: 'NASFWC-preview-container' },
+                { className: 'nasfwc-preview-container' },
                 wp.element.createElement(
                     'div',
-                    { className: 'NASFWC-preview-results', style: resultsStyle },
+                    { className: 'nasfwc-preview-results', style: resultsStyle },
                     renderPreviewItem('Sample Product 1', '$29.99', '001'),
                     renderPreviewItem('Sample Product 2', '$39.99', '002'),
                     renderPreviewItem('Sample Product 3', '$39.99', '003')
@@ -291,22 +291,22 @@ const SettingsApp = () => {
     if (loading) {
         return wp.element.createElement(
             'div',
-            { className: 'NASFWC-loading-screen' },
+            { className: 'nasfwc-loading-screen' },
             wp.element.createElement(
                 'div',
-                { className: 'NASFWC-loading-content' },
-                wp.element.createElement('div', { className: 'NASFWC-spinner' }),
-                wp.element.createElement('p', { className: 'NASFWC-loading-text' }, 'Loading settings...')
+                { className: 'nasfwc-loading-content' },
+                wp.element.createElement('div', { className: 'nasfwc-spinner' }),
+                wp.element.createElement('p', { className: 'nasfwc-loading-text' }, 'Loading settings...')
             )
         );
     }
 
     return wp.element.createElement(
         'div',
-        { className: 'NASFWC-settings-container' },
+        { className: 'nasfwc-settings-container' },
         wp.element.createElement(
             'div',
-            { className: 'NASFWC-settings-header' },
+            { className: 'nasfwc-settings-header' },
             wp.element.createElement(
                 'div',
                 {},
@@ -316,21 +316,21 @@ const SettingsApp = () => {
             wp.element.createElement(
                 'div',
                 { style: { display: 'flex', gap: '10px' } },
-                wp.element.createElement('button', { className: 'NASFWC-reset-button', disabled: saving, onClick: resetSettings }, __('Reset Settings', 'nivo-ajax-search-for-woocommerce')),
-                wp.element.createElement('button', { className: 'NASFWC-save-button', disabled: saving, onClick: saveSettings }, saving ? NASFWCAdmin.strings.saving : NASFWCAdmin.strings.save)
+                wp.element.createElement('button', { className: 'nasfwc-reset-button', disabled: saving, onClick: resetSettings }, __('Reset Settings', 'nivo-ajax-search-for-woocommerce')),
+                wp.element.createElement('button', { className: 'nasfwc-save-button', disabled: saving, onClick: saveSettings }, saving ? NASFWCAdmin.strings.saving : NASFWCAdmin.strings.save)
             )
         ),
 
         message && wp.element.createElement(
             'div',
-            { className: 'NASFWC-notice NASFWC-notice-success' },
-            wp.element.createElement('span', { className: 'NASFWC-notice-icon' }, '✓'),
+            { className: 'nasfwc-notice nasfwc-notice-success' },
+            wp.element.createElement('span', { className: 'nasfwc-notice-icon' }, '✓'),
             wp.element.createElement('p', {}, message)
         ),
 
         wp.element.createElement(
             'div',
-            { className: 'NASFWC-tab-nav' },
+            { className: 'nasfwc-tab-nav' },
             wp.element.createElement('button', { className: activeTab === 'general' ? 'active' : '', onClick: () => setActiveTab('general') }, __('General', 'nivo-ajax-search-for-woocommerce')),
             wp.element.createElement('button', { className: activeTab === 'search' ? 'active' : '', onClick: () => setActiveTab('search') }, __('Search Scope', 'nivo-ajax-search-for-woocommerce')),
             wp.element.createElement('button', { className: activeTab === 'searchbar' ? 'active' : '', onClick: () => setActiveTab('searchbar') }, __('Search Bar', 'nivo-ajax-search-for-woocommerce')),
@@ -340,15 +340,15 @@ const SettingsApp = () => {
 
         wp.element.createElement(
             'div',
-            { className: 'NASFWC-tab-content' + ((activeTab === 'searchbar' || activeTab === 'results') ? ' NASFWC-with-preview' : '') },
+            { className: 'nasfwc-tab-content' + ((activeTab === 'searchbar' || activeTab === 'results') ? ' nasfwc-with-preview' : '') },
             
             activeTab === 'searchbar' && wp.element.createElement(
                 'div',
-                { className: 'NASFWC-preview-layout' },
+                { className: 'nasfwc-preview-layout' },
                 wp.element.createElement(
                     'div',
-                    { className: 'NASFWC-controls-panel' },
-                    wp.element.createElement('div', { className: 'NASFWC-setting-group' },
+                    { className: 'nasfwc-controls-panel' },
+                    wp.element.createElement('div', { className: 'nasfwc-setting-group' },
                         renderSettingRow(__('Placeholder Text', 'nivo-ajax-search-for-woocommerce'), __('Text shown in empty search field', 'nivo-ajax-search-for-woocommerce'), renderTextInput('placeholder_text', settings.placeholder_text, 'Search products...')),
                         renderSettingRow(__('Width', 'nivo-ajax-search-for-woocommerce'), __('Maximum width in pixels', 'nivo-ajax-search-for-woocommerce'), renderRange('search_bar_width', settings.search_bar_width, 200, 1200, 50)),
                         renderSettingRow(__('Border Width', 'nivo-ajax-search-for-woocommerce'), __('Border thickness', 'nivo-ajax-search-for-woocommerce'), renderRange('border_width', settings.border_width, 0, 10, 1)),
@@ -365,11 +365,11 @@ const SettingsApp = () => {
 
             activeTab === 'results' && wp.element.createElement(
                 'div',
-                { className: 'NASFWC-preview-layout' },
+                { className: 'nasfwc-preview-layout' },
                 wp.element.createElement(
                     'div',
-                    { className: 'NASFWC-controls-panel' },
-                    wp.element.createElement('div', { className: 'NASFWC-setting-group' },
+                    { className: 'nasfwc-controls-panel' },
+                    wp.element.createElement('div', { className: 'nasfwc-setting-group' },
                         wp.element.createElement('h3', { style: { marginTop: 0 } }, __('Display Options', 'nivo-ajax-search-for-woocommerce')),
                         renderSettingRow(__('Show Thumbnail', 'nivo-ajax-search-for-woocommerce'), __('Display product images', 'nivo-ajax-search-for-woocommerce'), renderToggle('show_images', settings.show_images)),
                         renderSettingRow(__('Show Price', 'nivo-ajax-search-for-woocommerce'), __('Display product price', 'nivo-ajax-search-for-woocommerce'), renderToggle('show_price', settings.show_price)),
@@ -386,12 +386,12 @@ const SettingsApp = () => {
                 renderSearchResultsPreview()
             ),
 
-            activeTab === 'general' && wp.element.createElement('div', { className: 'NASFWC-setting-group' },
+            activeTab === 'general' && wp.element.createElement('div', { className: 'nasfwc-setting-group' },
                 renderSettingRow(__('Enable AJAX Search', 'nivo-ajax-search-for-woocommerce'), __('Enable real-time search', 'nivo-ajax-search-for-woocommerce'), renderToggle('enable_ajax', settings.enable_ajax)),
                 renderSettingRow(__('Results Limit', 'nivo-ajax-search-for-woocommerce'), __('Maximum results', 'nivo-ajax-search-for-woocommerce'), renderRange('search_limit', settings.search_limit, 1, 50)),
                 renderSettingRow(__('Minimum Characters', 'nivo-ajax-search-for-woocommerce'), __('Trigger threshold', 'nivo-ajax-search-for-woocommerce'), renderRange('min_chars', settings.min_chars, 1, 5)),
                 renderSettingRow(__('Search Delay (ms)', 'nivo-ajax-search-for-woocommerce'), __('Debounce delay', 'nivo-ajax-search-for-woocommerce'), renderRange('search_delay', settings.search_delay, 100, 1000, 100)),
-                wp.element.createElement('div', { className: 'NASFWC-shortcode-box', style: { background: '#f0f6fc', border: '1px solid #0073aa', borderRadius: '8px', padding: '20px', marginTop: '20px', gridColumn: '1 / -1' } },
+                wp.element.createElement('div', { className: 'nasfwc-shortcode-box', style: { background: '#f0f6fc', border: '1px solid #0073aa', borderRadius: '8px', padding: '20px', marginTop: '20px', gridColumn: '1 / -1' } },
                     wp.element.createElement('h3', { style: { margin: '0 0 10px 0', color: '#0073aa' } }, __('How to Use', 'nivo-ajax-search-for-woocommerce')),
                     wp.element.createElement('p', { style: { margin: '0 0 15px 0', color: '#646970' } }, __('Use shortcode or Gutenberg block to display the search form:', 'nivo-ajax-search-for-woocommerce')),
                     wp.element.createElement('div', { style: { marginBottom: '15px' } },
@@ -430,7 +430,7 @@ const SettingsApp = () => {
                 )
             ),
 
-            activeTab === 'search' && wp.element.createElement('div', { className: 'NASFWC-setting-group' },
+            activeTab === 'search' && wp.element.createElement('div', { className: 'nasfwc-setting-group' },
                 renderSettingRow(__('Search in Title', 'nivo-ajax-search-for-woocommerce'), __('Search product titles', 'nivo-ajax-search-for-woocommerce'), renderToggle('search_in_title', settings.search_in_title)),
                 renderSettingRow(__('Search in SKU', 'nivo-ajax-search-for-woocommerce'), __('Search product SKUs', 'nivo-ajax-search-for-woocommerce'), renderToggle('search_in_sku', settings.search_in_sku)),
                 renderSettingRow(__('Search in Description', 'nivo-ajax-search-for-woocommerce'), __('Search full product descriptions', 'nivo-ajax-search-for-woocommerce'), renderToggle('search_in_content', settings.search_in_content)),
@@ -438,7 +438,7 @@ const SettingsApp = () => {
                 renderSettingRow(__('Search in Categories', 'nivo-ajax-search-for-woocommerce'), __('Search categories', 'nivo-ajax-search-for-woocommerce'), renderToggle('search_in_categories', settings.search_in_categories))
             ),
 
-            activeTab === 'ai' && wp.element.createElement('div', { className: 'NASFWC-setting-group' },
+            activeTab === 'ai' && wp.element.createElement('div', { className: 'nasfwc-setting-group' },
                 renderSettingRow(__('Typo Correction', 'nivo-ajax-search-for-woocommerce'), __('Auto-fix spelling mistakes', 'nivo-ajax-search-for-woocommerce'), renderToggle('enable_typo_correction', settings.enable_typo_correction)),
                 renderSettingRow(__('Synonym Support', 'nivo-ajax-search-for-woocommerce'), __('Expand with related terms', 'nivo-ajax-search-for-woocommerce'), renderToggle('enable_synonyms', settings.enable_synonyms))
             )
@@ -447,7 +447,7 @@ const SettingsApp = () => {
 };
 
 document.addEventListener('DOMContentLoaded', () => {
-    const root = document.getElementById('NASFWC-settings-root');
+    const root = document.getElementById('nasfwc-settings-root');
     if (root) {
         render(wp.element.createElement(SettingsApp), root);
     }

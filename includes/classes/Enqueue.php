@@ -85,9 +85,9 @@ class Enqueue {
 	 */
 	public function enqueue_admin_assets( $hook ) {
 		// Enqueue on settings page
-		if ( $hook === 'woocommerce_page_NASFWC-settings' ) {
+		if ( $hook === 'woocommerce_page_nasfwc-settings' ) {
 			// Admin CSS
-			wp_enqueue_style( 'NASFWC-admin', $this->plugin_url . 'assets/css/admin.css', array(), $this->version );
+			wp_enqueue_style( 'nasfwc-admin', $this->plugin_url . 'assets/css/admin.css', array(), $this->version );
 
 			// WordPress React
 			wp_enqueue_script( 'wp-element' );
@@ -96,7 +96,7 @@ class Enqueue {
 
 			// Admin React app
 			wp_enqueue_script(
-				'NASFWC-admin-react',
+				'nasfwc-admin-react',
 				$this->plugin_url . 'assets/js/admin-react.js',
 				array( 'wp-element', 'wp-components', 'wp-api-fetch' ),
 				$this->version,
@@ -105,7 +105,7 @@ class Enqueue {
 
 			// Localize script data
 			wp_localize_script(
-				'NASFWC-admin-react',
+				'nasfwc-admin-react',
 				'NASFWCAdmin',
 				array(
 					'ajax_url'   => admin_url( 'admin-ajax.php' ),
@@ -123,7 +123,7 @@ class Enqueue {
 		}
 
 		// Allow filtering of admin pages where assets should load
-		$allowed_pages = apply_filters( 'NASFWC_admin_asset_pages', array( 'woocommerce_page_NASFWC-settings' ) );
+		$allowed_pages = apply_filters( 'NASFWC_admin_asset_pages', array( 'woocommerce_page_nasfwc-settings' ) );
 
 		if ( ! empty( $allowed_pages ) && in_array( $hook, $allowed_pages, true ) ) {
 			do_action( 'NASFWC_enqueue_admin_assets', $hook );
@@ -142,8 +142,8 @@ class Enqueue {
 		$script_version = apply_filters( 'NASFWC_script_version', $this->version );
 
 		wp_enqueue_script(
-			'NASFWC-ajax-search',
-			$this->plugin_url . 'assets/js/NASFWC-search.js',
+			'nasfwc-ajax-search',
+			$this->plugin_url . 'assets/js/nasfwc-search.js',
 			$script_deps,
 			$script_version,
 			true
@@ -164,15 +164,15 @@ class Enqueue {
 		$style_version = apply_filters( 'NASFWC_style_version', $this->version );
 
 		wp_enqueue_style(
-			'NASFWC-ajax-search',
-			$this->plugin_url . 'assets/css/NASFWC-search.css',
+			'nasfwc-ajax-search',
+			$this->plugin_url . 'assets/css/nasfwc-search.css',
 			$style_deps,
 			$style_version
 		);
 
 		// Add inline styles for customization
 		$custom_css = $this->generate_custom_css();
-		wp_add_inline_style( 'NASFWC-ajax-search', $custom_css );
+		wp_add_inline_style( 'nasfwc-ajax-search', $custom_css );
 
 		// Allow additional styles
 		do_action( 'NASFWC_after_enqueue_styles' );
@@ -224,7 +224,7 @@ class Enqueue {
 			)
 		);
 
-		wp_localize_script( 'NASFWC-ajax-search', 'NASFWC_ajax_search', $localize_data );
+		wp_localize_script( 'nasfwc-ajax-search', 'NASFWC_ajax_search', $localize_data );
 	}
 
 	/**
@@ -239,7 +239,7 @@ class Enqueue {
 		// Search bar styles
 		$center_align = get_option( 'NASFWC_center_align', 0 );
 		$css .= sprintf(
-			'.NASFWC-product-search { border: %dpx solid %s !important; border-radius: %dpx !important; background-color: %s !important; padding: %dpx 45px !important; }',
+			'.nasfwc-product-search { border: %dpx solid %s !important; border-radius: %dpx !important; background-color: %s !important; padding: %dpx 45px !important; }',
 			get_option( 'NASFWC_border_width', 1 ),
 			get_option( 'NASFWC_border_color', '#dfdfdf' ),
 			get_option( 'NASFWC_border_radius', 30 ),
@@ -247,10 +247,10 @@ class Enqueue {
 			get_option( 'NASFWC_padding_vertical', 15 )
 		);
 		
-		$css .= '.NASFWC-product-search:focus { background-color: #ffffff !important; border-color: #666666 !important; }';
+		$css .= '.nasfwc-product-search:focus { background-color: #ffffff !important; border-color: #666666 !important; }';
 		
 		if ( $center_align ) {
-			$css .= '.NASFWC-ajax-search-container { margin-left: auto !important; margin-right: auto !important; }';
+			$css .= '.nasfwc-ajax-search-container { margin-left: auto !important; margin-right: auto !important; }';
 		}
 		
 		// Theme inheritance overrides
@@ -263,19 +263,19 @@ class Enqueue {
 			$css .= ':root {';
 			
 			if ( ! empty( $custom_font_family ) ) {
-				$css .= '--NASFWC-font-family: ' . esc_attr( $custom_font_family ) . ';';
+				$css .= '--nasfwc-font-family: ' . esc_attr( $custom_font_family ) . ';';
 			}
 			
 			if ( ! empty( $custom_text_color ) ) {
-				$css .= '--NASFWC-text-color: ' . esc_attr( $custom_text_color ) . ';';
+				$css .= '--nasfwc-text-color: ' . esc_attr( $custom_text_color ) . ';';
 			}
 			
 			if ( ! empty( $custom_hover_color ) ) {
-				$css .= '--NASFWC-hover-color: ' . esc_attr( $custom_hover_color ) . ';';
+				$css .= '--nasfwc-hover-color: ' . esc_attr( $custom_hover_color ) . ';';
 			}
 			
 			if ( ! empty( $custom_hover_bg ) ) {
-				$css .= '--NASFWC-hover-bg: ' . esc_attr( $custom_hover_bg ) . ';';
+				$css .= '--nasfwc-hover-bg: ' . esc_attr( $custom_hover_bg ) . ';';
 			}
 			
 			$css .= '}';

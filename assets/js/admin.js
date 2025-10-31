@@ -10,7 +10,7 @@ jQuery(document).ready(function($) {
     
     // Toggle AI settings based on AI enable checkbox
     $('input[name="NASFWC_enable_ai"]').on('change', function() {
-        const $aiSettings = $('.NASFWC-ai-settings');
+        const $aiSettings = $('.nasfwc-ai-settings');
         if ($(this).is(':checked')) {
             $aiSettings.show();
         } else {

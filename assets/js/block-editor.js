@@ -104,7 +104,7 @@
                         el('strong', { style: { color: '#667eea', fontSize: '14px' } }, 'Nivo AJAX Search')
                     ),
                     el('div', {
-                        className: 'NASFWC-ajax-search-container NASFWC-block-preview',
+                        className: 'nasfwc-ajax-search-container nasfwc-block-preview',
                         style: {
                             backgroundColor: backgroundColor,
                             border: `1px solid ${borderColor}`,
@@ -115,7 +115,7 @@
                         }
                     },
                         showIcon && el('svg', { 
-                            className: 'NASFWC-search-icon',
+                            className: 'nasfwc-search-icon',
                             width: '18',
                             height: '18',
                             viewBox: '0 0 24 24',

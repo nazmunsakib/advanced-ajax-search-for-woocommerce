@@ -39,25 +39,25 @@ class Shortcode {
         // Parse shortcode attributes
         $atts = shortcode_atts([
             'placeholder' => __('Search products...', 'nivo-ajax-search-for-woocommerce'),
-            'container_class' => 'NASFWC-ajax-search-container',
-            'input_class' => 'NASFWC-product-search',
-            'results_class' => 'NASFWC-search-results',
+            'container_class' => 'nasfwc-ajax-search-container',
+            'input_class' => 'nasfwc-product-search',
+            'results_class' => 'nasfwc-search-results',
             'show_icon' => 'true',
             'style' => ''
         ], $atts, 'NASFWC_ajax_search');
         
         $show_icon = $atts['show_icon'] === 'true';
-        $icon_html = $show_icon ? '<svg class="NASFWC-search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>' : '';
+        $icon_html = $show_icon ? '<svg class="nasfwc-search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>' : '';
         $style_attr = !empty($atts['style']) ? ' style="' . esc_attr($atts['style']) . '"' : '';
         
         // Build HTML
         $html = sprintf(
             '<div class="%s"%s>
-                <form class="NASFWC-search-form" role="search" method="get" action="%s">
-                    <div class="NASFWC-search-wrapper">
+                <form class="nasfwc-search-form" role="search" method="get" action="%s">
+                    <div class="nasfwc-search-wrapper">
                         %s
                         <input type="text" class="%s" name="s" placeholder="%s" autocomplete="off">
-                        <span class="NASFWC-clear-search" style="display:none;">&times;</span>
+                        <span class="nasfwc-clear-search" style="display:none;">&times;</span>
                     </div>
                 </form>
                 <div class="%s"></div>

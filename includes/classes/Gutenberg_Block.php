@@ -73,7 +73,7 @@ class Gutenberg_Block {
      */
     public function enqueue_block_assets() {
         wp_enqueue_script(
-            'NASFWC-block-editor',
+            'nasfwc-block-editor',
             NASFWC_PLUGIN_URL . 'assets/js/block-editor.js',
             ['wp-blocks', 'wp-element', 'wp-editor', 'wp-components'],
             NASFWC_VERSION,
@@ -102,18 +102,18 @@ class Gutenberg_Block {
             $border_color
         );
         
-        $icon_html = $show_icon ? '<svg class="NASFWC-search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>' : '';
+        $icon_html = $show_icon ? '<svg class="nasfwc-search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>' : '';
         
         return sprintf(
-            '<div class="NASFWC-ajax-search-container NASFWC-block">
-                <form class="NASFWC-search-form" role="search" method="get" action="%s">
-                    <div class="NASFWC-search-wrapper" style="%s">
+            '<div class="nasfwc-ajax-search-container nasfwc-block">
+                <form class="nasfwc-search-form" role="search" method="get" action="%s">
+                    <div class="nasfwc-search-wrapper" style="%s">
                         %s
-                        <input type="text" class="NASFWC-product-search" name="s" placeholder="%s" style="%s" autocomplete="off">
-                        <span class="NASFWC-clear-search" style="display:none;">&times;</span>
+                        <input type="text" class="nasfwc-product-search" name="s" placeholder="%s" style="%s" autocomplete="off">
+                        <span class="nasfwc-clear-search" style="display:none;">&times;</span>
                     </div>
                 </form>
-                <div class="NASFWC-search-results"></div>
+                <div class="nasfwc-search-results"></div>
             </div>',
             esc_url(wc_get_page_permalink('shop')),
             $style,

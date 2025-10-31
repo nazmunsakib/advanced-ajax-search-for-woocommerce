@@ -9,47 +9,47 @@
 
 /* CSS Custom Properties for easy customization */
 :root {
-    --NASFWC-primary-color: #0073aa;
-    --NASFWC-border-color: #ddd;
-    --NASFWC-border-radius: 4px;
-    --NASFWC-box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    --NASFWC-transition: all 0.3s ease;
-    --NASFWC-font-size-base: 15px;
-    --NASFWC-spacing-xs: 5px;
-    --NASFWC-spacing-sm: 10px;
-    --NASFWC-spacing-md: 15px;
-    --NASFWC-spacing-lg: 20px;
-    --NASFWC-z-index-dropdown: 1000;
+    --nasfwc-primary-color: #0073aa;
+    --nasfwc-border-color: #ddd;
+    --nasfwc-border-radius: 4px;
+    --nasfwc-box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    --nasfwc-transition: all 0.3s ease;
+    --nasfwc-font-size-base: 15px;
+    --nasfwc-spacing-xs: 5px;
+    --nasfwc-spacing-sm: 10px;
+    --nasfwc-spacing-md: 15px;
+    --nasfwc-spacing-lg: 20px;
+    --nasfwc-z-index-dropdown: 1000;
     
     /* Theme inheritance - can be overridden by settings */
-    --NASFWC-font-family: inherit;
-    --NASFWC-text-color: inherit;
-    --NASFWC-hover-color: inherit;
-    --NASFWC-hover-bg: rgba(0, 0, 0, 0.05);
+    --nasfwc-font-family: inherit;
+    --nasfwc-text-color: inherit;
+    --nasfwc-hover-color: inherit;
+    --nasfwc-hover-bg: rgba(0, 0, 0, 0.05);
 }
 
 /* Main Container */
-.NASFWC-ajax-search-container {
+.nasfwc-ajax-search-container {
     position: relative;
     max-width: 600px;
     width: 100%;
-    font-family: var(--NASFWC-font-family);
-    font-size: var(--NASFWC-font-size-base);
-    color: var(--NASFWC-text-color);
+    font-family: var(--nasfwc-font-family);
+    font-size: var(--nasfwc-font-size-base);
+    color: var(--nasfwc-text-color);
 }
 
-.NASFWC-search-wrapper {
+.nasfwc-search-wrapper {
     position: relative;
     display: flex;
     align-items: center;
 }
 
-.NASFWC-search-form {
+.nasfwc-search-form {
     margin: 0;
     width: 100%;
 }
 
-.NASFWC-search-icon {
+.nasfwc-search-icon {
     position: absolute;
     left: 15px;
     top: 50%;
@@ -59,7 +59,7 @@
     z-index: 5;
 }
 
-.NASFWC-clear-search {
+.nasfwc-clear-search {
     position: absolute;
     right: 15px;
     top: 50%;
@@ -75,36 +75,36 @@
     transition: color 0.2s;
 }
 
-.NASFWC-clear-search:hover {
+.nasfwc-clear-search:hover {
     color: #333;
 }
 
 /* Search Input */
-.NASFWC-product-search {
+.nasfwc-product-search {
     width: 100%;
     padding: 15px 45px 15px 45px;
     border: 1px solid #dfdfdf;
     border-radius: 30px;
     font-size: 15px;
-    transition: var(--NASFWC-transition);
+    transition: var(--nasfwc-transition);
     box-sizing: border-box;
     outline: none;
     background: #dfdfdf;
     font-family: inherit;
 }
 
-.NASFWC-product-search:focus {
+.nasfwc-product-search:focus {
     background: #fff;
     border-color: #666;
     box-shadow: none;
 }
 
-.NASFWC-product-search::placeholder {
+.nasfwc-product-search::placeholder {
     color: #999;
 }
 
 /* Loading State */
-.NASFWC-ajax-search-container.NASFWC-loading .NASFWC-search-wrapper::after {
+.nasfwc-ajax-search-container.nasfwc-loading .nasfwc-search-wrapper::after {
     content: '';
     position: absolute;
     right: 45px;
@@ -113,7 +113,7 @@
     width: 16px;
     height: 16px;
     border: 2px solid #e0e0e0;
-    border-top-color: var(--NASFWC-primary-color);
+    border-top-color: var(--nasfwc-primary-color);
     border-radius: 50%;
     animation: spin 0.6s linear infinite;
 }
@@ -123,7 +123,7 @@
 }
 
 /* Results Container */
-.NASFWC-search-results {
+.nasfwc-search-results {
     padding: 5px;
     position: absolute;
     top: calc(100% + 8px);
@@ -131,63 +131,63 @@
     right: 0;
     max-height: 450px;
     overflow-y: auto;
-    z-index: var(--NASFWC-z-index-dropdown);
+    z-index: var(--nasfwc-z-index-dropdown);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     display: none;
 }
 
-.NASFWC-ajax-search-container.NASFWC-has-results .NASFWC-search-results,
-.NASFWC-ajax-search-container.NASFWC-no-results .NASFWC-search-results {
+.nasfwc-ajax-search-container.nasfwc-has-results .nasfwc-search-results,
+.nasfwc-ajax-search-container.nasfwc-no-results .nasfwc-search-results {
     display: block;
 }
 
 /* Results List */
-.NASFWC-search-results-list {
+.nasfwc-search-results-list {
     list-style: none;
     margin: 0;
     padding: 0;
 }
 
-.NASFWC-search-result-item {
+.nasfwc-search-result-item {
     border-bottom: 1px solid #eee;
     transition: background-color 0.2s ease;
 }
 
-.NASFWC-search-result-item:last-child {
+.nasfwc-search-result-item:last-child {
     border-bottom: none;
 }
 
-.NASFWC-search-result-item:hover {
-    background-color: var(--NASFWC-hover-bg);
+.nasfwc-search-result-item:hover {
+    background-color: var(--nasfwc-hover-bg);
 }
 
 /* Product Link */
-.NASFWC-product-link {
+.nasfwc-product-link {
     display: flex;
     align-items: center;
     text-decoration: none;
-    color: var(--NASFWC-text-color);
+    color: var(--nasfwc-text-color);
     transition: all 0.2s ease;
     gap: 10px;
     padding: 5px;
     border-radius: 4px;
 }
 
-.NASFWC-product-link:hover {
-    color: var(--NASFWC-hover-color);
+.nasfwc-product-link:hover {
+    color: var(--nasfwc-hover-color);
 }
 
-.NASFWC-product-link:hover .NASFWC-product-title {
-    color: var(--NASFWC-hover-color, var(--NASFWC-primary-color));
+.nasfwc-product-link:hover .nasfwc-product-title {
+    color: var(--nasfwc-hover-color, var(--nasfwc-primary-color));
 }
 
-.NASFWC-product-link:focus {
-    outline: 2px solid var(--NASFWC-primary-color);
+.nasfwc-product-link:focus {
+    outline: 2px solid var(--nasfwc-primary-color);
     outline-offset: -2px;
 }
 
 /* Product Image */
-.NASFWC-product-image {
+.nasfwc-product-image {
     width: 50px;
     height: 50px;
     object-fit: cover;
@@ -197,12 +197,12 @@
 }
 
 /* Product Info */
-.NASFWC-product-info {
+.nasfwc-product-info {
     flex: 1;
     min-width: 0;
 }
 
-.NASFWC-product-title-row {
+.nasfwc-product-title-row {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -210,7 +210,7 @@
     margin-bottom: 4px;
 }
 
-.NASFWC-product-title {
+.nasfwc-product-title {
     font-size: 15px;
     line-height: 1.4;
     color: inherit;
@@ -218,14 +218,14 @@
     transition: color 0.2s ease;
 }
 
-.NASFWC-product-title strong {
+.nasfwc-product-title strong {
     color: #999;
     font-size: 13px;
     font-weight: 600;
     margin-left: 4px;
 }
 
-.NASFWC-product-price {
+.nasfwc-product-price {
     color: inherit;
     opacity: 0.8;
     font-size: 15px;
@@ -233,7 +233,7 @@
     white-space: nowrap;
 }
 
-.NASFWC-product-description {
+.nasfwc-product-description {
     display: block;
     color: inherit;
     opacity: 0.7;
@@ -242,8 +242,8 @@
     margin-top: 4px;
 }
 
-.NASFWC-product-categories,
-.NASFWC-product-tags {
+.nasfwc-product-categories,
+.nasfwc-product-tags {
     display: inline-block;
     color: inherit;
     opacity: 0.6;
@@ -252,7 +252,7 @@
 }
 
 /* Keyword Highlighting */
-.NASFWC-highlight {
+.nasfwc-highlight {
     background-color: #fff3cd;
     color: #856404;
     font-weight: 600;
@@ -261,8 +261,8 @@
 }
 
 /* Messages */
-.NASFWC-no-results-message,
-.NASFWC-error-message {
+.nasfwc-no-results-message,
+.nasfwc-error-message {
     padding: 20px;
     margin: 0;
     text-align: center;
@@ -270,12 +270,12 @@
     font-size: 15px;
 }
 
-.NASFWC-no-results-message {
+.nasfwc-no-results-message {
     background: #f8f9fa;
     border-radius: 4px;
 }
 
-.NASFWC-error-message {
+.nasfwc-error-message {
     color: #d63638;
     background-color: #fef7f7;
     border-radius: 4px;
@@ -283,35 +283,35 @@
 
 /* Responsive Design */
 @media (max-width: 768px) {
-    .NASFWC-ajax-search-container {
+    .nasfwc-ajax-search-container {
         max-width: 100%;
     }
     
-    .NASFWC-search-results {
+    .nasfwc-search-results {
         max-height: 300px;
     }
     
-    .NASFWC-product-image {
+    .nasfwc-product-image {
         width: 40px;
         height: 40px;
     }
 }
 
 @media (max-width: 480px) {
-    .NASFWC-product-link {
-        padding: var(--NASFWC-spacing-xs);
+    .nasfwc-product-link {
+        padding: var(--nasfwc-spacing-xs);
     }
     
-    .NASFWC-product-image {
+    .nasfwc-product-image {
         width: 35px;
         height: 35px;
     }
     
-    .NASFWC-product-title {
+    .nasfwc-product-title {
         font-size: 0.9em;
     }
     
-    .NASFWC-product-price {
+    .nasfwc-product-price {
         font-size: 0.8em;
     }
 }

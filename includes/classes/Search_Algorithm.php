@@ -64,7 +64,9 @@ class Search_Algorithm {
         $search_args = wp_parse_args($args, [
             'status' => 'publish',
             'limit' => get_option('nivo_search_limit', 10),
+            // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query
             'meta_query' => [],
+            // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_tax_query
             'tax_query' => []
         ]);
         
@@ -137,14 +139,22 @@ class Search_Algorithm {
      * Search in product content
      */
     private function search_in_content($query, $args) {
-        global $wpdb;
-        $product_ids = $wpdb->get_col($wpdb->prepare(
-            "SELECT ID FROM {$wpdb->posts} 
-             WHERE post_type = 'product' 
-             AND post_status = 'publish' 
-             AND post_content LIKE %s",
-            '%' . $wpdb->esc_like($query) . '%'
-        ));
+        $cache_key = 'nivo_search_content_' . md5($query);
+        $product_ids = wp_cache_get($cache_key, 'nivo_search');
+        
+        if (false === $product_ids) {
+            global $wpdb;
+            // Direct query needed for LIKE search in post_content - no WP function equivalent
+            // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery
+            $product_ids = $wpdb->get_col($wpdb->prepare(
+                "SELECT ID FROM {$wpdb->posts} 
+                 WHERE post_type = 'product' 
+                 AND post_status = 'publish' 
+                 AND post_content LIKE %s",
+                '%' . $wpdb->esc_like($query) . '%'
+            ));
+            wp_cache_set($cache_key, $product_ids, 'nivo_search', 300);
+        }
         
         if (empty($product_ids)) return [];
         
@@ -155,14 +165,22 @@ class Search_Algorithm {
      * Search in product excerpt
      */
     private function search_in_excerpt($query, $args) {
-        global $wpdb;
-        $product_ids = $wpdb->get_col($wpdb->prepare(
-            "SELECT ID FROM {$wpdb->posts} 
-             WHERE post_type = 'product' 
-             AND post_status = 'publish' 
-             AND post_excerpt LIKE %s",
-            '%' . $wpdb->esc_like($query) . '%'
-        ));
+        $cache_key = 'nivo_search_excerpt_' . md5($query);
+        $product_ids = wp_cache_get($cache_key, 'nivo_search');
+        
+        if (false === $product_ids) {
+            global $wpdb;
+            // Direct query needed for LIKE search in post_excerpt - no WP function equivalent
+            // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery
+            $product_ids = $wpdb->get_col($wpdb->prepare(
+                "SELECT ID FROM {$wpdb->posts} 
+                 WHERE post_type = 'product' 
+                 AND post_status = 'publish' 
+                 AND post_excerpt LIKE %s",
+                '%' . $wpdb->esc_like($query) . '%'
+            ));
+            wp_cache_set($cache_key, $product_ids, 'nivo_search', 300);
+        }
         
         if (empty($product_ids)) return [];
         
@@ -221,10 +239,15 @@ class Search_Algorithm {
             
             if (!empty($terms)) {
                 $term_ids = wp_list_pluck($terms, 'term_id');
-                $ids = $wpdb->get_col(
-                    "SELECT object_id FROM {$wpdb->term_relationships} 
-                     WHERE term_taxonomy_id IN (" . implode(',', array_map('intval', $term_ids)) . ")"
-                );
+                $term_ids = array_map('intval', $term_ids);
+                $cache_key = 'nivo_search_attr_' . md5(serialize($term_ids));
+                $ids = wp_cache_get($cache_key, 'nivo_search');
+                
+                if (false === $ids) {
+                    // Use WordPress function instead of direct query
+                    $ids = get_objects_in_term($term_ids, $taxonomy);
+                    wp_cache_set($cache_key, $ids, 'nivo_search', 300);
+                }
                 $product_ids = array_merge($product_ids, $ids);
             }
         }
@@ -410,16 +433,22 @@ class Search_Algorithm {
      * Fuzzy match against product titles
      */
     private function fuzzy_match_products($query) {
-        global $wpdb;
+        $cache_key = 'nivo_search_titles';
+        $titles = wp_cache_get($cache_key, 'nivo_search');
         
-        // Get recent product titles for fuzzy matching
-        $titles = $wpdb->get_col(
-            "SELECT post_title FROM {$wpdb->posts} 
-             WHERE post_type = 'product' 
-             AND post_status = 'publish' 
-             ORDER BY post_date DESC 
-             LIMIT 100"
-        );
+        if (false === $titles) {
+            global $wpdb;
+            // Direct query needed for fuzzy matching - no WP function for this specific use case
+            // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery
+            $titles = $wpdb->get_col(
+                "SELECT post_title FROM {$wpdb->posts} 
+                 WHERE post_type = 'product' 
+                 AND post_status = 'publish' 
+                 ORDER BY post_date DESC 
+                 LIMIT 100"
+            );
+            wp_cache_set($cache_key, $titles, 'nivo_search', 600);
+        }
         
         $best_match = $query;
         $min_distance = strlen($query);

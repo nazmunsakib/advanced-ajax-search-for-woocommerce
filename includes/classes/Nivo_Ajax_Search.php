@@ -154,7 +154,7 @@ final class Nivo_Ajax_Search {
 			check_ajax_referer( 'nivo_search_nonce', 'nonce' );
 		}
 
-		$query = isset( $_POST['s'] ) ? sanitize_text_field( $_POST['s'] ) : ( isset( $_POST['query'] ) ? sanitize_text_field( $_POST['query'] ) : '' );
+		$query = isset( $_POST['s'] ) ? sanitize_text_field( wp_unslash( $_POST['s'] ) ) : ( isset( $_POST['query'] ) ? sanitize_text_field( wp_unslash( $_POST['query'] ) ) : '' );
 
 		// Check if AJAX search is enabled
 		if ( ! get_option( 'nivo_search_enable_ajax', 1 ) ) {
@@ -172,6 +172,7 @@ final class Nivo_Ajax_Search {
 			'nivo_search_args',
 			array(
 				'limit'   => get_option( 'nivo_search_limit', 10 ),
+				// phpcs:ignore WordPressVIPMinimum.Performance.WPQueryParams.PostNotIn_exclude
 				'exclude' => $this->get_excluded_products(),
 			),
 			$query

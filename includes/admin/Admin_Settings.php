@@ -58,59 +58,59 @@ class Admin_Settings {
      */
     public function register_settings() {
         // General Settings
-        register_setting('nivo_search_settings', 'nivo_search_enable_ajax');
-        register_setting('nivo_search_settings', 'nivo_search_enable_ai');
-        register_setting('nivo_search_settings', 'nivo_search_limit');
-        register_setting('nivo_search_settings', 'nivo_search_min_chars');
-        register_setting('nivo_search_settings', 'nivo_search_delay');
-        register_setting('nivo_search_settings', 'nivo_search_excluded_products');
+        register_setting('nivo_search_settings', 'nivo_search_enable_ajax', array('sanitize_callback' => 'absint'));
+        register_setting('nivo_search_settings', 'nivo_search_enable_ai', array('sanitize_callback' => 'absint'));
+        register_setting('nivo_search_settings', 'nivo_search_limit', array('sanitize_callback' => 'absint'));
+        register_setting('nivo_search_settings', 'nivo_search_min_chars', array('sanitize_callback' => 'absint'));
+        register_setting('nivo_search_settings', 'nivo_search_delay', array('sanitize_callback' => 'absint'));
+        register_setting('nivo_search_settings', 'nivo_search_excluded_products', array('sanitize_callback' => 'sanitize_text_field'));
         
         // Search Scope Settings
-        register_setting('nivo_search_settings', 'nivo_search_in_title');
-        register_setting('nivo_search_settings', 'nivo_search_in_sku');
-        register_setting('nivo_search_settings', 'nivo_search_in_content');
-        register_setting('nivo_search_settings', 'nivo_search_in_excerpt');
-        register_setting('nivo_search_settings', 'nivo_search_in_categories');
-        register_setting('nivo_search_settings', 'nivo_search_in_tags');
-        register_setting('nivo_search_settings', 'nivo_search_in_attributes');
-        register_setting('nivo_search_settings', 'nivo_search_exclude_out_of_stock');
+        register_setting('nivo_search_settings', 'nivo_search_in_title', array('sanitize_callback' => 'absint'));
+        register_setting('nivo_search_settings', 'nivo_search_in_sku', array('sanitize_callback' => 'absint'));
+        register_setting('nivo_search_settings', 'nivo_search_in_content', array('sanitize_callback' => 'absint'));
+        register_setting('nivo_search_settings', 'nivo_search_in_excerpt', array('sanitize_callback' => 'absint'));
+        register_setting('nivo_search_settings', 'nivo_search_in_categories', array('sanitize_callback' => 'absint'));
+        register_setting('nivo_search_settings', 'nivo_search_in_tags', array('sanitize_callback' => 'absint'));
+        register_setting('nivo_search_settings', 'nivo_search_in_attributes', array('sanitize_callback' => 'absint'));
+        register_setting('nivo_search_settings', 'nivo_search_exclude_out_of_stock', array('sanitize_callback' => 'absint'));
         
         // AI Settings
-        register_setting('nivo_search_settings', 'nivo_search_enable_typo_correction');
-        register_setting('nivo_search_settings', 'nivo_search_enable_synonyms');
+        register_setting('nivo_search_settings', 'nivo_search_enable_typo_correction', array('sanitize_callback' => 'absint'));
+        register_setting('nivo_search_settings', 'nivo_search_enable_synonyms', array('sanitize_callback' => 'absint'));
         
         // Style & Layout Settings - Search Bar
-        register_setting('nivo_search_settings', 'nivo_search_placeholder_text');
-        register_setting('nivo_search_settings', 'nivo_search_bar_width');
-        register_setting('nivo_search_settings', 'nivo_search_border_width');
-        register_setting('nivo_search_settings', 'nivo_search_border_color');
-        register_setting('nivo_search_settings', 'nivo_search_border_radius');
-        register_setting('nivo_search_settings', 'nivo_search_bg_color');
-        register_setting('nivo_search_settings', 'nivo_search_padding_vertical');
-        register_setting('nivo_search_settings', 'nivo_search_center_align');
-        register_setting('nivo_search_settings', 'nivo_search_show_search_icon');
-        register_setting('nivo_search_settings', 'nivo_search_show_submit_button');
+        register_setting('nivo_search_settings', 'nivo_search_placeholder_text', array('sanitize_callback' => 'sanitize_text_field'));
+        register_setting('nivo_search_settings', 'nivo_search_bar_width', array('sanitize_callback' => 'absint'));
+        register_setting('nivo_search_settings', 'nivo_search_border_width', array('sanitize_callback' => 'absint'));
+        register_setting('nivo_search_settings', 'nivo_search_border_color', array('sanitize_callback' => 'sanitize_hex_color'));
+        register_setting('nivo_search_settings', 'nivo_search_border_radius', array('sanitize_callback' => 'absint'));
+        register_setting('nivo_search_settings', 'nivo_search_bg_color', array('sanitize_callback' => 'sanitize_hex_color'));
+        register_setting('nivo_search_settings', 'nivo_search_padding_vertical', array('sanitize_callback' => 'absint'));
+        register_setting('nivo_search_settings', 'nivo_search_center_align', array('sanitize_callback' => 'absint'));
+        register_setting('nivo_search_settings', 'nivo_search_show_search_icon', array('sanitize_callback' => 'absint'));
+        register_setting('nivo_search_settings', 'nivo_search_show_submit_button', array('sanitize_callback' => 'absint'));
         // Style & Layout Settings - Results
-        register_setting('nivo_search_settings', 'nivo_search_results_border_width');
-        register_setting('nivo_search_settings', 'nivo_search_results_border_color');
-        register_setting('nivo_search_settings', 'nivo_search_results_border_radius');
-        register_setting('nivo_search_settings', 'nivo_search_results_bg_color');
-        register_setting('nivo_search_settings', 'nivo_search_results_padding');
+        register_setting('nivo_search_settings', 'nivo_search_results_border_width', array('sanitize_callback' => 'absint'));
+        register_setting('nivo_search_settings', 'nivo_search_results_border_color', array('sanitize_callback' => 'sanitize_hex_color'));
+        register_setting('nivo_search_settings', 'nivo_search_results_border_radius', array('sanitize_callback' => 'absint'));
+        register_setting('nivo_search_settings', 'nivo_search_results_bg_color', array('sanitize_callback' => 'sanitize_hex_color'));
+        register_setting('nivo_search_settings', 'nivo_search_results_padding', array('sanitize_callback' => 'absint'));
         
         // Theme Inheritance Settings
-        register_setting('nivo_search_settings', 'nivo_search_font_family');
-        register_setting('nivo_search_settings', 'nivo_search_text_color');
-        register_setting('nivo_search_settings', 'nivo_search_hover_color');
-        register_setting('nivo_search_settings', 'nivo_search_hover_bg');
+        register_setting('nivo_search_settings', 'nivo_search_font_family', array('sanitize_callback' => 'sanitize_text_field'));
+        register_setting('nivo_search_settings', 'nivo_search_text_color', array('sanitize_callback' => 'sanitize_hex_color'));
+        register_setting('nivo_search_settings', 'nivo_search_hover_color', array('sanitize_callback' => 'sanitize_hex_color'));
+        register_setting('nivo_search_settings', 'nivo_search_hover_bg', array('sanitize_callback' => 'sanitize_text_field'));
         
         // Display Settings
-        register_setting('nivo_search_settings', 'nivo_search_show_images');
-        register_setting('nivo_search_settings', 'nivo_search_show_price');
-        register_setting('nivo_search_settings', 'nivo_search_show_add_to_cart');
-        register_setting('nivo_search_settings', 'nivo_search_show_sku');
-        register_setting('nivo_search_settings', 'nivo_search_show_description');
-        register_setting('nivo_search_settings', 'nivo_search_show_categories');
-        register_setting('nivo_search_settings', 'nivo_search_show_tags');
+        register_setting('nivo_search_settings', 'nivo_search_show_images', array('sanitize_callback' => 'absint'));
+        register_setting('nivo_search_settings', 'nivo_search_show_price', array('sanitize_callback' => 'absint'));
+        register_setting('nivo_search_settings', 'nivo_search_show_add_to_cart', array('sanitize_callback' => 'absint'));
+        register_setting('nivo_search_settings', 'nivo_search_show_sku', array('sanitize_callback' => 'absint'));
+        register_setting('nivo_search_settings', 'nivo_search_show_description', array('sanitize_callback' => 'absint'));
+        register_setting('nivo_search_settings', 'nivo_search_show_categories', array('sanitize_callback' => 'absint'));
+        register_setting('nivo_search_settings', 'nivo_search_show_tags', array('sanitize_callback' => 'absint'));
     }
     
     /**
@@ -199,7 +199,11 @@ class Admin_Settings {
             wp_send_json_error(['message' => __('Insufficient permissions', 'nivo-ajax-search-for-woocommerce')]);
         }
         
-        $settings = json_decode(stripslashes($_POST['settings']), true);
+        if ( ! isset( $_POST['settings'] ) ) {
+            wp_send_json_error( array( 'message' => __( 'No settings data provided', 'nivo-ajax-search-for-woocommerce' ) ) );
+        }
+
+        $settings = json_decode( sanitize_text_field( wp_unslash( $_POST['settings'] ) ), true );
         
         if (!$settings) {
             wp_send_json_error(['message' => __('Invalid settings data', 'nivo-ajax-search-for-woocommerce')]);

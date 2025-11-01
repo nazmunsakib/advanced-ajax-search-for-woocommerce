@@ -3,7 +3,7 @@ Contributors: nazmunsakib
 Donate link: https://nazmunsakib.com/donate
 Tags: product search, woocommerce search, ajax search, live search, autocomplete
 Requires at least: 5.0
-Tested up to: 6.4
+Tested up to: 6.8
 Requires PHP: 7.4
 Stable tag: 1.0.0
 License: GPLv2 or later

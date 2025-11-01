@@ -1,0 +1,420 @@
+# Copyright (C) 2024 Nazmun Sakib
+# This file is distributed under the GPL v2 or later.
+msgid ""
+msgstr ""
+"Project-Id-Version: Nivo AJAX Search for WooCommerce 1.0.0\n"
+"Report-Msgid-Bugs-To: https://github.com/nazmunsakib/nivo-ajax-search-for-woocommerce/issues\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2024-01-01T00:00:00+00:00\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"X-Generator: WordPress\n"
+"X-Domain: nivo-ajax-search-for-woocommerce\n"
+
+#: nivo-ajax-search-for-woocommerce.php:87
+msgid "Settings"
+msgstr ""
+
+#: nivo-ajax-search-for-woocommerce.php:100
+msgid "This plugin requires WooCommerce to be installed and active."
+msgstr ""
+
+#: nivo-ajax-search-for-woocommerce.php:118
+msgid "Documentation"
+msgstr ""
+
+#: nivo-ajax-search-for-woocommerce.php:119
+msgid "Support"
+msgstr ""
+
+#: includes/admin/Admin_Settings.php:43
+msgid "AJAX Search Settings"
+msgstr ""
+
+#: includes/admin/Admin_Settings.php:44
+msgid "NivoSearch"
+msgstr ""
+
+#: includes/admin/Admin_Settings.php:165
+msgid "Insufficient permissions"
+msgstr ""
+
+#: includes/admin/Admin_Settings.php:170
+msgid "Invalid settings data"
+msgstr ""
+
+#: includes/admin/Admin_Settings.php:213
+msgid "Settings saved successfully"
+msgstr ""
+
+#: includes/admin/Admin_Settings.php:223
+msgid "Insufficient permissions"
+msgstr ""
+
+#: includes/admin/Admin_Settings.php:258
+msgid "Settings reset successfully"
+msgstr ""
+
+#: includes/classes/Enqueue.php:85
+msgid "Nivo AJAX Search Settings"
+msgstr ""
+
+#: includes/classes/Enqueue.php:86
+msgid "Save Settings"
+msgstr ""
+
+#: includes/classes/Enqueue.php:87
+msgid "Saving..."
+msgstr ""
+
+#: includes/classes/Enqueue.php:88
+msgid "Settings saved successfully!"
+msgstr ""
+
+#: includes/classes/Enqueue.php:172
+#: includes/classes/Enqueue.php:173
+#: includes/classes/Enqueue.php:174
+#: includes/classes/Enqueue.php:175
+msgid "No products found"
+msgstr ""
+
+msgid "Loading..."
+msgstr ""
+
+msgid "Search error occurred"
+msgstr ""
+
+msgid "View All Results"
+msgstr ""
+
+#: includes/classes/Gutenberg_Block.php:62
+#: includes/classes/Shortcode.php:38
+msgid "Search products..."
+msgstr ""
+
+#: includes/classes/Nivo_Ajax_Search.php:108
+msgid "AJAX search is disabled"
+msgstr ""
+
+#: includes/classes/Nivo_Ajax_Search.php:114
+msgid "Query too short"
+msgstr ""
+
+#: assets/js/nivo-search.js:172
+msgid "No products found"
+msgstr ""
+
+#: assets/js/nivo-search.js:173
+msgid "Loading..."
+msgstr ""
+
+#: assets/js/nivo-search.js:174
+msgid "Search error occurred"
+msgstr ""
+
+#: assets/js/nivo-search.js:175
+msgid "View All Results"
+msgstr ""
+
+#: assets/js/admin-react.js:65
+msgid "Are you sure you want to reset all settings to default values?"
+msgstr ""
+
+#: assets/js/admin-react.js:78
+msgid "Settings reset to defaults successfully!"
+msgstr ""
+
+#: assets/js/admin-react.js:189
+msgid "Search Bar Preview"
+msgstr ""
+
+#: assets/js/admin-react.js:190
+msgid "Preview only - not interactive"
+msgstr ""
+
+#: assets/js/admin-react.js:235
+msgid "Search Results Preview"
+msgstr ""
+
+#: assets/js/admin-react.js:236
+msgid "Preview only - not interactive"
+msgstr ""
+
+#: assets/js/admin-react.js:260
+msgid "Nivo AJAX Search Settings"
+msgstr ""
+
+#: assets/js/admin-react.js:261
+msgid "Configure your AJAX search with intelligent features"
+msgstr ""
+
+#: assets/js/admin-react.js:264
+msgid "Reset Settings"
+msgstr ""
+
+#: assets/js/admin-react.js:265
+msgid "Save Settings"
+msgstr ""
+
+#: assets/js/admin-react.js:265
+msgid "Saving..."
+msgstr ""
+
+#: assets/js/admin-react.js:275
+msgid "General"
+msgstr ""
+
+#: assets/js/admin-react.js:276
+msgid "Search Scope"
+msgstr ""
+
+#: assets/js/admin-react.js:277
+msgid "Search Bar"
+msgstr ""
+
+#: assets/js/admin-react.js:278
+msgid "Search Results"
+msgstr ""
+
+#: assets/js/admin-react.js:279
+msgid "AI Features"
+msgstr ""
+
+#: assets/js/admin-react.js:286
+msgid "Placeholder Text"
+msgstr ""
+
+#: assets/js/admin-react.js:286
+msgid "Text shown in empty search field"
+msgstr ""
+
+#: assets/js/admin-react.js:287
+msgid "Width"
+msgstr ""
+
+#: assets/js/admin-react.js:287
+msgid "Maximum width in pixels"
+msgstr ""
+
+#: assets/js/admin-react.js:288
+msgid "Border Width"
+msgstr ""
+
+#: assets/js/admin-react.js:288
+msgid "Border thickness"
+msgstr ""
+
+#: assets/js/admin-react.js:289
+msgid "Border Color"
+msgstr ""
+
+#: assets/js/admin-react.js:289
+msgid "Border color"
+msgstr ""
+
+#: assets/js/admin-react.js:290
+msgid "Border Radius"
+msgstr ""
+
+#: assets/js/admin-react.js:290
+msgid "Rounded corners"
+msgstr ""
+
+#: assets/js/admin-react.js:291
+msgid "Background Color"
+msgstr ""
+
+#: assets/js/admin-react.js:291
+msgid "Background"
+msgstr ""
+
+#: assets/js/admin-react.js:292
+msgid "Padding Vertical"
+msgstr ""
+
+#: assets/js/admin-react.js:292
+msgid "Top/bottom padding"
+msgstr ""
+
+#: assets/js/admin-react.js:293
+msgid "Center Align"
+msgstr ""
+
+#: assets/js/admin-react.js:293
+msgid "Center the search bar"
+msgstr ""
+
+#: assets/js/admin-react.js:294
+msgid "Show Search Icon"
+msgstr ""
+
+#: assets/js/admin-react.js:294
+msgid "Display search icon"
+msgstr ""
+
+#: assets/js/admin-react.js:301
+msgid "Display Options"
+msgstr ""
+
+#: assets/js/admin-react.js:302
+msgid "Show Thumbnail"
+msgstr ""
+
+#: assets/js/admin-react.js:302
+msgid "Display product images"
+msgstr ""
+
+#: assets/js/admin-react.js:303
+msgid "Show Price"
+msgstr ""
+
+#: assets/js/admin-react.js:303
+msgid "Display product price"
+msgstr ""
+
+#: assets/js/admin-react.js:304
+msgid "Show Short Description"
+msgstr ""
+
+#: assets/js/admin-react.js:304
+msgid "Display product excerpt"
+msgstr ""
+
+#: assets/js/admin-react.js:305
+msgid "Show SKU"
+msgstr ""
+
+#: assets/js/admin-react.js:305
+msgid "Display product SKU"
+msgstr ""
+
+#: assets/js/admin-react.js:306
+msgid "Styling"
+msgstr ""
+
+#: assets/js/admin-react.js:315
+msgid "Padding"
+msgstr ""
+
+#: assets/js/admin-react.js:315
+msgid "Inner padding"
+msgstr ""
+
+#: assets/js/admin-react.js:321
+msgid "Enable AJAX Search"
+msgstr ""
+
+#: assets/js/admin-react.js:321
+msgid "Enable real-time search"
+msgstr ""
+
+#: assets/js/admin-react.js:322
+msgid "Results Limit"
+msgstr ""
+
+#: assets/js/admin-react.js:322
+msgid "Maximum results"
+msgstr ""
+
+#: assets/js/admin-react.js:323
+msgid "Minimum Characters"
+msgstr ""
+
+#: assets/js/admin-react.js:323
+msgid "Trigger threshold"
+msgstr ""
+
+#: assets/js/admin-react.js:324
+msgid "Search Delay (ms)"
+msgstr ""
+
+#: assets/js/admin-react.js:324
+msgid "Debounce delay"
+msgstr ""
+
+#: assets/js/admin-react.js:325
+msgid "How to Use"
+msgstr ""
+
+#: assets/js/admin-react.js:326
+msgid "Use shortcode or Gutenberg block to display the search form:"
+msgstr ""
+
+#: assets/js/admin-react.js:328
+msgid "Shortcode:"
+msgstr ""
+
+#: assets/js/admin-react.js:344
+msgid "Copied!"
+msgstr ""
+
+#: assets/js/admin-react.js:350
+msgid "Copy"
+msgstr ""
+
+#: assets/js/admin-react.js:353
+msgid "Gutenberg Block:"
+msgstr ""
+
+#: assets/js/admin-react.js:354
+msgid "Search for \"Nivo Search\" block in the block editor."
+msgstr ""
+
+#: assets/js/admin-react.js:358
+msgid "Search in Title"
+msgstr ""
+
+#: assets/js/admin-react.js:358
+msgid "Search product titles"
+msgstr ""
+
+#: assets/js/admin-react.js:359
+msgid "Search in SKU"
+msgstr ""
+
+#: assets/js/admin-react.js:359
+msgid "Search product SKUs"
+msgstr ""
+
+#: assets/js/admin-react.js:360
+msgid "Search in Description"
+msgstr ""
+
+#: assets/js/admin-react.js:360
+msgid "Search full product descriptions"
+msgstr ""
+
+#: assets/js/admin-react.js:361
+msgid "Search in Short Description"
+msgstr ""
+
+#: assets/js/admin-react.js:361
+msgid "Search product excerpts"
+msgstr ""
+
+#: assets/js/admin-react.js:362
+msgid "Search in Categories"
+msgstr ""
+
+#: assets/js/admin-react.js:362
+msgid "Search categories"
+msgstr ""
+
+#: assets/js/admin-react.js:365
+msgid "Typo Correction"
+msgstr ""
+
+#: assets/js/admin-react.js:365
+msgid "Auto-fix spelling mistakes"
+msgstr ""
+
+#: assets/js/admin-react.js:366
+msgid "Synonym Support"
+msgstr ""
+
+#: assets/js/admin-react.js:366
+msgid "Expand with related terms"
+msgstr ""

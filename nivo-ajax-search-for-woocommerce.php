@@ -51,12 +51,29 @@ add_action(
 );
 
 /**
+ * Load plugin text domain
+ *
+ * @since 1.0.0
+ * @return void
+ */
+function nivo_search_load_textdomain() {
+	load_plugin_textdomain(
+		'nivo-ajax-search-for-woocommerce',
+		false,
+		dirname( NIVO_SEARCH_PLUGIN_BASENAME ) . '/languages'
+	);
+}
+
+/**
  * Initialize the plugin
  *
  * @since 1.0.0
  * @return void
  */
 function nivo_search_init() {
+	// Load text domain
+	nivo_search_load_textdomain();
+	
 	// Load Composer autoloader.
 	if ( file_exists( NIVO_SEARCH_PLUGIN_DIR . 'vendor/autoload.php' ) ) {
 		require_once NIVO_SEARCH_PLUGIN_DIR . 'vendor/autoload.php';

@@ -435,7 +435,8 @@ const SettingsApp = () => {
                 renderSettingRow(__('Search in SKU', 'nivo-ajax-search-for-woocommerce'), __('Search product SKUs', 'nivo-ajax-search-for-woocommerce'), renderToggle('search_in_sku', settings.search_in_sku)),
                 renderSettingRow(__('Search in Description', 'nivo-ajax-search-for-woocommerce'), __('Search full product descriptions', 'nivo-ajax-search-for-woocommerce'), renderToggle('search_in_content', settings.search_in_content)),
                 renderSettingRow(__('Search in Short Description', 'nivo-ajax-search-for-woocommerce'), __('Search product excerpts', 'nivo-ajax-search-for-woocommerce'), renderToggle('search_in_excerpt', settings.search_in_excerpt)),
-                renderSettingRow(__('Search in Categories', 'nivo-ajax-search-for-woocommerce'), __('Search categories', 'nivo-ajax-search-for-woocommerce'), renderToggle('search_in_categories', settings.search_in_categories))
+                renderSettingRow(__('Search in Categories', 'nivo-ajax-search-for-woocommerce'), __('Search categories', 'nivo-ajax-search-for-woocommerce'), renderToggle('search_in_categories', settings.search_in_categories)),
+                renderSettingRow(__('Exclude Out of Stock', 'nivo-ajax-search-for-woocommerce'), __('Hide out of stock products from search results', 'nivo-ajax-search-for-woocommerce'), renderToggle('exclude_out_of_stock', settings.exclude_out_of_stock))
             ),
 
             activeTab === 'ai' && wp.element.createElement('div', { className: 'nivo-search-setting-group' },

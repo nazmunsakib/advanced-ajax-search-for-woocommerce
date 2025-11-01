@@ -1,8 +1,7 @@
 === Nivo AJAX Search for WooCommerce ===
 Contributors: nazmunsakib
 Donate link: https://nazmunsakib.com/donate
-Tags: product search, woocommerce search, ajax search, live search, autocomplete, ai search, typo correction, category search
-Requires at least: 5.0
+Tags: product search, woocommerce search, ajax search, live search, autocomplete
 Tested up to: 6.8
 Requires PHP: 7.4
 Stable tag: 1.0.0

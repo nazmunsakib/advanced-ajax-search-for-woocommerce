@@ -9,23 +9,23 @@
 
 /* CSS Custom Properties for easy customization */
 :root {
-    --nivo_search-primary-color: #0073aa;
-    --nivo_search-border-color: #ddd;
-    --nivo_search-border-radius: 4px;
-    --nivo_search-box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    --nivo_search-transition: all 0.3s ease;
-    --nivo_search-font-size-base: 15px;
-    --nivo_search-spacing-xs: 5px;
-    --nivo_search-spacing-sm: 10px;
-    --nivo_search-spacing-md: 15px;
-    --nivo_search-spacing-lg: 20px;
-    --nivo_search-z-index-dropdown: 1000;
+    --nivo-search-primary-color: #0073aa;
+    --nivo-search-border-color: #ddd;
+    --nivo-search-border-radius: 4px;
+    --nivo-search-box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    --nivo-search-transition: all 0.3s ease;
+    --nivo-search-font-size-base: 15px;
+    --nivo-search-spacing-xs: 5px;
+    --nivo-search-spacing-sm: 10px;
+    --nivo-search-spacing-md: 15px;
+    --nivo-search-spacing-lg: 20px;
+    --nivo-search-z-index-dropdown: 1000;
     
     /* Theme inheritance - can be overridden by settings */
-    --nivo_search-font-family: inherit;
-    --nivo_search-text-color: inherit;
-    --nivo_search-hover-color: inherit;
-    --nivo_search-hover-bg: rgba(0, 0, 0, 0.05);
+    --nivo-search-font-family: inherit;
+    --nivo-search-text-color: inherit;
+    --nivo-search-hover-color: inherit;
+    --nivo-search-hover-bg: rgba(0, 0, 0, 0.05);
 }
 
 /* Main Container */
@@ -33,23 +33,23 @@
     position: relative;
     max-width: 600px;
     width: 100%;
-    font-family: var(--nivo_search-font-family);
-    font-size: var(--nivo_search-font-size-base);
-    color: var(--nivo_search-text-color);
+    font-family: var(--nivo-search-font-family);
+    font-size: var(--nivo-search-font-size-base);
+    color: var(--nivo-search-text-color);
 }
 
-.nivo_search-wrapper {
+.nivo-search-wrapper {
     position: relative;
     display: flex;
     align-items: center;
 }
 
-.nivo_search-form {
+.nivo-search-form {
     margin: 0;
     width: 100%;
 }
 
-.nivo_search-icon {
+.nivo-search-icon {
     position: absolute;
     left: 15px;
     top: 50%;
@@ -59,10 +59,10 @@
     z-index: 5;
 }
 
-.nivo_search-clear-search {
+.nivo-search-clear-search {
     position: absolute;
     right: 15px;
-    top: 50%;
+    top: 47%;
     transform: translateY(-50%);
     cursor: pointer;
     font-size: 22px;
@@ -75,36 +75,45 @@
     transition: color 0.2s;
 }
 
-.nivo_search-clear-search:hover {
+.nivo-search-clear-search:hover {
     color: #333;
 }
 
 /* Search Input */
-.nivo_search-product-search {
+.nivo-search-wrapper .nivo-search-product-search {
     width: 100%;
     padding: 15px 45px 15px 45px;
     border: 1px solid #dfdfdf;
     border-radius: 30px;
     font-size: 15px;
-    transition: var(--nivo_search-transition);
+    transition: var(--nivo-search-transition);
     box-sizing: border-box;
     outline: none;
     background: #dfdfdf;
     font-family: inherit;
+    height: auto;
 }
 
-.nivo_search-product-search:focus {
+.nivo-search-form .nivo-search-wrapper .nivo-search-product-search:focus {
     background: #fff;
     border-color: #666;
     box-shadow: none;
 }
 
-.nivo_search-product-search::placeholder {
+.nivo-search-wrapper .nivo-search-product-search::placeholder {
     color: #999;
 }
 
+.nivo-search-form .nivo-search-wrapper {
+    margin: 0;
+    padding: 0;
+}
+
+input.nivo-search-product-search.form-control {
+    margin-bottom: 0;
+} 
 /* Loading State */
-.nivo-ajax-search-container.nivo_search-loading .nivo_search-wrapper::after {
+.nivo-ajax-search-container.nivo-search-loading .nivo-search-wrapper::after {
     content: '';
     position: absolute;
     right: 45px;
@@ -113,7 +122,7 @@
     width: 16px;
     height: 16px;
     border: 2px solid #e0e0e0;
-    border-top-color: var(--nivo_search-primary-color);
+    border-top-color: var(--nivo-search-primary-color);
     border-radius: 50%;
     animation: spin 0.6s linear infinite;
 }
@@ -123,7 +132,7 @@
 }
 
 /* Results Container */
-.nivo_search-results {
+.nivo-search-results {
     padding: 5px;
     position: absolute;
     top: calc(100% + 8px);
@@ -131,63 +140,54 @@
     right: 0;
     max-height: 450px;
     overflow-y: auto;
-    z-index: var(--nivo_search-z-index-dropdown);
+    z-index: var(--nivo-search-z-index-dropdown);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     display: none;
 }
 
-.nivo-ajax-search-container.nivo_search-has-results .nivo_search-results,
-.nivo-ajax-search-container.nivo_search-no-results .nivo_search-results {
+.nivo-ajax-search-container.nivo-search-has-results .nivo-search-results,
+.nivo-ajax-search-container.nivo-search-no-results .nivo-search-results {
     display: block;
 }
 
 /* Results List */
-.nivo_search-results-list {
+ul.nivo-search-results-list {
     list-style: none;
     margin: 0;
     padding: 0;
 }
 
-.nivo_search-result-item {
+.nivo-search-result-item {
     border-bottom: 1px solid #eee;
     transition: background-color 0.2s ease;
 }
 
-.nivo_search-result-item:last-child {
+.nivo-search-result-item:last-child {
     border-bottom: none;
 }
 
-.nivo_search-result-item:hover {
-    background-color: var(--nivo_search-hover-bg);
+.nivo-search-result-item:hover {
+    background-color: var(--nivo-search-hover-bg);
 }
 
 /* Product Link */
-.nivo_search-product-link {
+.nivo-search-result-item a.nivo-search-product-link {
     display: flex;
     align-items: center;
-    text-decoration: none;
-    color: var(--nivo_search-text-color);
+    text-decoration: none !important;
+    color: var(--nivo-search-text-color);
     transition: all 0.2s ease;
     gap: 10px;
     padding: 5px;
     border-radius: 4px;
 }
 
-.nivo_search-product-link:hover {
-    color: var(--nivo_search-hover-color);
-}
-
-.nivo_search-product-link:hover .nivo_search-product-title {
-    color: var(--nivo_search-hover-color, var(--nivo_search-primary-color));
-}
-
-.nivo_search-product-link:focus {
-    outline: 2px solid var(--nivo_search-primary-color);
-    outline-offset: -2px;
+.nivo-search-product-link .amount{
+    color: var(--nivo-search-text-color);
 }
 
 /* Product Image */
-.nivo_search-product-image {
+.nivo-search-product-image {
     width: 50px;
     height: 50px;
     object-fit: cover;
@@ -197,12 +197,12 @@
 }
 
 /* Product Info */
-.nivo_search-product-info {
+.nivo-search-product-info {
     flex: 1;
     min-width: 0;
 }
 
-.nivo_search-product-title-row {
+.nivo-search-product-title-row {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -210,7 +210,7 @@
     margin-bottom: 4px;
 }
 
-.nivo_search-product-title {
+.nivo-search-product-title {
     font-size: 15px;
     line-height: 1.4;
     color: inherit;
@@ -218,14 +218,14 @@
     transition: color 0.2s ease;
 }
 
-.nivo_search-product-title strong {
+.nivo-search-product-title strong {
     color: #999;
     font-size: 13px;
     font-weight: 600;
     margin-left: 4px;
 }
 
-.nivo_search-product-price {
+.nivo-search-product-price {
     color: inherit;
     opacity: 0.8;
     font-size: 15px;
@@ -233,7 +233,7 @@
     white-space: nowrap;
 }
 
-.nivo_search-product-description {
+.nivo-search-product-description {
     display: block;
     color: inherit;
     opacity: 0.7;
@@ -242,8 +242,8 @@
     margin-top: 4px;
 }
 
-.nivo_search-product-categories,
-.nivo_search-product-tags {
+.nivo-search-product-categories,
+.nivo-search-product-tags {
     display: inline-block;
     color: inherit;
     opacity: 0.6;
@@ -252,7 +252,7 @@
 }
 
 /* Keyword Highlighting */
-.nivo_search-highlight {
+.nivo-search-highlight {
     background-color: #fff3cd;
     color: #856404;
     font-weight: 600;
@@ -261,8 +261,8 @@
 }
 
 /* Messages */
-.nivo_search-no-results-message,
-.nivo_search-error-message {
+.nivo-search-no-results-message,
+.nivo-search-error-message {
     padding: 20px;
     margin: 0;
     text-align: center;
@@ -270,12 +270,12 @@
     font-size: 15px;
 }
 
-.nivo_search-no-results-message {
+.nivo-search-no-results-message {
     background: #f8f9fa;
     border-radius: 4px;
 }
 
-.nivo_search-error-message {
+.nivo-search-error-message {
     color: #d63638;
     background-color: #fef7f7;
     border-radius: 4px;
@@ -287,31 +287,31 @@
         max-width: 100%;
     }
     
-    .nivo_search-results {
+    .nivo-search-results {
         max-height: 300px;
     }
     
-    .nivo_search-product-image {
+    .nivo-search-product-image {
         width: 40px;
         height: 40px;
     }
 }
 
 @media (max-width: 480px) {
-    .nivo_search-product-link {
-        padding: var(--nivo_search-spacing-xs);
+    .nivo-search-product-link {
+        padding: var(--nivo-search-spacing-xs);
     }
     
-    .nivo_search-product-image {
+    .nivo-search-product-image {
         width: 35px;
         height: 35px;
     }
     
-    .nivo_search-product-title {
+    .nivo-search-product-title {
         font-size: 0.9em;
     }
     
-    .nivo_search-product-price {
+    .nivo-search-product-price {
         font-size: 0.8em;
     }
 }

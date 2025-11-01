@@ -244,7 +244,7 @@ class Enqueue {
 		// Search bar styles.
 		$center_align = get_option( 'nivo_search_center_align', 0 );
 		$css .= sprintf(
-			'.nivo_search-product-search { border: %dpx solid %s !important; border-radius: %dpx !important; background-color: %s !important; padding: %dpx 45px !important; }',
+			'.nivo-search-product-search { border: %dpx solid %s !important; border-radius: %dpx !important; background-color: %s !important; padding: %dpx 45px !important; }',
 			get_option( 'nivo_search_border_width', 1 ),
 			get_option( 'nivo_search_border_color', '#dfdfdf' ),
 			get_option( 'nivo_search_border_radius', 30 ),
@@ -252,7 +252,7 @@ class Enqueue {
 			get_option( 'nivo_search_padding_vertical', 15 )
 		);
 		
-		$css .= '.nivo_search-product-search:focus { background-color: #ffffff !important; border-color: #666666 !important; }';
+		$css .= '.nivo-search-product-search:focus { background-color: #ffffff !important; border-color: #666666 !important; }';
 		
 		if ( $center_align ) {
 			$css .= '.nivo-ajax-search-container { margin-left: auto !important; margin-right: auto !important; }';
@@ -268,19 +268,19 @@ class Enqueue {
 			$css .= ':root {';
 			
 			if ( ! empty( $custom_font_family ) ) {
-				$css .= '--nivo_search-font-family: ' . esc_attr( $custom_font_family ) . ';';
+				$css .= '--nivo-search-font-family: ' . esc_attr( $custom_font_family ) . ';';
 			}
 			
 			if ( ! empty( $custom_text_color ) ) {
-				$css .= '--nivo_search-text-color: ' . esc_attr( $custom_text_color ) . ';';
+				$css .= '--nivo-search-text-color: ' . esc_attr( $custom_text_color ) . ';';
 			}
 			
 			if ( ! empty( $custom_hover_color ) ) {
-				$css .= '--nivo_search-hover-color: ' . esc_attr( $custom_hover_color ) . ';';
+				$css .= '--nivo-search-hover-color: ' . esc_attr( $custom_hover_color ) . ';';
 			}
 			
 			if ( ! empty( $custom_hover_bg ) ) {
-				$css .= '--nivo_search-hover-bg: ' . esc_attr( $custom_hover_bg ) . ';';
+				$css .= '--nivo-search-hover-bg: ' . esc_attr( $custom_hover_bg ) . ';';
 			}
 			
 			$css .= '}';

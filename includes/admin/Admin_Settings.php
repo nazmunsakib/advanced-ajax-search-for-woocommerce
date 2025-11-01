@@ -150,8 +150,8 @@ class Admin_Settings {
             'search_in_attributes' => (int)get_option('nivo_search_in_attributes', 0),
             'exclude_out_of_stock' => (int)get_option('nivo_search_exclude_out_of_stock', 0),
             // AI features
-            'enable_typo_correction' => (int)get_option('nivo_search_enable_typo_correction', 1),
-            'enable_synonyms' => (int)get_option('nivo_search_enable_synonyms', 1),
+            'enable_typo_correction' => (int)get_option('nivo_search_enable_typo_correction', 0),
+            'enable_synonyms' => (int)get_option('nivo_search_enable_synonyms', 0),
             // Style & Layout - Search Bar
             'placeholder_text' => get_option('nivo_search_placeholder_text', 'Search products...'),
             'search_bar_width' => (int)get_option('nivo_search_bar_width', 600),
@@ -310,8 +310,8 @@ class Admin_Settings {
             'search_in_categories' => 0,
             'search_in_attributes' => 0,
             'exclude_out_of_stock' => 0,
-            'enable_typo_correction' => 1,
-            'enable_synonyms' => 1,
+            'enable_typo_correction' => 0,
+            'enable_synonyms' => 0,
             'placeholder_text' => 'Search products...',
             'search_bar_width' => 600,
             'border_width' => 1,

@@ -286,11 +286,12 @@ class Search_Algorithm {
      * Enhanced typo correction
      */
     private function correct_typos($query) {
-        if (!get_option('nivo_search_enable_typo_correction', 1)) {
+        if (!get_option('nivo_search_enable_typo_correction', 0)) {
             return $query;
         }
         
         $corrections = apply_filters('nivo_search_typo_corrections', [
+            // Common typos
             'tshirt' => 't-shirt',
             'jens' => 'jeans',
             'shose' => 'shoes',
@@ -299,6 +300,25 @@ class Search_Algorithm {
             'cloths' => 'clothes',
             'womens' => 'women',
             'mens' => 'men',
+            // Technology
+            'iphone' => 'iPhone',
+            'ipad' => 'iPad',
+            'macbook' => 'MacBook',
+            'samsung' => 'Samsung',
+            'labtop' => 'laptop',
+            'compter' => 'computer',
+            // Fashion
+            'sneeker' => 'sneaker',
+            'sneekers' => 'sneakers',
+            'trouser' => 'trousers',
+            'jeens' => 'jeans',
+            'shitr' => 'shirt',
+            'dres' => 'dress',
+            // General
+            'wach' => 'watch',
+            'watche' => 'watch',
+            'beutiful' => 'beautiful',
+            'beatiful' => 'beautiful'
         ]);
         
         return str_ireplace(array_keys($corrections), array_values($corrections), $query);
@@ -308,12 +328,32 @@ class Search_Algorithm {
      * Enhanced synonym expansion
      */
     private function expand_synonyms($query) {
-        if (!get_option('nivo_search_enable_synonyms', 1)) {
+        if (!get_option('nivo_search_enable_synonyms', 0)) {
             return $query;
         }
         
-        // For now, return original query
-        return $query;
+        $synonyms = apply_filters('nivo_search_synonyms', [
+            'phone' => ['mobile', 'smartphone', 'cell phone'],
+            'laptop' => ['notebook', 'computer'],
+            'shirt' => ['tee', 't-shirt', 'top'],
+            'pants' => ['trousers', 'jeans'],
+            'shoes' => ['footwear', 'sneakers', 'boots'],
+            'bag' => ['purse', 'handbag', 'backpack'],
+            'watch' => ['timepiece', 'clock'],
+            'jewelry' => ['jewellery', 'accessories']
+        ]);
+        
+        $words = explode(' ', strtolower($query));
+        $expanded = [];
+        
+        foreach ($words as $word) {
+            $expanded[] = $word;
+            if (isset($synonyms[$word])) {
+                $expanded = array_merge($expanded, $synonyms[$word]);
+            }
+        }
+        
+        return implode(' ', array_unique($expanded));
     }
     
     /**

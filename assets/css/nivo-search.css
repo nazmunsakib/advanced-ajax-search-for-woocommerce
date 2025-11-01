@@ -260,6 +260,72 @@ ul.nivo-search-results-list {
     border-radius: 2px;
 }
 
+/* Category Results */
+.nivo-search-categories-section,
+.nivo-search-products-section {
+    margin-bottom: 10px;
+}
+
+.nivo-search-categories-section:last-child,
+.nivo-search-products-section:last-child {
+    margin-bottom: 0;
+}
+
+.nivo-search-section-title {
+    margin: 0 0 8px 0;
+    padding: 8px 12px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #666;
+    background: #f8f9fa;
+    border-bottom: 1px solid #eee;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+ul.nivo-search-categories-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.nivo-search-category-item {
+    border-bottom: 1px solid #eee;
+    transition: background-color 0.2s ease;
+}
+
+.nivo-search-category-item:last-child {
+    border-bottom: none;
+}
+
+.nivo-search-category-item:hover {
+    background-color: var(--nivo-search-hover-bg);
+}
+
+.nivo-search-category-link {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    text-decoration: none !important;
+    color: var(--nivo-search-text-color);
+    transition: all 0.2s ease;
+    padding: 5px;
+    border-radius: 4px;
+}
+
+.nivo-search-category-title {
+    font-size: 14px;
+    line-height: 1.4;
+    color: inherit;
+    flex: 1;
+}
+
+.nivo-search-category-count {
+    color: #999;
+    font-size: 12px;
+    font-weight: 500;
+}
+
 /* Messages */
 .nivo-search-no-results-message,
 .nivo-search-error-message {

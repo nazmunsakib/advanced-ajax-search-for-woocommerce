@@ -25,7 +25,7 @@
         },
         settings: {
             minLength: (window.nivo_search && window.nivo_search.settings.min_length) || 2,
-            delay: (window.nivo_search && window.nivo_search.settings.delay) || 300,
+            delay: (window.nivo_search && window.nivo_search.settings.delay) || 200,
             maxResults: (window.nivo_search && window.nivo_search.settings.max_results) || 10
         },
         strings: (window.nivo_search && window.nivo_search.strings) || {}
@@ -90,16 +90,19 @@
 
         clearTimeout(searchTimeout);
 
-        if (currentRequest) {
-            currentRequest.abort();
-        }
-
         if (query.length < config.settings.minLength) {
+            if (currentRequest) {
+                currentRequest.abort();
+                currentRequest = null;
+            }
             clearResults(results, container);
             return;
         }
 
         searchTimeout = setTimeout(() => {
+            if (currentRequest) {
+                currentRequest.abort();
+            }
             performSearch(query, results, container);
         }, config.settings.delay);
     }
@@ -157,10 +160,11 @@
 
         currentRequest.onload = function () {
             removeClass(container, config.classes.loading);
+            currentRequest = null;
 
-            if (currentRequest.status === 200) {
+            if (this.status === 200) {
                 try {
-                    const response = JSON.parse(currentRequest.responseText);
+                    const response = JSON.parse(this.responseText);
                     if (response.success) {
                         displayResults(response.data, results, container, query);
                     } else {
@@ -180,11 +184,13 @@
 
         currentRequest.onerror = function () {
             removeClass(container, config.classes.loading);
+            currentRequest = null;
             displayError(config.strings.error, results, container);
         };
 
         currentRequest.onabort = function () {
             removeClass(container, config.classes.loading);
+            currentRequest = null;
         };
 
         currentRequest.send(formData);
@@ -193,12 +199,12 @@
     /**
      * Display search results
      */
-    function displayResults(products, results, container, query) {
-        if (!Array.isArray(products)) {
-            products = [];
-        }
+    function displayResults(data, results, container, query) {
+        // Handle both old format (array) and new format (object with categories/products)
+        const categories = data.categories || [];
+        const products = data.products || (Array.isArray(data) ? data : []);
 
-        if (products.length === 0) {
+        if (categories.length === 0 && products.length === 0) {
             displayNoResults(results, container);
             return;
         }
@@ -212,18 +218,40 @@
 
         results.style.cssText = resultsStyle;
 
-        let html = '<ul class="nivo-search-results-list">';
+        let html = '';
 
-        products.forEach(function (product) {
-            html += renderProductItem(product, query, settings);
-        });
+        // Add products section first
+        if (products.length > 0) {
+            if (categories.length > 0) {
+                html += '<div class="nivo-search-products-section">';
+                html += '<h4 class="nivo-search-section-title">Products</h4>';
+            } else {
+                html += '<div class="nivo-search-products-section">';
+            }
+            html += '<ul class="nivo-search-results-list">';
+            products.forEach(function (product) {
+                html += renderProductItem(product, query, settings);
+            });
+            html += '</ul>';
+            html += '</div>';
+        }
 
-        html += '</ul>';
+        // Add categories section second
+        if (categories.length > 0) {
+            html += '<div class="nivo-search-categories-section">';
+            html += '<h4 class="nivo-search-section-title">Categories</h4>';
+            html += '<ul class="nivo-search-categories-list">';
+            categories.forEach(function (category) {
+                html += renderCategoryItem(category, query, settings);
+            });
+            html += '</ul>';
+            html += '</div>';
+        }
 
         results.innerHTML = html;
         addClass(container, config.classes.hasResults);
 
-        triggerEvent('resultsDisplayed', { products, results, container, query });
+        triggerEvent('resultsDisplayed', { categories, products, results, container, query });
     }
 
     /**
@@ -233,6 +261,21 @@
         if (!text || !query) return text;
         const regex = new RegExp(`(${query})`, 'gi');
         return text.replace(regex, '<span class="nivo-search-highlight">$1</span>');
+    }
+
+    /**
+     * Render individual category item
+     */
+    function renderCategoryItem(category, query, settings) {
+        const padding = settings.results_padding || 10;
+        const highlightedTitle = highlightKeywords(category.title, query);
+        
+        return `<li class="nivo-search-category-item" style="padding: ${padding}px;">
+                <a href="${category.url}" class="nivo-search-category-link">
+                    <span class="nivo-search-category-title">${highlightedTitle}</span>
+                    <span class="nivo-search-category-count">(${category.count})</span>
+                </a>
+            </li>`;
     }
 
     /**

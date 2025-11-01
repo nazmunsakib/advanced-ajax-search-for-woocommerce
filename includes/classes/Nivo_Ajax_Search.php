@@ -179,13 +179,25 @@ final class Nivo_Ajax_Search {
 		);
 
 		// Use nivo search algorithm
-		$products = $this->search_algorithm->search( $query, $search_args );
+		$search_results = $this->search_algorithm->search( $query, $search_args );
 
 		// Format results
 		$results = array();
+		
+		// Add categories if present
+		if ( isset( $search_results['categories'] ) && ! empty( $search_results['categories'] ) ) {
+			$results['categories'] = array();
+			foreach ( $search_results['categories'] as $category ) {
+				$results['categories'][] = $this->format_category_result( $category, $query );
+			}
+		}
+		
+		// Add products
+		$products = isset( $search_results['products'] ) ? $search_results['products'] : $search_results;
+		$results['products'] = array();
 		foreach ( $products as $product ) {
-			$result    = $this->format_search_result( $product, $query );
-			$results[] = apply_filters( 'nivo_search_result_item', $result, $product, $query );
+			$result = $this->format_search_result( $product, $query );
+			$results['products'][] = apply_filters( 'nivo_search_result_item', $result, $product, $query );
 		}
 
 		// Send results directly for JavaScript compatibility
@@ -228,6 +240,23 @@ final class Nivo_Ajax_Search {
 		}
 
 		return array_map( 'intval', explode( ',', $excluded ) );
+	}
+
+	/**
+	 * Format category search result
+	 *
+	 * @since 1.0.0
+	 * @param WP_Term $category Category term
+	 * @param string  $query Search query
+	 * @return array Formatted category result
+	 */
+	private function format_category_result( $category, $query ) {
+		return array(
+			'id'    => $category->term_id,
+			'title' => $category->name,
+			'url'   => get_term_link( $category ),
+			'count' => $category->count,
+		);
 	}
 
 	/**

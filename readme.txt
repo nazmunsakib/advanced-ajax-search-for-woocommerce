@@ -1,7 +1,7 @@
 === NivoSearch – Ajax Product Search for WooCommerce ===
 Contributors: nazmunsakib
 Donate link: https://nazmunsakib.com/donate
-Tags: ajax product search for woocommerce, woocommerce product search, ajax search woocommerce, ajax product search, sku search woocommerce
+Tags: ajax product search for woocommerce, woocommerce product search, ajax search woocommerce, live product search, sku search woocommerce
 Requires at least: 5.0
 Tested up to: 6.8
 Requires PHP: 7.4
@@ -9,15 +9,15 @@ Stable tag: 1.1.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-Ajax product search for WooCommerce (Fast & Smart). Replace slow search with instant live results, SKU search, and fuzzy matching to boost sales
+Ajax Product Search for WooCommerce with instant live results, smart relevance, SKU search, and fuzzy matching to boost conversions.
 
 == Description ==
 
-**NivoSearch** is a high-performance **Ajax Product Search for WooCommerce** built to deliver speed, accuracy, and scalability for modern online stores. Unlike the default WooCommerce search, which is often slow and limited, NivoSearch provides instant Ajax Search results in real time as users type, typically responding in under **200ms**. This significantly reduces search friction and improves product discovery across your WooCommerce store.
+NivoSearch is a high-performance **Ajax Product Search for WooCommerce** built to deliver speed, accuracy, and scalability for modern online stores. Unlike the default WooCommerce search, which is often slow and limited, NivoSearch provides instant Ajax Search results in real time as users type, typically responding in under **200ms** significantly reducing search friction and improving product discovery across your WooCommerce store.
 
-This advanced WooCommerce Product Search supports intelligent features such as **fuzzy search**, **SKU-based product lookup**, and relevance-driven result scoring. Customers can find the right products even when using partial, incomplete, or misspelled search terms,dramatically improving usability, engagement, and conversion rates.
+This advanced WooCommerce Product Search supports intelligent features such as **fuzzy search**, **SKU-based** product lookup, and relevance, driven result scoring. It also allows searching by product identifiers such as **GTIN, UPC, EAN, and ISBN**, enabling precise product matching for inventory-heavy or barcode, driven stores. Customers can find the right products even when using partial, incomplete, or misspelled search terms, dramatically improving usability, engagement, and conversion rates.
 
-Powered by a **custom indexing engine**, NivoSearch efficiently processes WooCommerce product data while minimizing database load during live searches. This architecture ensures consistent performance for both small stores and large-scale WooCommerce sites with **100,000+ products**. Store owners retain full control over searchable fields, including product titles, SKUs, categories, tags, attributes, and visibility rules.
+Powered by a **custom indexing** engine, NivoSearch efficiently processes WooCommerce product data while minimizing database load during live searches. This architecture ensures consistent performance for both small stores and large, scale WooCommerce sites with **100,000+ products**. Store owners retain full control over searchable fields, including product titles, SKUs, GTIN, UPC, EAN, ISBN, categories, tags, attributes, and visibility rules.
 
 [&raquo; Live Demo](https://nivosearch.com/live-demo-woocommerce-product-search/) | [&raquo; Documentation](https://nivosearch.com/documentation/) | [&raquo; More Info](https://nivosearch.com/)
 
@@ -37,6 +37,8 @@ NivoSearch delivers a robust set of WooCommerce Product Search capabilities desi
 * **Add to Cart button directly in Ajax search results**, reducing clicks and improving conversions
 * **Unlimited search presets**, each with its own design, data sources, and relevance logic
 * **Context-aware preset usage**, allowing different search configurations for headers, sidebars, footers, and landing pages
+* Search by product identifiers including **GTIN, UPC, EAN, and ISBN**
+
 
 == Display Elements in Ajax Product Search for WooCommerce Results ==
 

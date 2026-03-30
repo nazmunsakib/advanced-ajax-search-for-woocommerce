@@ -1,6 +1,6 @@
 <?php
 /**
- * Plugin Name: NivoSearch – Ajax Product Search for WooCommerce
+ * Plugin Name: NivoSearch – Ajax Search for WooCommerce
  * Plugin URI: https://nivosearch.com
  * Description: The fast, modern WooCommerce product search. Give your customers a beautiful live AJAX search bar with instant product results.
  * Version: 1.1.1

@@ -9,7 +9,7 @@ Stable tag: 2.0.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-Instant Ajax product search for WooCommerce. Real-time results, add-to-cart from the dropdown, rich product cards, SKU lookup, and unlimited presets — free.
+Instant Ajax product search for WooCommerce. Real-time results, add-to-cart from search, rich product cards, SKU lookup, unlimited presets.
 
 == Description ==
 

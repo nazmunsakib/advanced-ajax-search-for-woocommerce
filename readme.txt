@@ -13,31 +13,31 @@ Instant Ajax product search for WooCommerce. Real-time results, add-to-cart from
 
 == Description ==
 
-**NivoSearch** delivers a fast, lightweight **WooCommerce Ajax search** experience — instant product results appear as customers type, with no page reload required. Built for speed, conversion, and full customization, NivoSearch is a capable alternative to the slow default WooCommerce search.
+**NivoSearch** delivers a fast, lightweight **WooCommerce Ajax search** experience: instant product results appear as customers type, with no page reload required. Built for speed, conversion, and full customization, NivoSearch is a capable alternative to the slow default WooCommerce search.
 
-Give your customers a smooth **live product search** experience that keeps them engaged and moving toward checkout — without paying for a premium plugin.
+Give your customers a smooth **live product search** experience that keeps them engaged and moving toward checkout, without paying for a premium plugin.
 
-[» GitHub](https://github.com/nazmunsakib/nivo-ajax-search-for-woocommerce)
+[» Live Demo](https://nivosearch.com/live-demo-woocommerce-product-search/) | [» GitHub](https://github.com/nazmunsakib/nivo-ajax-search-for-woocommerce)
 
 = Why Store Owners Choose NivoSearch =
 
-**⚡ Instant Ajax Search Results** — Products appear in a scrollable dropdown as customers type. Real-time results with no page reload means faster discovery and fewer abandoned sessions.
+**⚡ Instant Ajax Search Results**: Products appear in a scrollable dropdown as customers type. Real-time results with no page reload means faster discovery and fewer abandoned sessions.
 
-**🛒 Add to Cart from Search Results** — Shoppers can add simple products directly from the search dropdown — complete with an optional quantity selector and instant mini-cart update. Variable products get a quick-link to their product page. Fewer clicks, more conversions.
+**🛒 Add to Cart from Search Results**: Shoppers can add simple products directly from the search dropdown, complete with an optional quantity selector and instant mini-cart update. Variable products get a quick-link to their product page. Fewer clicks, more conversions.
 
-**📋 Rich Product Cards** — Each result shows the product thumbnail, title, inline SKU, current price, short description, stock status badge, and category badges — all toggled per preset.
+**📋 Rich Product Cards**: Each result shows the product thumbnail, title, inline SKU, current price, short description, stock status badge, and category badges, all toggled per preset.
 
-**🔍 SKU Search** — B2B stores and repeat customers find products instantly by SKU. Supports exact and partial SKU matching alongside title and description search.
+**🔍 SKU Search**: B2B stores and repeat customers find products instantly by SKU. Supports exact and partial SKU matching alongside title and description search.
 
-**📂 Category & Tag Search** — Matching product categories and tags appear in dedicated sections above product results, helping customers browse and discover related products.
+**📂 Category & Tag Search**: Matching product categories and tags appear in dedicated sections above product results, helping customers browse and discover related products.
 
-**🗂️ Unlimited Search Presets** — Create separate search bars for your header, footer, sidebar, or any page. Each preset has its own search scope, display settings, and styling — deployed via shortcode or Gutenberg block.
+**🗂️ Unlimited Search Presets**: Create separate search bars for your header, footer, sidebar, or any page. Each preset has its own search scope, display settings, and styling, deployed via shortcode or Gutenberg block.
 
-**⚡ Cached for Speed** — Search results are cached with auto-invalidation on product edits, so repeat queries are served in milliseconds without hitting the database.
+**⚡ Cached for Speed**: Search results are cached with auto-invalidation on product edits, so repeat queries are served in milliseconds without hitting the database.
 
-**🌍 Multilingual & Global Ready** — Translation-ready with a .pot file included. Compatible with WPML, Polylang, and TranslatePress.
+**🌍 Multilingual & Global Ready**: Translation-ready with a .pot file included. Compatible with WPML, Polylang, and TranslatePress.
 
-**🛠️ Developer-Friendly** — 14+ PHP hooks and filters, 8 JavaScript events, PSR-4 autoloading, nonce-secured AJAX endpoints. Clean, well-documented architecture built to extend.
+**🛠️ Developer-Friendly**: 14+ PHP hooks and filters, 8 JavaScript events, PSR-4 autoloading, nonce-secured AJAX endpoints. Clean, well-documented architecture built to extend.
 
 = WooCommerce Ajax Search Features =
 
@@ -58,7 +58,7 @@ Give your customers a smooth **live product search** experience that keeps them 
 * Inline SKU display (right of title)
 * Current selling price
 * Short description excerpt
-* Stock status badge — In Stock, Out of Stock, On Backorder
+* Stock status badge: In Stock, Out of Stock, On Backorder
 * Category badges on each result
 * Add-to-cart button (AJAX) with optional quantity selector
 * Instant mini-cart fragment update after add-to-cart
@@ -89,19 +89,19 @@ Give your customers a smooth **live product search** experience that keeps them 
 * 14+ WordPress actions and filters
 * 8 JavaScript custom events
 * Nonce-secured Ajax endpoints
-* Translation-ready — .pot file included
+* Translation-ready, .pot file included
 * WPML and Polylang compatible
 * Inline PHPDoc documentation throughout
 
 = Coming Soon =
 
-* **Fuzzy search & typo tolerance** — finds "iPhon" → "iPhone"
-* **Synonym expansion** — "phone" finds "mobile," "smartphone"
+* **Fuzzy search & typo tolerance**: finds "iPhon" and returns "iPhone"
+* **Synonym expansion**: "phone" finds "mobile," "smartphone"
 * **GTIN / UPC / EAN / ISBN** search support
 * **Product attribute search**
-* **Custom index engine (Pro)** — sub-100ms on 100,000+ product catalogs
-* **REST API endpoints (Pro)** — headless WooCommerce search
-* **Template overrides (Pro)** — full HTML control over result items
+* **Custom index engine (Pro)**: sub-100ms on 100,000+ product catalogs
+* **REST API endpoints (Pro)**: headless WooCommerce search
+* **Template overrides (Pro)**: full HTML control over result items
 * **Search analytics dashboard (Pro)**
 
 = Compatibility =
@@ -109,60 +109,60 @@ Give your customers a smooth **live product search** experience that keeps them 
 * **Themes:** Storefront, Astra, OceanWP, Flatsome, Hello Elementor, WoodMart, Kadence, GeneratePress, and all standard WooCommerce-compatible themes
 * **Page builders:** Gutenberg, Elementor, Beaver Builder, WPBakery
 * **Caching:** WP Rocket, W3 Total Cache, WP Super Cache, LiteSpeed Cache
-* **Multilingual:** WPML, Polylang, TranslatePress — translation-ready (.pot file included)
+* **Multilingual:** WPML, Polylang, TranslatePress, translation-ready (.pot file included)
 * **WooCommerce:** HPOS compatible, supports variable products, grouped products, and external products
 
 == Installation ==
 
 = Automatic Installation (Recommended) =
 
-1. Go to **Plugins → Add New** in your WordPress admin
+1. Go to **Plugins > Add New** in your WordPress admin
 2. Search for **NivoSearch**
 3. Click **Install Now**, then **Activate**
-4. Go to **NivoSearch → Search Presets → Add New**
+4. Go to **NivoSearch > Search Presets > Add New**
 5. Configure your preset settings and styling
 6. Copy the generated shortcode and paste it anywhere on your site
 
 = Manual Installation =
 
 1. Download the plugin ZIP from WordPress.org
-2. Go to **Plugins → Add New → Upload Plugin**
+2. Go to **Plugins > Add New > Upload Plugin**
 3. Upload the ZIP file and click **Install Now**
-4. Activate the plugin and go to **NivoSearch → Search Presets**
+4. Activate the plugin and go to **NivoSearch > Search Presets**
 
 == Quick Start ==
 
-1. Go to **NivoSearch → Search Presets → Add New**
+1. Go to **NivoSearch > Search Presets > Add New**
 2. Set your results limit, minimum characters, and placeholder text
 3. Choose what to search: title, SKU, description, categories, tags
 4. Choose what to display: images, price, SKU, descriptions
 5. Customize colors and sizing using the built-in style controls
-6. Click **Publish** — your shortcode is generated automatically
+6. Click **Publish**, your shortcode is generated automatically
 7. Paste `[nivo_search id="123"]` into any page, post, widget, or template
 
 == Developer Hooks ==
 
 = PHP Filters =
 
-`nivo_search_args` — Modify search query arguments before execution.
-`nivo_search_results` — Modify the full results array before the JSON response.
-`nivo_search_result_item` — Modify an individual product result item.
-`nivo_search_shortcode_html` — Override the complete shortcode HTML output.
-`nivo_search_localize_data` — Modify the JavaScript localization data object.
-`nivo_search_should_enqueue_assets` — Return false to conditionally skip asset loading.
-`nivo_search_typo_corrections` — Register a custom typo correction map (array of misspelling → correction).
-`nivo_search_synonyms` — Register synonym groups (array of term → array of synonyms).
+`nivo_search_args`: Modify search query arguments before execution.
+`nivo_search_results`: Modify the full results array before the JSON response.
+`nivo_search_result_item`: Modify an individual product result item.
+`nivo_search_shortcode_html`: Override the complete shortcode HTML output.
+`nivo_search_localize_data`: Modify the JavaScript localization data object.
+`nivo_search_should_enqueue_assets`: Return false to conditionally skip asset loading.
+`nivo_search_typo_corrections`: Register a custom typo correction map (array of misspelling to correction).
+`nivo_search_synonyms`: Register synonym groups (array of term to array of synonyms).
 
 = JavaScript Events =
 
-`nivo_search:init` — Search widget initialized.
-`nivo_search:beforeSearch` — Fired before an Ajax request is sent.
-`nivo_search:resultsDisplayed` — Fired after results are rendered in the dropdown.
-`nivo_search:noResults` — Fired when the search returns zero products.
-`nivo_search:error` — Fired when an Ajax error occurs.
-`nivo_search:resultsCleared` — Fired when the results dropdown is cleared.
-`nivo_search:focus` — Fired when the search input receives focus.
-`nivo_search:blur` — Fired when the search input loses focus.
+`nivo_search:init`: Search widget initialized.
+`nivo_search:beforeSearch`: Fired before an Ajax request is sent.
+`nivo_search:resultsDisplayed`: Fired after results are rendered in the dropdown.
+`nivo_search:noResults`: Fired when the search returns zero products.
+`nivo_search:error`: Fired when an Ajax error occurs.
+`nivo_search:resultsCleared`: Fired when the results dropdown is cleared.
+`nivo_search:focus`: Fired when the search input receives focus.
+`nivo_search:blur`: Fired when the search input loses focus.
 
 == Frequently Asked Questions ==
 
@@ -172,11 +172,11 @@ No. NivoSearch adds a separate Ajax search widget deployed via shortcode or Gute
 
 = How do I add the search bar to my site? =
 
-Create a preset under **NivoSearch → Search Presets → Add New**, then copy its shortcode (e.g. `[nivo_search id="5"]`) and paste it into any page, post, widget area, or theme template file. You can also insert the NivoSearch Gutenberg block directly in the block editor.
+Create a preset under **NivoSearch > Search Presets > Add New**, then copy its shortcode (e.g. `[nivo_search id="5"]`) and paste it into any page, post, widget area, or theme template file. You can also insert the NivoSearch Gutenberg block directly in the block editor.
 
 = Can I create multiple search bars with different settings? =
 
-Yes — unlimited presets is a core feature. Create as many as you need, each with its own search scope, display options, colors, and sizing. Common use cases: a compact header search, a full-width homepage search bar, and a sidebar widget.
+Yes, unlimited presets is a core feature. Create as many as you need, each with its own search scope, display options, colors, and sizing. Common use cases: a compact header search, a full-width homepage search bar, and a sidebar widget.
 
 = Does it support fuzzy search and typo correction? =
 
@@ -204,7 +204,7 @@ Yes. NivoSearch is fully compatible with WooCommerce High-Performance Order Stor
 
 = What happens to my presets if I delete the plugin? =
 
-By default, all your presets and settings are preserved when you delete the plugin — reinstalling restores everything instantly. To perform a complete clean removal, enable **Delete all data on uninstall** in **NivoSearch → Settings** before deleting.
+By default, all your presets and settings are preserved when you delete the plugin, reinstalling restores everything instantly. To perform a complete clean removal, enable **Delete all data on uninstall** in **NivoSearch > Settings** before deleting.
 
 = Is NivoSearch GDPR compliant? =
 
@@ -216,42 +216,42 @@ Yes. NivoSearch provides 14+ PHP filters and actions, 8 JavaScript events, nonce
 
 == Screenshots ==
 
-1. Live Ajax search results — product image, title, price, and SKU displayed as the user types
-2. Search preset list — unlimited presets with shortcode shown in the list view
-3. Preset configuration panel — search scope, display options, and styling in one screen
+1. Live Ajax search results: product image, title, price, and SKU displayed as the user types
+2. Search preset list: unlimited presets with shortcode shown in the list view
+3. Preset configuration panel: search scope, display options, and styling in one screen
 4. Category and tag results displayed in dedicated sections above product results
-5. NivoSearch Settings page — Data & Privacy options
+5. NivoSearch Settings page: Data and Privacy options
 
 == Changelog ==
 
 = 2.0.0 =
-* NEW: Add-to-cart button directly in search results — AJAX-powered with instant WooCommerce mini-cart fragment update
+* NEW: Add-to-cart button directly in search results, AJAX-powered with instant WooCommerce mini-cart fragment update
 * NEW: Quantity selector in search results (configurable per preset)
-* NEW: Variable product support — chevron icon links to product page to select options
-* NEW: Stock status badge — In Stock / Out of Stock / On Backorder per result
+* NEW: Variable product support, chevron icon links to product page to select options
+* NEW: Stock status badge: In Stock, Out of Stock, On Backorder per result
 * NEW: Category badges on each product result
 * NEW: Short description shown immediately below product title in results
 * NEW: Current selling price shown per result (no crossed-out regular/sale HTML clutter)
 * NEW: SKU displayed inline next to product title
 * NEW: Transient caching for Ajax search responses (5-min TTL, auto-invalidated on product/preset edits)
-* NEW: "View All Results" sticky footer link always visible at the bottom of the results panel (scrolls above it)
-* NEW: Admin settings page updated — accurate feature list, preset settings reference, new Key Features section
-* IMPROVED: Compact two-column result layout — left column (title → description → badges), right column (price / qty + cart)
-* IMPROVED: Search results panel is now a scrollable flex container — footer link never scrolls away
+* NEW: "View All Results" sticky footer link always visible at the bottom of the results panel
+* NEW: Admin settings page updated, accurate feature list, preset settings reference, new Key Features section
+* IMPROVED: Compact two-column result layout, left column (title, description, badges), right column (price, qty, cart)
+* IMPROVED: Search results panel is now a scrollable flex container, footer link never scrolls away
 * IMPROVED: SKU, short description, and category badge font size increased to 12px for legibility
 * REMOVED: Star ratings removed from results and settings (cleaner UI)
 * FIX: Double add-to-cart bug when quantity selector was used
 * FIX: Mini-cart not updating after AJAX add-to-cart (now uses WooCommerce jQuery fragment events)
-* FIX: Settings checkboxes (category badge, add-to-cart, qty selector) not taking effect — cache invalidation and missing default keys resolved
-* FIX: Price/qty/cart wrapping to separate lines — now grouped as a single right-side flex unit
+* FIX: Settings checkboxes (category badge, add-to-cart, qty selector) not taking effect, cache invalidation and missing default keys resolved
+* FIX: Price/qty/cart wrapping to separate lines, now grouped as a single right-side flex unit
 
 = 1.2.0 =
-* FIX: Activation race condition — default preset now reliably created on fresh install
+* FIX: Activation race condition, default preset now reliably created on fresh install
 * FIX: Deactivation hook now correctly flushes rewrite rules
 * FIX: Shortcode `container_class`, `input_class`, and `results_class` attributes now applied to rendered HTML
-* FIX: Duplicate clear button — suppressed browser-native X icon on `type="search"` inputs
+* FIX: Duplicate clear button, suppressed browser-native X icon on `type="search"` inputs
 * NEW: Database migration system for safe, zero-downtime plugin updates
-* NEW: Safe uninstall — preset data is preserved by default when the plugin is deleted
+* NEW: Safe uninstall, preset data is preserved by default when the plugin is deleted
 * NEW: "Data & Privacy" settings card with opt-in data deletion toggle
 * IMPROVED: `aria-label` on search input and `aria-live` on results panel for screen readers
 * IMPROVED: Submit button restored for keyboard navigation and accessibility users
@@ -275,7 +275,7 @@ Yes. NivoSearch provides 14+ PHP filters and actions, 8 JavaScript events, nonce
 == Upgrade Notice ==
 
 = 2.0.0 =
-Major update — adds add-to-cart, qty selector, stock badges, category badges, short descriptions, caching, and a redesigned result layout. Existing presets are automatically migrated. No manual action required.
+Major update, adds add-to-cart, qty selector, stock badges, category badges, short descriptions, caching, and a redesigned result layout. Existing presets are automatically migrated. No manual action required.
 
 = 1.2.0 =
 Stability and accessibility update. Existing presets are automatically migrated. No manual action required.

@@ -5,7 +5,7 @@ Tags: woocommerce search, ajax search, product search, live search, woocommerce
 Requires at least: 5.6
 Tested up to: 6.8
 Requires PHP: 7.4
-Stable tag: 2.0.0
+Stable tag: 2.0.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -223,6 +223,12 @@ Yes. NivoSearch provides 14+ PHP filters and actions, 8 JavaScript events, nonce
 5. NivoSearch Settings page: Data and Privacy options
 
 == Changelog ==
+
+= 2.0.1 =
+* FIX: Short description trimmed to meet WordPress.org 150-character limit
+* FIX: Removed em dashes throughout readme for better compatibility
+* FIX: Restored live demo link in description
+* FIX: Replaced arrow symbols in admin menu paths with standard ">" notation
 
 = 2.0.0 =
 * NEW: Add-to-cart button directly in search results, AJAX-powered with instant WooCommerce mini-cart fragment update

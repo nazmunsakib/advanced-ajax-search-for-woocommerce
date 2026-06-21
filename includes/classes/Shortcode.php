@@ -46,12 +46,32 @@ class Shortcode {
         add_action('before_delete_post', [$this, 'cleanup_default_preset_option']);
     }
 
-    private function get_search_form_html($atts) {
+    /**
+     * Build the inner search form HTML (input + icons)
+     *
+     * @since 1.0.0
+     * @param array $atts Shortcode attributes.
+     * @return string
+     */
+    private function get_search_form_html( $atts ) {
+        // Build the input class: always include the base class + any custom class.
+        $input_classes = 'nivo-search-product-search';
+        if ( ! empty( $atts['input_class'] ) && 'nivo-search-product-search' !== $atts['input_class'] ) {
+            $input_classes .= ' ' . sanitize_html_class( $atts['input_class'] );
+        }
+
         ob_start();
         ?>
-        <input type="search" class="nivo-search-product-search" name="s" placeholder="<?php echo esc_attr($atts['placeholder']); ?>" autocomplete="off">
+        <input
+            type="search"
+            class="<?php echo esc_attr( $input_classes ); ?>"
+            name="s"
+            placeholder="<?php echo esc_attr( $atts['placeholder'] ); ?>"
+            aria-label="<?php echo esc_attr( $atts['placeholder'] ); ?>"
+            autocomplete="off"
+        >
         <div class="nivo-search-loader-icons">
-            <svg class="nivo-search-close-icon" xmlns="http://www.w3.org/2000/svg" height="18" viewBox="0 0 24 24" width="18">
+            <svg class="nivo-search-close-icon" xmlns="http://www.w3.org/2000/svg" height="18" viewBox="0 0 24 24" width="18" aria-hidden="true" focusable="false">
                 <path d="M18.3 5.71c-.39-.39-1.02-.39-1.41 0L12 10.59 7.11 5.7c-.39-.39-1.02-.39-1.41 0-.39.39-.39 1.02 0 1.41L10.59 12 5.7 16.89c-.39.39-.39 1.02 0 1.41.39.39 1.02.39 1.41 0L12 13.41l4.89 4.89c.39.39 1.02.39 1.41 0 .39-.39.39-1.02 0-1.41L13.41 12l4.89-4.89c.38-.38.38-1.02 0-1.4z"></path>
             </svg>
         </div>
@@ -106,27 +126,52 @@ class Shortcode {
             self::$used_presets_style[$preset_id] = $preset_style_settings;
         }
 
-        $settings_compress = !empty($preset_settings) ? json_encode($preset_settings) : '{}';
-        
+        $settings_compress = ! empty( $preset_settings ) ? wp_json_encode( $preset_settings ) : '{}';
+
+        // Build container class: base + preset-specific + custom class from shortcode attr.
+        $container_classes = 'nivo-ajax-search-container' . $preset_class;
+        if ( ! empty( $atts['container_class'] ) && 'nivo-ajax-search-container' !== $atts['container_class'] ) {
+            $container_classes .= ' ' . sanitize_html_class( $atts['container_class'] );
+        }
+
+        // Build results class: base + custom class from shortcode attr.
+        $results_classes = 'nivo-search-results';
+        if ( ! empty( $atts['results_class'] ) && 'nivo-search-results' !== $atts['results_class'] ) {
+            $results_classes .= ' ' . sanitize_html_class( $atts['results_class'] );
+        }
+
         ?>
-        <div class="nivo-ajax-search-container<?php echo esc_attr($preset_class); ?>" data-preset-id="<?php echo esc_attr($preset_id); ?>" data-preset-settings="<?php echo esc_attr( $settings_compress ); ?>">
+        <div
+            class="<?php echo esc_attr( $container_classes ); ?>"
+            data-preset-id="<?php echo esc_attr( $preset_id ); ?>"
+            data-preset-settings="<?php echo esc_attr( $settings_compress ); ?>"
+            role="search"
+        >
             <div class="nivo-search-form-wrapper">
-                <form class="nivo-search-form" role="search" method="get" action="<?php echo esc_url($action_url) ?>">
-                    <div class="nivo-search-wrapper nivo-search-box-style-<?php echo esc_attr($atts['search_bar_layout']); ?>" >
+                <form class="nivo-search-form" method="get" action="<?php echo esc_url( $action_url ); ?>">
+                    <div class="nivo-search-wrapper nivo-search-box-style-<?php echo esc_attr( $atts['search_bar_layout'] ); ?>">
 
-                        <?php echo $this->get_search_form_html($atts); ?>
+                        <?php echo $this->get_search_form_html( $atts ); ?>
 
-                        <div class="nivo-search-search-icon-wrap">
-                            <?php echo $search_icon_html;  ?>
+                        <button type="submit" class="nivosearch-search-submit" aria-label="<?php esc_attr_e( 'Search', 'nivo-ajax-search-for-woocommerce' ); ?>">
+                            <span class="screen-reader-text"><?php esc_html_e( 'Search', 'nivo-ajax-search-for-woocommerce' ); ?></span>
+                        </button>
+
+                        <div class="nivo-search-search-icon-wrap" aria-hidden="true">
+                            <?php echo $search_icon_html; // phpcs:ignore WordPress.Security.EscapeOutput ?>
                         </div>
 
                     </div>
                 </form>
             </div>
 
-            <div class="nivo-search-results"></div>
+            <div
+                class="<?php echo esc_attr( $results_classes ); ?>"
+                aria-live="polite"
+                aria-atomic="true"
+                role="listbox"
+            ></div>
         </div>
-        <!-- <button type="submit" aria-label="Search" class="nivosearch-search-submit"></button> -->
         <?php
         $markup = ob_get_clean();
         return apply_filters('nivo_search_shortcode_html', $markup, $atts);

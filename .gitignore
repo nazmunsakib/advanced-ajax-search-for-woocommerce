@@ -1,5 +1,12 @@
 # Plugin specific
 
+# AI session / development planning files (not for distribution)
+CLAUDE.md
+AUDIT_REPORT.md
+DEVELOPMENT_PHASES.md
+FEATURES.md
+RULES.md
+
 # Composer
 composer.lock
 

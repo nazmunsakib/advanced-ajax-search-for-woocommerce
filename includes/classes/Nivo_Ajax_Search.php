@@ -114,12 +114,42 @@ final class Nivo_Ajax_Search {
 	 * @return void
 	 */
 	private function init_hooks() {
-		add_action( 'wp_ajax_nivo_search', array( $this, 'handle_search' ) );
+		add_action( 'wp_ajax_nivo_search',        array( $this, 'handle_search' ) );
 		add_action( 'wp_ajax_nopriv_nivo_search', array( $this, 'handle_search' ) );
-		add_action( 'wc_ajax_nivo_search', array( $this, 'handle_search' ) );
+		add_action( 'wc_ajax_nivo_search',        array( $this, 'handle_search' ) );
 
-		// Allow other plugins to hook into our initialization
+		// Invalidate search result cache whenever products change.
+		add_action( 'save_post_product',                     array( __CLASS__, 'invalidate_search_cache' ) );
+		add_action( 'deleted_post',                          array( __CLASS__, 'invalidate_search_cache' ) );
+		add_action( 'woocommerce_product_set_stock_status',  array( __CLASS__, 'invalidate_search_cache' ) );
+
+		// Allow other plugins to hook into our initialization.
 		do_action( 'nivo_search_plugin_loaded', $this );
+	}
+
+	/**
+	 * Bump the search cache version to invalidate all cached results.
+	 *
+	 * Uses a version number stored in options rather than deleting individual
+	 * transients, which avoids expensive prefix-based DB deletes.
+	 * Old transients expire naturally at their TTL.
+	 *
+	 * @since 1.2.0
+	 * @return void
+	 */
+	public static function invalidate_search_cache() {
+		$ver = (int) get_option( 'nivo_search_cache_ver', 1 );
+		update_option( 'nivo_search_cache_ver', $ver + 1, false );
+	}
+
+	/**
+	 * Return the current search cache version.
+	 *
+	 * @since 1.2.0
+	 * @return int
+	 */
+	private function get_cache_version() {
+		return (int) get_option( 'nivo_search_cache_ver', 1 );
 	}
 
 	/**
@@ -208,6 +238,15 @@ final class Nivo_Ajax_Search {
 			$query
 		);
 
+		// --- Transient cache check -------------------------------------------
+		$cache_ver = $this->get_cache_version();
+		$cache_key = 'nivo_s_' . substr( md5( $query . '|' . $preset_id . '|' . $cache_ver ), 0, 24 );
+		$cached    = get_transient( $cache_key );
+		if ( false !== $cached ) {
+			wp_send_json_success( $cached );
+		}
+		// --- /Transient cache check ------------------------------------------
+
 		// Use nivo search algorithm
 		$search_results = $this->search_algorithm->search( $query, $search_args );
 
@@ -250,6 +289,9 @@ final class Nivo_Ajax_Search {
 		if ( ! empty( $preset_settings ) ) {
 			$response_data['settings'] = $preset_settings;
 		}
+
+		// Store in transient cache (5 minutes TTL).
+		set_transient( $cache_key, $response_data, 5 * MINUTE_IN_SECONDS );
 
 		wp_send_json_success( $response_data );
 	}

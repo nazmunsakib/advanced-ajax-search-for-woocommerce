@@ -55,13 +55,14 @@ class Helper {
         if (!self::is_valid_preset($preset_id)) {
             return [];
         }
-        
-        // Fetch new split meta
+
         $generale_settings = get_post_meta($preset_id, '_nivo_search_generale', true) ?: [];
+        $query_settings    = get_post_meta($preset_id, '_nivo_search_query', true) ?: [];
         $display_settings  = get_post_meta($preset_id, '_nivo_search_display', true) ?: [];
-        
-        // Merge all settings for frontend
-        return array_merge($generale_settings, $display_settings);
+
+        // Merge generale + query + display for the frontend data-preset-settings attribute.
+        // Style settings are handled separately via get_preset_style_settings().
+        return array_merge($generale_settings, $query_settings, $display_settings);
     }
     
     /**
@@ -95,35 +96,45 @@ class Helper {
             $css .= $selector . ' .nivo-search-form-wrapper{max-width:' . absint($settings['bar_width']) . 'px}';
         }
         
+        // Search bar input styles.
         $input_styles = [];
-        if (isset($settings['bar_height'])) {
-            $input_styles[] = 'height:' . absint($settings['bar_height']) . 'px';
+        if ( isset( $settings['bar_height'] ) ) {
+            $input_styles[] = 'height:' . absint( $settings['bar_height'] ) . 'px';
         }
-        if (isset($settings['bg_color'])) {
-            $input_styles[] = 'background-color:' . esc_attr($settings['bg_color']);
+        if ( isset( $settings['bg_color'] ) ) {
+            $input_styles[] = 'background-color:' . esc_attr( $settings['bg_color'] );
         }
-        if (isset($settings['text_color'])) {
-            $input_styles[] = 'color:' . esc_attr($settings['text_color']);
+        if ( isset( $settings['text_color'] ) ) {
+            $input_styles[] = 'color:' . esc_attr( $settings['text_color'] );
         }
-        
-        if (!empty($input_styles)) {
-            $css .= $selector . ' .nivo-search-wrapper input[type=search].nivo-search-product-search{' . implode(';', $input_styles) . '}';
+        if ( isset( $settings['border_color'] ) ) {
+            $input_styles[] = 'border-color:' . esc_attr( $settings['border_color'] );
         }
-        
+
+        if ( ! empty( $input_styles ) ) {
+            $css .= $selector . ' .nivo-search-wrapper input[type=search].nivo-search-product-search{' . implode( ';', $input_styles ) . '}';
+        }
+
+        // Results panel styles.
         $results_styles = [];
-        if (isset($settings['results_width'])) {
-            $results_styles[] = 'max-width:' . absint($settings['results_width']) . 'px';
+        if ( isset( $settings['results_width'] ) ) {
+            $results_styles[] = 'max-width:' . absint( $settings['results_width'] ) . 'px';
         }
-        if (isset($settings['results_bg_color'])) {
-            $results_styles[] = 'background-color:' . esc_attr($settings['results_bg_color']);
+        if ( isset( $settings['results_bg_color'] ) ) {
+            $results_styles[] = 'background-color:' . esc_attr( $settings['results_bg_color'] );
         }
-        if (isset($settings['results_text_color'])) {
-            $css .= $selector . ' .nivo-search-results .nivo-search-product-description{ color:' . esc_attr($settings['results_text_color']) . '}';
-            $css .= $selector . ' .nivo-search-results .nivo-search-product-title{ color:' . esc_attr($settings['results_text_color']) . '}';
+        if ( isset( $settings['results_border_color'] ) ) {
+            $results_styles[] = 'border-color:' . esc_attr( $settings['results_border_color'] );
         }
-        
-        if (!empty($results_styles)) {
-            $css .= $selector . ' .nivo-search-results{' . implode(';', $results_styles) . '}';
+
+        if ( ! empty( $results_styles ) ) {
+            $css .= $selector . ' .nivo-search-results{' . implode( ';', $results_styles ) . '}';
+        }
+
+        // Results text color (applied to title + description separately for specificity).
+        if ( isset( $settings['results_text_color'] ) ) {
+            $css .= $selector . ' .nivo-search-results .nivo-search-product-title{color:' . esc_attr( $settings['results_text_color'] ) . '}';
+            $css .= $selector . ' .nivo-search-results .nivo-search-product-description{color:' . esc_attr( $settings['results_text_color'] ) . '}';
         }
         
         return $css;
@@ -137,29 +148,41 @@ class Helper {
      */
     public static function get_default_settings() {
         return [
-            'limit' => 10,
-            'min_chars' => 2,
-            'placeholder' => 'Search products...',
-            'search_in_title' => 1,
-            'search_in_sku' => 1,
-            'search_in_content' => 1,
-            'search_in_excerpt' => 1,
+            // General
+            'limit'                     => 10,
+            'min_chars'                 => 2,
+            'placeholder'               => 'Search products...',
+            'delay'                     => 300,
+            // Query
+            'search_in_title'           => 1,
+            'search_in_sku'             => 1,
+            'search_in_content'         => 1,
+            'search_in_excerpt'         => 1,
             'search_product_categories' => 1,
-            'search_product_tags' => 0,
-            'exclude_out_of_stock' => 0,
-            'show_images' => 1,
-            'show_price' => 1,
-            'show_sku' => 1,
-            'show_description' => 1,
-            'bar_width' => 600,
-            'bar_height' => 50,
-            'border_color' => '#ddd',
-            'bg_color' => '#ffffff',
-            'text_color' => '#333333',
-            'results_text_color' => '#333333',
-            'results_width' => 600,
-            'results_border_color' => '#ddd',
-            'results_bg_color' => '#ffffff',
+            'search_product_tags'       => 0,
+            'exclude_out_of_stock'      => 0,
+            'search_in_gtin'            => 0,
+            'search_in_attributes'      => 0,
+            'enable_synonyms'           => 0,
+            // Display
+            'show_images'               => 1,
+            'show_price'                => 1,
+            'show_sku'                  => 1,
+            'show_description'          => 1,
+            'show_ratings'              => 0,
+            'show_stock_status'         => 0,
+            'show_category_badge'       => 0,
+            'show_qty_selector'         => 0,
+            // Style
+            'bar_width'                 => 600,
+            'bar_height'                => 50,
+            'border_color'              => '#dddddd',
+            'bg_color'                  => '#ffffff',
+            'text_color'                => '#333333',
+            'results_width'             => 600,
+            'results_text_color'        => '#333333',
+            'results_border_color'      => '#dddddd',
+            'results_bg_color'          => '#ffffff',
         ];
     }
 }

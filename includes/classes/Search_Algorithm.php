@@ -27,30 +27,71 @@ class Search_Algorithm {
      * @param array $args Additional search arguments
      * @return array Search results
      */
-    public function search($query, $args = []) {
-        $start_time = microtime(true);
-        
-        // Default arguments
-        $defaults = [
-            'limit' => 10,
-            'post_types' => ['product'],
-            'post_status' => 'publish',
-            'search_fields' => ['title', 'content', 'sku'],
-            'exclude_out_of_stock' => false,
-            'excluded_products' => [],
-            'tax_query' => [],
-            'meta_query' => []
-        ];
-        
-        $args = wp_parse_args($args, $defaults);
+    /**
+     * Search products
+     *
+     * @since 1.0.0
+     * @param string $query Search query.
+     * @param array  $args  Additional search arguments.
+     * @return array Search results: products, categories, tags, total, execution_time.
+     */
+    public function search( $query, $args = array() ) {
+        $start_time = microtime( true );
 
-        // Map 'exclude' to 'excluded_products' if present (compatibility)
-        if (!empty($args['exclude']) && empty($args['excluded_products'])) {
+        // Default arguments.
+        $defaults = array(
+            'limit'                     => 10,
+            'post_types'                => array( 'product' ),
+            'post_status'               => 'publish',
+            'search_fields'             => array( 'title', 'content', 'sku' ),
+            'exclude_out_of_stock'      => false,
+            'excluded_products'         => array(),
+            'tax_query'                 => array(),
+            'meta_query'                => array(),
+            'search_product_categories' => 0,
+            'search_product_tags'       => 0,
+            'enable_synonyms'           => 0,
+        );
+
+        $args = wp_parse_args( $args, $defaults );
+
+        // Map 'exclude' to 'excluded_products' for back-compat.
+        if ( ! empty( $args['exclude'] ) && empty( $args['excluded_products'] ) ) {
             $args['excluded_products'] = $args['exclude'];
         }
-        
-        // Sanitize query
-        $query = sanitize_text_field($query);
+
+        // Sanitize query.
+        $query = sanitize_text_field( $query );
+
+        // -------------------------------------------------------
+        // Phase 1 stub: apply typo corrections filter.
+        // Returns empty array until Phase 3 implements the map.
+        // Developers can hook this now and their callbacks will run.
+        // -------------------------------------------------------
+        $typo_corrections = apply_filters( 'nivo_search_typo_corrections', array() );
+        if ( ! empty( $typo_corrections ) && is_array( $typo_corrections ) ) {
+            $query_lower = strtolower( $query );
+            if ( isset( $typo_corrections[ $query_lower ] ) ) {
+                $query = $typo_corrections[ $query_lower ];
+            }
+        }
+
+        // -------------------------------------------------------
+        // Phase 1 stub: apply synonym expansion filter.
+        // Returns empty array until Phase 3 implements synonym map.
+        // Developers can hook this now.
+        // -------------------------------------------------------
+        $synonym_terms = array( $query );
+        if ( ! empty( $args['enable_synonyms'] ) ) {
+            $synonyms = apply_filters( 'nivo_search_synonyms', array() );
+            if ( ! empty( $synonyms ) && is_array( $synonyms ) ) {
+                $query_lower = strtolower( $query );
+                if ( isset( $synonyms[ $query_lower ] ) ) {
+                    $synonym_terms = array_merge( array( $query ), (array) $synonyms[ $query_lower ] );
+                    $synonym_terms = array_unique( array_map( 'sanitize_text_field', $synonym_terms ) );
+                }
+            }
+        }
         
         // Get matching tags if enabled
         $tags = [];
@@ -77,7 +118,10 @@ class Search_Algorithm {
             'nivo_search_args' => $args, // Pass args to filters
             'tax_query' => $args['tax_query'],
             'meta_query' => $args['meta_query'],
-            'post__not_in' => $args['excluded_products']
+            'post__not_in'           => $args['excluded_products'],
+            'no_found_rows'          => true,
+            'update_post_term_cache' => false,
+            'update_post_meta_cache' => true,
         ];
         
         // Handle out of stock

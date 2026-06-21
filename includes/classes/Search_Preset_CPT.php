@@ -30,28 +30,19 @@ class Search_Preset_CPT {
 
     /**
      * Register custom post type
+     *
+     * Delegates to the shared nivo_search_register_preset_cpt() function
+     * defined in the main plugin file, which is also called during the
+     * activation hook to avoid the CPT race condition.
+     *
+     * @since 1.1.0
+     * @since 1.2.0 Delegates to shared nivo_search_register_preset_cpt() function.
+     * @return void
      */
     public function register_post_type() {
-        register_post_type('nivo_search_preset', [
-            'labels' => [
-                'name' => __('Search Presets', 'nivo-ajax-search-for-woocommerce'),
-                'singular_name' => __('Search Preset', 'nivo-ajax-search-for-woocommerce'),
-                'add_new' => __('Add New Preset', 'nivo-ajax-search-for-woocommerce'),
-                'add_new_item' => __('Add New Search Preset', 'nivo-ajax-search-for-woocommerce'),
-                'edit_item' => __('Edit Search Preset', 'nivo-ajax-search-for-woocommerce'),
-            ],
-            'public' => false,
-            'show_ui' => true,
-            'show_in_menu' => 'nivo-search',
-            'show_in_rest' => true,
-            'menu_icon' => 'dashicons-search',
-            'supports' => ['title'],
-            'capability_type' => 'post',
-            'capabilities' => [
-                'create_posts' => 'manage_options',
-            ],
-            'map_meta_cap' => true,
-        ]);
+        if ( function_exists( 'nivo_search_register_preset_cpt' ) ) {
+            nivo_search_register_preset_cpt();
+        }
     }
 
     /**
@@ -146,6 +137,12 @@ class Search_Preset_CPT {
             <div class="nivo-setting-row">
                 <label><?php _e('Placeholder Text', 'nivo-ajax-search-for-woocommerce'); ?></label>
                 <input type="text" name="nivo_settings[placeholder]" value="<?php echo esc_attr($settings['placeholder']); ?>">
+            </div>
+
+            <div class="nivo-setting-row">
+                <label><?php _e('Search Delay (ms)', 'nivo-ajax-search-for-woocommerce'); ?></label>
+                <input type="number" name="nivo_settings[delay]" value="<?php echo esc_attr($settings['delay']); ?>" min="0" max="2000" step="50">
+                <span style="color:#666;font-size:12px;"><?php _e('Debounce delay before sending search request (default: 300)', 'nivo-ajax-search-for-woocommerce'); ?></span>
             </div>
         </div>
 
@@ -295,50 +292,63 @@ class Search_Preset_CPT {
         if (isset($_POST['nivo_settings'])) {
             $settings = $_POST['nivo_settings'];
 
-            // 1. Process Query Settings
-            $genarale_settings = [
-                'limit' => absint($settings['limit'] ?? 10),
-                'min_chars' => absint($settings['min_chars'] ?? 2),
-                'placeholder' => sanitize_text_field($settings['placeholder'] ?? ''),
-            ];
-            
-            // 1. Process Query Settings
-            $query_settings = [
-                'search_in_title' => isset($settings['search_in_title']) ? 1 : 0,
-                'search_in_sku' => isset($settings['search_in_sku']) ? 1 : 0,
-                'search_in_content' => isset($settings['search_in_content']) ? 1 : 0,
-                'search_in_excerpt' => isset($settings['search_in_excerpt']) ? 1 : 0,
-                'search_product_categories' => isset($settings['search_product_categories']) ? 1 : 0,
-                'search_product_tags' => isset($settings['search_product_tags']) ? 1 : 0,
-                'exclude_out_of_stock' => isset($settings['exclude_out_of_stock']) ? 1 : 0,
-            ];
+            // Read existing meta first so we never lose keys not present in the form
+            // (e.g. keys added by migration for future phases, or Pro keys).
+            $existing_generale = get_post_meta( $post_id, '_nivo_search_generale', true );
+            $existing_query    = get_post_meta( $post_id, '_nivo_search_query', true );
+            $existing_display  = get_post_meta( $post_id, '_nivo_search_display', true );
+            $existing_style    = get_post_meta( $post_id, '_nivo_search_style', true );
 
-            // 2. Process Display Settings
-            $display_settings = [
-                'show_images' => isset($settings['show_images']) ? 1 : 0,
-                'show_price' => isset($settings['show_price']) ? 1 : 0,
-                'show_sku' => isset($settings['show_sku']) ? 1 : 0,
-                'show_description' => isset($settings['show_description']) ? 1 : 0,
-            ];
+            $existing_generale = is_array( $existing_generale ) ? $existing_generale : array();
+            $existing_query    = is_array( $existing_query )    ? $existing_query    : array();
+            $existing_display  = is_array( $existing_display )  ? $existing_display  : array();
+            $existing_style    = is_array( $existing_style )    ? $existing_style    : array();
 
-            // 3. Process Style Settings
-            $style_settings = [
-                'bar_width' => absint($settings['bar_width'] ?? 600),
-                'bar_height' => absint($settings['bar_height'] ?? 50),
-                'border_color' => sanitize_hex_color($settings['border_color'] ?? '#ddd'),
-                'bg_color' => sanitize_hex_color($settings['bg_color'] ?? '#ffffff'),
-                'text_color' => sanitize_hex_color($settings['text_color'] ?? '#333333'),
-                'results_text_color' => sanitize_hex_color($settings['results_text_color'] ?? '#333333'),
-                'results_width' => absint($settings['results_width'] ?? 600),
-                'results_border_color' => sanitize_hex_color($settings['results_border_color'] ?? '#ddd'),
-                'results_bg_color' => sanitize_hex_color($settings['results_bg_color'] ?? '#ffffff'),
-            ];
+            // 1. General Settings — merge form values over existing (preserves delay and future keys).
+            $genarale_settings = array_merge( $existing_generale, array(
+                'limit'       => absint( $settings['limit'] ?? 10 ),
+                'min_chars'   => absint( $settings['min_chars'] ?? 2 ),
+                'placeholder' => sanitize_text_field( $settings['placeholder'] ?? '' ),
+                'delay'       => absint( $settings['delay'] ?? 300 ),
+            ) );
 
-            // Save split keys
-            update_post_meta($post_id, '_nivo_search_generale', $genarale_settings);
-            update_post_meta($post_id, '_nivo_search_query', $query_settings);
-            update_post_meta($post_id, '_nivo_search_display', $display_settings);
-            update_post_meta($post_id, '_nivo_search_style', $style_settings);
+            // 2. Query Settings — merge form values over existing (preserves gtin, attributes, synonyms).
+            $query_settings = array_merge( $existing_query, array(
+                'search_in_title'           => isset( $settings['search_in_title'] ) ? 1 : 0,
+                'search_in_sku'             => isset( $settings['search_in_sku'] ) ? 1 : 0,
+                'search_in_content'         => isset( $settings['search_in_content'] ) ? 1 : 0,
+                'search_in_excerpt'         => isset( $settings['search_in_excerpt'] ) ? 1 : 0,
+                'search_product_categories' => isset( $settings['search_product_categories'] ) ? 1 : 0,
+                'search_product_tags'       => isset( $settings['search_product_tags'] ) ? 1 : 0,
+                'exclude_out_of_stock'      => isset( $settings['exclude_out_of_stock'] ) ? 1 : 0,
+            ) );
+
+            // 3. Display Settings — merge form values over existing (preserves ratings, stock, badge, qty).
+            $display_settings = array_merge( $existing_display, array(
+                'show_images'      => isset( $settings['show_images'] ) ? 1 : 0,
+                'show_price'       => isset( $settings['show_price'] ) ? 1 : 0,
+                'show_sku'         => isset( $settings['show_sku'] ) ? 1 : 0,
+                'show_description' => isset( $settings['show_description'] ) ? 1 : 0,
+            ) );
+
+            // 4. Style Settings — merge form values over existing.
+            $style_settings = array_merge( $existing_style, array(
+                'bar_width'           => absint( $settings['bar_width'] ?? 600 ),
+                'bar_height'          => absint( $settings['bar_height'] ?? 50 ),
+                'border_color'        => sanitize_hex_color( $settings['border_color'] ?? '#dddddd' ) ?: '#dddddd',
+                'bg_color'            => sanitize_hex_color( $settings['bg_color'] ?? '#ffffff' ) ?: '#ffffff',
+                'text_color'          => sanitize_hex_color( $settings['text_color'] ?? '#333333' ) ?: '#333333',
+                'results_width'       => absint( $settings['results_width'] ?? 600 ),
+                'results_text_color'  => sanitize_hex_color( $settings['results_text_color'] ?? '#333333' ) ?: '#333333',
+                'results_border_color'=> sanitize_hex_color( $settings['results_border_color'] ?? '#dddddd' ) ?: '#dddddd',
+                'results_bg_color'    => sanitize_hex_color( $settings['results_bg_color'] ?? '#ffffff' ) ?: '#ffffff',
+            ) );
+
+            // Save all four meta groups.
+            update_post_meta( $post_id, '_nivo_search_generale', $genarale_settings );
+            update_post_meta( $post_id, '_nivo_search_query',    $query_settings );
+            update_post_meta( $post_id, '_nivo_search_display',  $display_settings );
+            update_post_meta( $post_id, '_nivo_search_style',    $style_settings );
         }
     }
 

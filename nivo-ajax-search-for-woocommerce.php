@@ -3,7 +3,7 @@
  * Plugin Name: NivoSearch – Ajax Search for WooCommerce
  * Plugin URI: https://nivosearch.com
  * Description: The fast, modern WooCommerce product search. Give your customers a beautiful live AJAX search bar with instant product results.
- * Version: 1.1.1
+ * Version: 1.2.0
  * Author: Nazmun Sakib
  * Author URI: https://nazmunsakib.com
  * License: GPL v2 or later
@@ -27,7 +27,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 // Define plugin constants.
-define( 'NIVO_SEARCH_VERSION', '1.1.1' );
+define( 'NIVO_SEARCH_VERSION', '1.2.0' );
 define( 'NIVO_SEARCH_PLUGIN_FILE', __FILE__ );
 define( 'NIVO_SEARCH_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 define( 'NIVO_SEARCH_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
@@ -48,16 +48,28 @@ add_filter('before_woocommerce_init', 'before_woocommerce_init_render');
 
 
 /**
+ * Load the Composer autoloader
+ *
+ * @since 1.2.0
+ * @return void
+ */
+function nivo_search_load_autoloader() {
+	if ( file_exists( NIVO_SEARCH_PLUGIN_DIR . 'vendor/autoload.php' ) ) {
+		require_once NIVO_SEARCH_PLUGIN_DIR . 'vendor/autoload.php';
+	}
+}
+
+/**
  * Initialize the plugin
  *
  * @since 1.0.0
  * @return void
  */
 function nivo_search_init() {
-	// Load Composer autoloader.
-	if ( file_exists( NIVO_SEARCH_PLUGIN_DIR . 'vendor/autoload.php' ) ) {
-		require_once NIVO_SEARCH_PLUGIN_DIR . 'vendor/autoload.php';
-	}
+	nivo_search_load_autoloader();
+
+	// Run database migrations if version has changed.
+	NivoSearch\Migrator::maybe_migrate();
 
 	// Initialize main plugin class.
 	NivoSearch\Nivo_Ajax_Search::get_instance();
@@ -84,16 +96,73 @@ add_filter('plugin_action_links_' . NIVO_SEARCH_PLUGIN_BASENAME, 'plugin_action_
 /**
  * Plugin activation hook
  *
+ * Registers the CPT inline before inserting the default preset so that
+ * wp_insert_post() recognises 'nivo_search_preset' on a fresh install.
+ * (The CPT is normally registered on init, which fires after activation.)
+ *
  * @since 1.0.0
+ * @since 1.2.0 Fixed CPT race condition; added DB version stamp.
  * @return void
  */
 function nivo_search_activate() {
+	// Load autoloader so we can call class methods.
+	nivo_search_load_autoloader();
+
+	// Register the CPT now so wp_insert_post() recognises it.
+	nivo_search_register_preset_cpt();
+
+	// Stamp the DB version so the migrator knows this is a fresh install.
+	update_option( 'nivo_search_db_version', NIVO_SEARCH_VERSION );
+
+	// Create the default preset only on a truly fresh install.
 	$default_preset = get_option( 'nivo_search_default_preset_created' );
-	
-	if ( $default_preset ) {
-		return;
+	if ( ! $default_preset ) {
+		nivo_search_create_default_preset();
 	}
-	
+
+	// Flush rewrite rules so CPT slugs resolve immediately.
+	flush_rewrite_rules();
+}
+register_activation_hook( __FILE__, 'nivo_search_activate' );
+
+/**
+ * Register the Search Preset CPT (used during activation and on init)
+ *
+ * Extracted so the activation hook can call it before init fires.
+ *
+ * @since 1.2.0
+ * @return void
+ */
+function nivo_search_register_preset_cpt() {
+	register_post_type(
+		'nivo_search_preset',
+		array(
+			'labels'          => array(
+				'name'          => __( 'Search Presets', 'nivo-ajax-search-for-woocommerce' ),
+				'singular_name' => __( 'Search Preset', 'nivo-ajax-search-for-woocommerce' ),
+				'add_new'       => __( 'Add New Preset', 'nivo-ajax-search-for-woocommerce' ),
+				'add_new_item'  => __( 'Add New Search Preset', 'nivo-ajax-search-for-woocommerce' ),
+				'edit_item'     => __( 'Edit Search Preset', 'nivo-ajax-search-for-woocommerce' ),
+			),
+			'public'          => false,
+			'show_ui'         => true,
+			'show_in_menu'    => 'nivo-search',
+			'show_in_rest'    => true,
+			'supports'        => array( 'title' ),
+			'capability_type' => 'post',
+			'capabilities'    => array( 'create_posts' => 'manage_options' ),
+			'map_meta_cap'    => true,
+		)
+	);
+}
+
+/**
+ * Create the default preset with sensible defaults
+ *
+ * @since 1.2.0
+ * @return void
+ */
+function nivo_search_create_default_preset() {
 	$preset_id = wp_insert_post(
 		array(
 			'post_title'  => __( 'Default AJAX Search', 'nivo-ajax-search-for-woocommerce' ),
@@ -101,68 +170,65 @@ function nivo_search_activate() {
 			'post_status' => 'publish',
 		)
 	);
-	
+
 	if ( ! $preset_id || is_wp_error( $preset_id ) ) {
 		return;
 	}
 
-	// 1. Process Query Settings
-	$genarale_settings = [
-		'limit' 		=> 10,
-		'min_chars' 	=> 2,
-		'placeholder' 	=> __( 'Search products...', 'nivo-ajax-search-for-woocommerce' ),
-	];
-	
-	// 2. Process Query Settings
-	$query_settings = [
-		'search_in_title' 			=> 1,
-		'search_in_sku' 			=> 1,
-		'search_in_content' 		=> 1,
-		'search_in_excerpt' 		=> 1,
+	update_post_meta( $preset_id, '_nivo_search_generale', array(
+		'limit'       => 10,
+		'min_chars'   => 2,
+		'delay'       => 300,
+		'placeholder' => __( 'Search products...', 'nivo-ajax-search-for-woocommerce' ),
+	) );
+
+	update_post_meta( $preset_id, '_nivo_search_query', array(
+		'search_in_title'           => 1,
+		'search_in_sku'             => 1,
+		'search_in_content'         => 1,
+		'search_in_excerpt'         => 1,
 		'search_product_categories' => 1,
-		'search_product_tags' 		=> 0,	
-		'exclude_out_of_stock' 		=> 0,
-	];
+		'search_product_tags'       => 0,
+		'exclude_out_of_stock'      => 0,
+		'search_in_gtin'            => 0,
+		'search_in_attributes'      => 0,
+	) );
 
-	// 3. Process Display Settings
-	$display_settings = [
-		'show_images' 		=> 1,
-		'show_price' 		=> 1,
-		'show_sku' 			=> 1,
-		'show_description' 	=> 1,
-	];
+	update_post_meta( $preset_id, '_nivo_search_display', array(
+		'show_images'       => 1,
+		'show_price'        => 1,
+		'show_sku'          => 1,
+		'show_description'  => 1,
+		'show_ratings'      => 1,
+		'show_stock_status' => 1,
+		'show_category_badge' => 0,
+		'show_qty_selector' => 0,
+	) );
 
-	// 4. Process Style Settings
-	$style_settings = [
-		'bar_width' 		=> 600,
-		'bar_height' 		=> 50,
-		'border_color' 		=> '#ddd',
-		'bg_color' 			=> '#dfdfdf',
-		'text_color' 		=> '#333333',
-		'results_width'		=> 600,
-		'results_text_color' => '#333333',
-		'results_border_color' => '#ddd',
-		'results_bg_color' 	=> '#ffffff',
-	];
+	update_post_meta( $preset_id, '_nivo_search_style', array(
+		'bar_width'            => 600,
+		'bar_height'           => 50,
+		'border_color'         => '#dddddd',
+		'bg_color'             => '#ffffff',
+		'text_color'           => '#333333',
+		'results_width'        => 600,
+		'results_text_color'   => '#333333',
+		'results_border_color' => '#dddddd',
+		'results_bg_color'     => '#ffffff',
+	) );
 
-	// Save split keys
-	update_post_meta($preset_id, '_nivo_search_generale', $genarale_settings);
-	update_post_meta($preset_id, '_nivo_search_query', $query_settings);
-	update_post_meta($preset_id, '_nivo_search_display', $display_settings);
-	update_post_meta($preset_id, '_nivo_search_style', $style_settings);
-	
 	update_option( 'nivo_search_default_preset_created', $preset_id );
 }
-register_activation_hook( __FILE__, 'nivo_search_activate' );
 
 /**
  * Plugin deactivation hook
  *
  * @since 1.0.0
+ * @since 1.2.0 Added flush_rewrite_rules() to clean up CPT rewrite slugs.
  * @return void
  */
 function nivo_search_deactivate() {
-	// Cleanup if needed
+	flush_rewrite_rules();
 }
 register_deactivation_hook( __FILE__, 'nivo_search_deactivate' );
 

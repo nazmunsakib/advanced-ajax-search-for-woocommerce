@@ -278,16 +278,19 @@
         // Prioritize settings from response (preset), fallback to global
         const settings = data.settings ? Object.assign({}, globalSettings, data.settings) : globalSettings;
 
-        // Ensure proper type casting for boolean flags if they come as strings
-        if (data.settings) {
-            ['show_images', 'show_price', 'show_sku', 'show_description'].forEach(key => {
-                if (settings[key] !== undefined) {
-                    settings[key] = parseInt(settings[key], 10);
-                }
-            });
-        }
+        // Always cast boolean display flags — PHP serialises them as "0"/"1" strings.
+        [
+            'show_images', 'show_price', 'show_sku', 'show_description',
+            'show_stock_status', 'show_category_badge',
+            'show_add_to_cart', 'show_qty_selector', 'show_view_all'
+        ].forEach(key => {
+            if (settings[key] !== undefined) {
+                settings[key] = parseInt(settings[key], 10);
+            }
+        });
 
-        let html = '';
+        // Scrollable content wrapper — view-all sits outside this so it stays at the bottom
+        let html = '<div class="nivo-search-scrollable">';
 
         // Add categories section first
         if (categories.length > 0) {
@@ -330,8 +333,27 @@
             html += '</div>';
         }
 
+        // Close scrollable wrapper
+        html += '</div>';
+
+        // View All Results footer link — outside scrollable, always at bottom
+        const showViewAll = settings.show_view_all === undefined ? 1 : settings.show_view_all;
+        if (showViewAll !== 0) {
+            const shopUrl = (window.nivo_search && window.nivo_search.shop_url) || '/?s=' + encodeURIComponent(query) + '&post_type=product';
+            const viewAllUrl = shopUrl.indexOf('?') !== -1
+                ? shopUrl + '&s=' + encodeURIComponent(query)
+                : shopUrl + '?s=' + encodeURIComponent(query);
+            const viewAllLabel = (window.nivo_search && window.nivo_search.strings && window.nivo_search.strings.view_all)
+                ? window.nivo_search.strings.view_all.replace('%s', escapeHtml(query))
+                : 'View all results for "' + escapeHtml(query) + '"';
+            html += '<div class="nivo-search-view-all"><a href="' + escapeHtml(viewAllUrl) + '" class="nivo-search-view-all-link">' + viewAllLabel + '</a></div>';
+        }
+
         results.innerHTML = html;
         addClass(container, config.classes.hasResults);
+
+        // Bind add-to-cart buttons (after innerHTML is set)
+        bindAddToCartButtons(results);
 
         triggerEvent('resultsDisplayed', { categories, products, results, container, query });
     }
@@ -392,41 +414,263 @@
     }
 
     /**
+     * Render stock status badge HTML
+     */
+    function renderStockBadge(status) {
+        const labels = {
+            instock:     (window.nivo_search && window.nivo_search.strings && window.nivo_search.strings.in_stock)     || 'In Stock',
+            outofstock:  (window.nivo_search && window.nivo_search.strings && window.nivo_search.strings.out_of_stock)  || 'Out of Stock',
+            onbackorder: (window.nivo_search && window.nivo_search.strings && window.nivo_search.strings.on_backorder)  || 'On Backorder',
+        };
+        const label = labels[status] || labels.instock;
+        return '<span class="nivo-stock-badge nivo-stock-' + escapeHtml(status) + '">' + escapeHtml(label) + '</span>';
+    }
+
+    /**
      * Render individual product item
      */
     function renderProductItem(product, query, settings) {
-        const showImages = settings.show_images === 1;
-        const showPrice = settings.show_price === 1;
-        const showSku = settings.show_sku === 1;
-        const showDescription = settings.show_description === 1;
+        // All flags are integers (1/0) after the cast in displayResults().
+        const showImages      = settings.show_images       === 1;
+        const showPrice       = settings.show_price        === 1;
+        const showSku         = settings.show_sku          === 1;
+        const showDescription = settings.show_description  === 1;
+        const showStock       = settings.show_stock_status === 1;
+        const showCatBadge    = settings.show_category_badge === 1;
+        const showAddToCart   = settings.show_add_to_cart  === 1;
+        const showQty         = settings.show_qty_selector === 1;
 
+        // Image
         const imageHtml = (showImages && product.image)
-            ? `<img src="${escapeHtml(product.image)}" alt="${escapeHtml(product.title)}" class="nivo-search-product-image">`
+            ? `<img src="${escapeHtml(product.image)}" alt="${escapeHtml(product.title)}" class="nivo-search-product-image" loading="lazy" width="60" height="60">`
             : '';
 
+        // Title (with inline SKU immediately after title text)
         const highlightedTitle = highlightKeywords(product.title, query);
-        const skuHtml = (showSku && product.sku) ? ` <strong>(SKU: ${highlightKeywords(product.sku, query)})</strong>` : '';
-        // Price is trusted HTML from WooCommerce
-        const priceHtml = (showPrice && product.price) ? `<span class="nivo-search-product-price">${product.price}</span>` : '';
+        const skuInline = (showSku && product.sku)
+            ? `<span class="nivo-search-product-sku">SKU: ${highlightKeywords(product.sku, query)}</span>`
+            : '';
 
-        const titleSkuHtml = `<div class="nivo-search-product-title-row">
-            <span class="nivo-search-product-title">${highlightedTitle}${skuHtml}</span>
-            ${priceHtml}
-        </div>`;
+        // Price — current selling price only (no strikethrough regular/sale HTML)
+        const priceHtml = (showPrice && product.current_price)
+            ? `<span class="nivo-search-product-price">${product.current_price}</span>`
+            : '';
 
+        // Description
         const descHtml = (showDescription && product.short_description)
             ? `<span class="nivo-search-product-description">${highlightKeywords(product.short_description, query)}</span>`
             : '';
 
+
+        // Stock badge
+        const stockHtml = showStock
+            ? renderStockBadge(product.stock_status || 'instock')
+            : '';
+
+        // Category badges (max 2)
+        let catBadgesHtml = '';
+        if (showCatBadge && product.categories && product.categories.length > 0) {
+            catBadgesHtml = '<span class="nivo-search-category-badges">';
+            product.categories.forEach(function(cat) {
+                catBadgesHtml += `<a href="${escapeHtml(cat.url)}" class="nivo-cat-badge">${escapeHtml(cat.name)}</a>`;
+            });
+            catBadgesHtml += '</span>';
+        }
+
+        // Add to Cart button + quantity selector
+        let addToCartHtml = '';
+        if (showAddToCart && product.is_purchasable && product.is_in_stock) {
+            const qtyHtml = (showQty && product.product_type === 'simple')
+                ? `<span class="nivo-qty-wrapper">
+                    <button type="button" class="nivo-qty-btn nivo-qty-minus" aria-label="Decrease quantity">−</button>
+                    <input type="number" class="nivo-qty-input" value="1" min="1" max="99" aria-label="Quantity">
+                    <button type="button" class="nivo-qty-btn nivo-qty-plus" aria-label="Increase quantity">+</button>
+                   </span>`
+                : '';
+
+            const isVariable = product.product_type === 'variable';
+            // Cart icon SVG — used for simple product add-to-cart buttons.
+            const cartIcon = `<svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>`;
+            // Checkmark icon for the "added" state.
+            const checkIcon = `<svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><polyline points="20 6 9 17 4 12"/></svg>`;
+            // Chevron-right icon — used for variable products (go to product page).
+            const arrowIcon = `<svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><polyline points="9 18 15 12 9 6"/></svg>`;
+
+            if (isVariable) {
+                // Variables: chevron-right links to product page to select options.
+                addToCartHtml = `<span class="nivo-add-to-cart-wrapper"><a href="${escapeHtml(product.url)}"
+                    class="nivo-add-to-cart-btn nivo-atc-icon nivo-atc-variable"
+                    title="Select options"
+                    aria-label="Select options for ${escapeHtml(product.title)}"
+                >${arrowIcon}</a></span>`;
+            } else {
+                addToCartHtml = `<span class="nivo-add-to-cart-wrapper">${qtyHtml}<button type="button"
+                    class="nivo-add-to-cart-btn nivo-atc-icon"
+                    data-product-id="${escapeHtml(String(product.id))}"
+                    data-atc-url="${escapeHtml(product.add_to_cart_url)}"
+                    data-product-url="${escapeHtml(product.url)}"
+                    data-nonce="${escapeHtml(product.add_to_cart_nonce)}"
+                    data-cart-icon="${cartIcon.replace(/"/g, '&quot;')}"
+                    data-check-icon="${checkIcon.replace(/"/g, '&quot;')}"
+                    title="Add to cart"
+                    aria-label="Add ${escapeHtml(product.title)} to cart"
+                >${cartIcon}</button></span>`;
+            }
+        } else if (showAddToCart && !product.is_in_stock) {
+            addToCartHtml = `<span class="nivo-out-of-stock-label">${escapeHtml((window.nivo_search && window.nivo_search.strings && window.nivo_search.strings.out_of_stock) || 'Out of Stock')}</span>`;
+        }
+
+        // ---- Two-column layout ----
+        // [img] | [LEFT: title → desc → badges] | [RIGHT: price / qty+cart]
+        //
+        // Left and right are separate siblings — nothing from the right
+        // column sits inside the left info column.
+
+        const chips = [stockHtml, catBadgesHtml].filter(Boolean).join('');
+        const chipsRow = chips ? `<div class="nivo-search-meta-chips">${chips}</div>` : '';
+
+        // Right column: price on top, qty+cart below
+        const actionsHtml = (priceHtml || addToCartHtml)
+            ? `<div class="nivo-search-product-actions">${priceHtml}${addToCartHtml}</div>`
+            : '';
+
         return `<li class="nivo-search-result-item">
-                <a href="${escapeHtml(product.url)}" class="nivo-search-product-link">
+                <a href="${escapeHtml(product.url)}" class="nivo-search-product-link" tabindex="-1" aria-hidden="true">
                     ${imageHtml}
-                    <div class="nivo-search-product-info">
-                        ${titleSkuHtml}
-                        ${descHtml}
-                    </div>
                 </a>
+                <div class="nivo-search-product-info">
+                    <a href="${escapeHtml(product.url)}" class="nivo-search-product-title-link">
+                        <span class="nivo-search-product-title">${highlightedTitle}</span>${skuInline}
+                    </a>
+                    ${descHtml}
+                    ${chipsRow}
+                </div>
+                ${actionsHtml}
             </li>`;
+    }
+
+    /**
+     * Bind add-to-cart AJAX behaviour to buttons inside a results panel.
+     */
+    function bindAddToCartButtons(resultsEl) {
+        // Quantity selector
+        resultsEl.querySelectorAll('.nivo-qty-minus').forEach(function(btn) {
+            btn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                const input = btn.parentElement.querySelector('.nivo-qty-input');
+                if (input) input.value = Math.max(1, parseInt(input.value, 10) - 1);
+            });
+        });
+        resultsEl.querySelectorAll('.nivo-qty-plus').forEach(function(btn) {
+            btn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                const input = btn.parentElement.querySelector('.nivo-qty-input');
+                if (input) input.value = Math.min(99, parseInt(input.value, 10) + 1);
+            });
+        });
+
+        // Add to cart
+        resultsEl.querySelectorAll('.nivo-add-to-cart-btn[data-product-id]').forEach(function(btn) {
+            btn.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+
+                const productId  = btn.getAttribute('data-product-id');
+                const atcUrl     = btn.getAttribute('data-atc-url');    // ?add-to-cart=X
+                const productUrl = btn.getAttribute('data-product-url'); // product permalink
+                const nonce      = btn.getAttribute('data-nonce');
+                const wrapper    = btn.closest('.nivo-add-to-cart-wrapper');
+                const qtyInput   = wrapper ? wrapper.querySelector('.nivo-qty-input') : null;
+                const qty        = qtyInput ? Math.max(1, parseInt(qtyInput.value, 10) || 1) : 1;
+
+                btn.classList.add('nivo-atc-loading');
+                btn.disabled = true;
+                // Show spinner while loading (save cart icon to restore later).
+                const spinnerSvg = `<svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>`;
+                btn.innerHTML = spinnerSvg;
+
+                // Resolve WooCommerce AJAX add-to-cart URL.
+                // Prefer wc_cart_params (WC's own localized template), then our
+                // nivo_search.wc_cart_ajax_url, and fall back to redirect.
+                let wcAjaxUrl = null;
+                if (window.wc_cart_params && window.wc_cart_params.ajax_url) {
+                    wcAjaxUrl = window.wc_cart_params.ajax_url.replace('%%endpoint%%', 'add_to_cart');
+                } else if (window.nivo_search && window.nivo_search.wc_cart_ajax_url) {
+                    wcAjaxUrl = window.nivo_search.wc_cart_ajax_url.replace('%%endpoint%%', 'add_to_cart');
+                }
+
+                if (wcAjaxUrl) {
+                    // WC wc-ajax=add_to_cart only needs product_id + quantity.
+                    // DO NOT send 'add-to-cart' — it triggers the standard WC hook
+                    // (woocommerce_add_to_cart_action on wp_loaded) in addition to
+                    // the AJAX handler, causing the product to be added twice.
+                    const formData = new FormData();
+                    formData.append('product_id', productId);
+                    formData.append('quantity',   qty);
+
+                    const xhr = new XMLHttpRequest();
+                    xhr.open('POST', wcAjaxUrl);
+                    xhr.onload = function() {
+                        btn.classList.remove('nivo-atc-loading');
+                        btn.disabled = false;
+                        try {
+                            const res = JSON.parse(xhr.responseText);
+                            if (res && res.error) {
+                                // WC returned an error — send to product page.
+                                window.location.href = productUrl;
+                            } else {
+                                // Success — show checkmark icon.
+                                btn.classList.add('nivo-atc-added');
+                                const checkIcon = btn.getAttribute('data-check-icon') || '✓';
+                                btn.innerHTML = checkIcon;
+
+                                // Update WooCommerce mini-cart fragments.
+                                // WooCommerce's cart widgets listen to jQuery's
+                                // 'added_to_cart' event on document.body.
+                                if (res && res.fragments) {
+                                    if (window.jQuery) {
+                                        // Standard WC fragment injection + event.
+                                        window.jQuery.each(res.fragments, function(key, value) {
+                                            window.jQuery(key).replaceWith(value);
+                                        });
+                                        window.jQuery(document.body).trigger('added_to_cart', [res.fragments, res.cart_hash]);
+                                        window.jQuery(document.body).trigger('wc_fragments_refreshed');
+                                    } else {
+                                        // Non-jQuery fallback: inject fragments manually.
+                                        Object.keys(res.fragments).forEach(function(selector) {
+                                            const el = document.querySelector(selector);
+                                            if (el) el.outerHTML = res.fragments[selector];
+                                        });
+                                        document.body.dispatchEvent(new CustomEvent('wc_fragment_refresh'));
+                                    }
+                                }
+
+                                triggerEvent('addedToCart', { productId, qty });
+
+                                // Revert to cart icon after 2 s.
+                                setTimeout(function() {
+                                    btn.classList.remove('nivo-atc-added');
+                                    const cartIcon = btn.getAttribute('data-cart-icon') || '';
+                                    btn.innerHTML = cartIcon;
+                                }, 2000);
+                            }
+                        } catch(err) {
+                            // Unexpected response — fall back to redirect with quantity.
+                            window.location.href = atcUrl + (atcUrl.indexOf('?') !== -1 ? '&' : '?') + 'quantity=' + qty;
+                        }
+                    };
+                    xhr.onerror = function() {
+                        btn.classList.remove('nivo-atc-loading');
+                        btn.disabled = false;
+                        window.location.href = atcUrl + (atcUrl.indexOf('?') !== -1 ? '&' : '?') + 'quantity=' + qty;
+                    };
+                    xhr.send(formData);
+                } else {
+                    // No WC AJAX — redirect to add-to-cart URL with quantity.
+                    window.location.href = atcUrl + (atcUrl.indexOf('?') !== -1 ? '&' : '?') + 'quantity=' + qty;
+                }
+            });
+        });
     }
 
     /**

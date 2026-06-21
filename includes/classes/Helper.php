@@ -169,10 +169,11 @@ class Helper {
             'show_price'                => 1,
             'show_sku'                  => 1,
             'show_description'          => 1,
-            'show_ratings'              => 0,
             'show_stock_status'         => 0,
             'show_category_badge'       => 0,
+            'show_add_to_cart'          => 0,
             'show_qty_selector'         => 0,
+            'show_view_all'             => 1,
             // Style
             'bar_width'                 => 600,
             'bar_height'                => 50,

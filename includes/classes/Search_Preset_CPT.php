@@ -202,6 +202,32 @@ class Search_Preset_CPT {
                 <input type="checkbox" name="nivo_settings[show_description]" value="1" <?php checked($settings['show_description'], 1); ?>>
             </div>
 
+            <div class="nivo-setting-row">
+                <label><?php _e('Show Stock Status', 'nivo-ajax-search-for-woocommerce'); ?></label>
+                <input type="checkbox" name="nivo_settings[show_stock_status]" value="1" <?php checked($settings['show_stock_status'], 1); ?>>
+            </div>
+
+            <div class="nivo-setting-row">
+                <label><?php _e('Show Category Badge', 'nivo-ajax-search-for-woocommerce'); ?></label>
+                <input type="checkbox" name="nivo_settings[show_category_badge]" value="1" <?php checked($settings['show_category_badge'], 1); ?>>
+            </div>
+
+            <div class="nivo-setting-row">
+                <label><?php _e('Show Add to Cart Button', 'nivo-ajax-search-for-woocommerce'); ?></label>
+                <input type="checkbox" name="nivo_settings[show_add_to_cart]" value="1" <?php checked($settings['show_add_to_cart'] ?? 0, 1); ?>>
+            </div>
+
+            <div class="nivo-setting-row">
+                <label><?php _e('Show Quantity Selector', 'nivo-ajax-search-for-woocommerce'); ?></label>
+                <input type="checkbox" name="nivo_settings[show_qty_selector]" value="1" <?php checked($settings['show_qty_selector'], 1); ?>>
+                <span style="color:#666;font-size:12px;"><?php _e('Only shown with Add to Cart button', 'nivo-ajax-search-for-woocommerce'); ?></span>
+            </div>
+
+            <div class="nivo-setting-row">
+                <label><?php _e('Show "View All Results" Link', 'nivo-ajax-search-for-woocommerce'); ?></label>
+                <input type="checkbox" name="nivo_settings[show_view_all]" value="1" <?php checked($settings['show_view_all'] ?? 1, 1); ?>>
+            </div>
+
             <h4 class="nivo-search-settings-sub"><?php _e('Display Styling', 'nivo-ajax-search-for-woocommerce'); ?></h4>
 
             <div class="nivo-setting-row">
@@ -323,12 +349,17 @@ class Search_Preset_CPT {
                 'exclude_out_of_stock'      => isset( $settings['exclude_out_of_stock'] ) ? 1 : 0,
             ) );
 
-            // 3. Display Settings — merge form values over existing (preserves ratings, stock, badge, qty).
+            // 3. Display Settings — merge form values over existing.
             $display_settings = array_merge( $existing_display, array(
-                'show_images'      => isset( $settings['show_images'] ) ? 1 : 0,
-                'show_price'       => isset( $settings['show_price'] ) ? 1 : 0,
-                'show_sku'         => isset( $settings['show_sku'] ) ? 1 : 0,
-                'show_description' => isset( $settings['show_description'] ) ? 1 : 0,
+                'show_images'        => isset( $settings['show_images'] ) ? 1 : 0,
+                'show_price'         => isset( $settings['show_price'] ) ? 1 : 0,
+                'show_sku'           => isset( $settings['show_sku'] ) ? 1 : 0,
+                'show_description'   => isset( $settings['show_description'] ) ? 1 : 0,
+                'show_stock_status'  => isset( $settings['show_stock_status'] ) ? 1 : 0,
+                'show_category_badge'=> isset( $settings['show_category_badge'] ) ? 1 : 0,
+                'show_add_to_cart'   => isset( $settings['show_add_to_cart'] ) ? 1 : 0,
+                'show_qty_selector'  => isset( $settings['show_qty_selector'] ) ? 1 : 0,
+                'show_view_all'      => isset( $settings['show_view_all'] ) ? 1 : 0,
             ) );
 
             // 4. Style Settings — merge form values over existing.

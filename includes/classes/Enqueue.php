@@ -176,10 +176,19 @@ class Enqueue {
 				'ajax_url'    => admin_url( 'admin-ajax.php' ),
 				'wc_ajax_url' => $wc_ajax_url,
 				'nonce'       => wp_create_nonce( 'nivo_search_nonce' ),
+				'shop_url'        => function_exists( 'wc_get_page_permalink' ) ? esc_url( wc_get_page_permalink( 'shop' ) ) : home_url( '/' ),
+			// WC AJAX template URL — JS replaces %%endpoint%% with the action name.
+			'wc_cart_ajax_url' => class_exists( 'WC_AJAX' ) ? esc_url_raw( add_query_arg( 'wc-ajax', '%%endpoint%%', home_url( '/' ) ) ) : '',
 				'strings'     => array(
-					'no_results' => esc_html__( 'No products found', 'nivo-ajax-search-for-woocommerce' ),
-					'error'      => esc_html__( 'Search error occurred', 'nivo-ajax-search-for-woocommerce' ),
-					'view_all'   => esc_html__( 'View All Results', 'nivo-ajax-search-for-woocommerce' ),
+					'no_results'    => esc_html__( 'No products found', 'nivo-ajax-search-for-woocommerce' ),
+					'error'         => esc_html__( 'Search error occurred', 'nivo-ajax-search-for-woocommerce' ),
+					/* translators: %s is the search query */
+					'view_all'      => esc_html__( 'View all results for "%s"', 'nivo-ajax-search-for-woocommerce' ),
+					'in_stock'      => esc_html__( 'In Stock', 'nivo-ajax-search-for-woocommerce' ),
+					'out_of_stock'  => esc_html__( 'Out of Stock', 'nivo-ajax-search-for-woocommerce' ),
+					'on_backorder'  => esc_html__( 'On Backorder', 'nivo-ajax-search-for-woocommerce' ),
+					'add_to_cart'   => esc_html__( 'Add to cart', 'nivo-ajax-search-for-woocommerce' ),
+					'added_to_cart' => esc_html__( 'Added!', 'nivo-ajax-search-for-woocommerce' ),
 				),
 				'settings'    => array( // Default settings
 					'min_chars' => 2,

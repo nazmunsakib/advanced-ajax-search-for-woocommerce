@@ -204,23 +204,32 @@ input.nivo-search-product-search.form-control {
     }
 }
 
-/* Results Container */
+/* Results Container — flex column so view-all sticks to bottom */
 .nivo-search-results {
-    padding: 5px;
+    padding: 0;
     position: absolute;
     top: calc(100% + 8px);
     left: 0;
     right: 0;
     max-height: 450px;
-    overflow-y: auto;
+    overflow: hidden;
     z-index: var(--nivo-search-z-index-dropdown);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     display: none;
+    flex-direction: column;
 }
 
 .nivo-ajax-search-container.nivo-search-has-results .nivo-search-results,
 .nivo-ajax-search-container.nivo-search-no-results .nivo-search-results {
-    display: block;
+    display: flex;
+}
+
+/* Scrollable results area — grows to fill panel, scrolls when results overflow */
+.nivo-search-scrollable {
+    flex: 1;
+    overflow-y: auto;
+    min-height: 0;
+    padding: 5px;
 }
 
 /* Results List */
@@ -261,12 +270,13 @@ ul.nivo-search-results-list {
 
 /* Product Image */
 .nivo-search-product-image {
-    width: 50px;
-    height: 50px;
+    width: 48px;
+    height: 48px;
     object-fit: cover;
-    border-radius: 4px;
+    border-radius: 3px;
     flex-shrink: 0;
-    background: #ddd;
+    background: #f0f0f0;
+    display: block;
 }
 
 /* Product Info */
@@ -275,20 +285,18 @@ ul.nivo-search-results-list {
     min-width: 0;
 }
 
-.nivo-search-product-title-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 4px;
-}
 
 .nivo-search-product-title {
-    font-size: 15px;
-    line-height: 1.4;
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 1.35;
     color: inherit;
-    flex: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
     transition: color 0.2s ease;
+    flex-shrink: 1;
+    min-width: 0;
 }
 
 .nivo-search-product-title strong {
@@ -298,21 +306,15 @@ ul.nivo-search-results-list {
     margin-left: 4px;
 }
 
-.nivo-search-product-price {
-    color: inherit;
-    opacity: 0.8;
-    font-size: 15px;
-    font-weight: 600;
-    white-space: nowrap;
-}
-
 .nivo-search-product-description {
     display: block;
     color: inherit;
-    opacity: 0.7;
-    font-size: 13px;
-    line-height: 1.5;
-    margin-top: 4px;
+    opacity: 0.65;
+    font-size: 12px;
+    line-height: 1.4;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .nivo-search-product-categories,
@@ -461,5 +463,301 @@ ul.nivo-search-tags-list {
 
     .nivo-search-product-price {
         font-size: 0.8em;
+    }
+}
+
+/* =============================================================
+   Phase 2 — Display Layer (Compact)
+   ============================================================= */
+
+/* Product item: thumbnail | info column | actions column */
+.nivo-search-result-item {
+    display: flex;
+    align-items: flex-start;
+    padding: 8px 10px;
+    gap: 9px;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.nivo-search-result-item:last-child {
+    border-bottom: none;
+}
+
+.nivo-search-result-item a.nivo-search-product-link {
+    flex-shrink: 0;
+    display: block;
+    padding: 0;
+    line-height: 0;
+}
+
+/* Left info column: title → desc → badges stacked tightly */
+.nivo-search-product-info {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+/* Title link — flex row so SKU sits immediately after title text */
+.nivo-search-product-title-link {
+    text-decoration: none !important;
+    color: inherit;
+    min-width: 0;
+    display: flex;
+    align-items: baseline;
+    gap: 5px;
+    overflow: hidden;
+}
+.nivo-search-product-title-link:hover .nivo-search-product-title {
+    color: var(--nivo-search-primary-color);
+}
+
+/* SKU — inline immediately after title text, never truncates */
+.nivo-search-product-sku {
+    font-size: 12px;
+    color: #bbb;
+    white-space: nowrap;
+    flex-shrink: 0;
+    letter-spacing: 0.2px;
+    font-weight: 400;
+}
+
+/* Right-side group: price on top, qty + cart below — two stacked rows */
+.nivo-search-product-actions {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 4px;
+    flex-shrink: 0;
+    margin-left: auto;
+}
+
+/* Price inside actions group */
+.nivo-search-product-price {
+    font-size: 13px;
+    font-weight: 700;
+    white-space: nowrap;
+    color: inherit;
+    flex-shrink: 0;
+}
+
+.nivo-search-product-price .amount {
+    color: inherit;
+}
+
+/* ---- Stock Status Badge ---- */
+.nivo-stock-badge {
+    display: inline-block;
+    padding: 1px 5px;
+    border-radius: 2px;
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    line-height: 1.6;
+}
+
+.nivo-stock-instock {
+    background: #d4edda;
+    color: #155724;
+}
+
+.nivo-stock-outofstock {
+    background: #f8d7da;
+    color: #721c24;
+}
+
+.nivo-stock-onbackorder {
+    background: #fff3cd;
+    color: #856404;
+}
+
+/* ---- Category Badges ---- */
+.nivo-search-category-badges {
+    display: inline-flex;
+    flex-wrap: wrap;
+    gap: 4px;
+}
+
+.nivo-cat-badge {
+    display: inline-block;
+    padding: 1px 6px;
+    background: #f0f0f0;
+    color: #666 !important;
+    border-radius: 2px;
+    font-size: 12px;
+    text-decoration: none !important;
+    transition: background 0.15s;
+}
+
+.nivo-cat-badge:hover {
+    background: #e0e0e0;
+    color: #333 !important;
+}
+
+/* Chips row: stock · category · ratings on one line */
+.nivo-search-meta-chips {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 4px;
+}
+
+/* ---- Add to Cart ---- */
+.nivo-add-to-cart-wrapper {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    flex-shrink: 0;
+}
+
+/* Icon-only cart button */
+.nivo-add-to-cart-btn.nivo-atc-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    padding: 0;
+    background: var(--nivo-search-primary-color, #0073aa);
+    color: #fff !important;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    text-decoration: none !important;
+    transition: background 0.18s, transform 0.12s;
+    flex-shrink: 0;
+    line-height: 1;
+}
+
+.nivo-add-to-cart-btn.nivo-atc-icon svg {
+    display: block;
+    pointer-events: none;
+}
+
+.nivo-add-to-cart-btn.nivo-atc-icon:hover {
+    background: #005d8f;
+    transform: scale(1.08);
+}
+
+.nivo-add-to-cart-btn.nivo-atc-loading {
+    opacity: 0.7;
+    cursor: wait;
+    transform: none !important;
+}
+
+.nivo-add-to-cart-btn.nivo-atc-loading svg {
+    animation: nivo-spin 0.7s linear infinite;
+}
+
+@keyframes nivo-spin {
+    to { transform: rotate(360deg); }
+}
+
+.nivo-add-to-cart-btn.nivo-atc-added {
+    background: #4caf50 !important;
+    transform: none !important;
+}
+
+.nivo-add-to-cart-btn.nivo-atc-variable {
+    background: #888;
+}
+
+.nivo-add-to-cart-btn.nivo-atc-variable:hover {
+    background: #555;
+}
+
+.nivo-out-of-stock-label {
+    font-size: 10px;
+    color: #bbb;
+    flex-shrink: 0;
+}
+
+/* ---- Quantity Selector (compact) ---- */
+.nivo-qty-wrapper {
+    display: inline-flex;
+    align-items: center;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+    overflow: hidden;
+    height: 22px;
+}
+
+.nivo-qty-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 22px;
+    background: #f5f5f5;
+    border: none;
+    cursor: pointer;
+    font-size: 13px;
+    line-height: 1;
+    padding: 0;
+    color: #555;
+    transition: background 0.15s;
+    flex-shrink: 0;
+}
+
+.nivo-qty-btn:hover {
+    background: #e5e5e5;
+}
+
+.nivo-qty-input {
+    width: 28px;
+    height: 22px;
+    text-align: center;
+    border: none;
+    border-left: 1px solid #ddd;
+    border-right: 1px solid #ddd;
+    font-size: 11px;
+    padding: 0;
+    -moz-appearance: textfield;
+    background: #fff;
+}
+
+.nivo-qty-input::-webkit-inner-spin-button,
+.nivo-qty-input::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* ---- View All Results — sticky footer of the results panel ---- */
+.nivo-search-view-all {
+    flex-shrink: 0;
+    border-top: 1px solid #eee;
+    padding: 5px 12px;
+    text-align: center;
+    background: #fafafa;
+    line-height: 1.4;
+}
+
+.nivo-search-view-all-link {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--nivo-search-primary-color, #0073aa) !important;
+    text-decoration: none !important;
+    transition: color 0.2s;
+    display: block;
+    padding: 4px 8px;
+}
+
+.nivo-search-view-all-link:hover {
+    text-decoration: underline !important;
+}
+
+/* ---- Phase 2 responsive ---- */
+@media (max-width: 480px) {
+    .nivo-add-to-cart-btn {
+        padding: 4px 8px;
+        font-size: 11px;
+    }
+    .nivo-search-product-meta {
+        gap: 4px;
+    }
+    .nivo-qty-wrapper {
+        display: none; /* hide qty on very small screens */
     }
 }

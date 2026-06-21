@@ -174,53 +174,67 @@ class Admin_Settings {
             <div class="nivo-card">
                 <h2>
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
-                    <?php _e('Key Features', 'nivo-ajax-search-for-woocommerce'); ?>
+                    <?php _e( 'Key Features', 'nivo-ajax-search-for-woocommerce' ); ?>
                 </h2>
                 <div class="nivo-feature-grid">
                     <div class="nivo-feature-item">
                         <h3>
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M7 2v11h3v9l7-12h-4l4-8z"/></svg>
-                            <?php _e('High Performance', 'nivo-ajax-search-for-woocommerce'); ?>
+                            <?php _e( 'High Performance', 'nivo-ajax-search-for-woocommerce' ); ?>
                         </h3>
-                        <p><?php _e('Optimized single query approach with ~200ms response time', 'nivo-ajax-search-for-woocommerce'); ?></p>
+                        <p><?php _e( 'Transient-cached AJAX search with ~200ms response time. Cache auto-invalidates on product or preset changes.', 'nivo-ajax-search-for-woocommerce' ); ?></p>
                     </div>
                     <div class="nivo-feature-item">
                         <h3>
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 3c-4.97 0-9 4.03-9 9s4.03 9 9 9c.83 0 1.5-.67 1.5-1.5 0-.39-.15-.74-.39-1.01-.23-.26-.38-.61-.38-.99 0-.83.67-1.5 1.5-1.5H16c2.76 0 5-2.24 5-5 0-4.42-4.03-8-9-8zm-5.5 9c-.83 0-1.5-.67-1.5-1.5S5.67 9 6.5 9 8 9.67 8 10.5 7.33 12 6.5 12zm3-4C8.67 8 8 7.33 8 6.5S8.67 5 9.5 5s1.5.67 1.5 1.5S10.33 8 9.5 8zm5 0c-.83 0-1.5-.67-1.5-1.5S13.67 5 14.5 5s1.5.67 1.5 1.5S15.33 8 14.5 8zm3 4c-.83 0-1.5-.67-1.5-1.5S16.67 9 17.5 9s1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>
-                            <?php _e('Unlimited Presets', 'nivo-ajax-search-for-woocommerce'); ?>
+                            <?php _e( 'Unlimited Presets', 'nivo-ajax-search-for-woocommerce' ); ?>
                         </h3>
-                        <p><?php _e('Create multiple search bars with different designs and settings', 'nivo-ajax-search-for-woocommerce'); ?></p>
+                        <p><?php _e( 'Create multiple search bars with different scopes, layouts, and styles. Use anywhere via shortcode or block.', 'nivo-ajax-search-for-woocommerce' ); ?></p>
                     </div>
                     <div class="nivo-feature-item">
                         <h3>
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
-                            <?php _e('Smart Search', 'nivo-ajax-search-for-woocommerce'); ?>
+                            <?php _e( 'Smart Search', 'nivo-ajax-search-for-woocommerce' ); ?>
                         </h3>
-                        <p><?php _e('Search in title, SKU, description, categories, and tags', 'nivo-ajax-search-for-woocommerce'); ?></p>
+                        <p><?php _e( 'Search across product title, SKU, description, excerpt, categories, and tags — all configurable per preset.', 'nivo-ajax-search-for-woocommerce' ); ?></p>
+                    </div>
+                    <div class="nivo-feature-item">
+                        <h3>
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+                            <?php _e( 'Add to Cart', 'nivo-ajax-search-for-woocommerce' ); ?>
+                        </h3>
+                        <p><?php _e( 'Customers can add products directly from search results with AJAX — including a quantity selector and instant mini-cart update.', 'nivo-ajax-search-for-woocommerce' ); ?></p>
+                    </div>
+                    <div class="nivo-feature-item">
+                        <h3>
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 6h16v2H4zm0 5h16v2H4zm0 5h16v2H4z"/></svg>
+                            <?php _e( 'Rich Results', 'nivo-ajax-search-for-woocommerce' ); ?>
+                        </h3>
+                        <p><?php _e( 'Each result shows thumbnail, title, SKU, short description, current price, stock status, and category badges.', 'nivo-ajax-search-for-woocommerce' ); ?></p>
                     </div>
                     <div class="nivo-feature-item">
                         <h3>
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 1.01L7 1c-1.1 0-2 .9-2 2v18c0 1.1.9 2 2 2h10c1.1 0 2-.9 2-2V3c0-1.1-.9-1.99-2-1.99zM17 19H7V5h10v14z"/></svg>
-                            <?php _e('Fully Responsive', 'nivo-ajax-search-for-woocommerce'); ?>
+                            <?php _e( 'Fully Responsive', 'nivo-ajax-search-for-woocommerce' ); ?>
                         </h3>
-                        <p><?php _e('Perfect display on all devices with mobile-optimized design', 'nivo-ajax-search-for-woocommerce'); ?></p>
+                        <p><?php _e( 'Compact result layout adapts to all screen sizes with mobile-optimised design.', 'nivo-ajax-search-for-woocommerce' ); ?></p>
                     </div>
                 </div>
             </div>
-            
+
             <div class="nivo-card">
                 <h2>
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 5c-1.11-.35-2.33-.5-3.5-.5-1.95 0-4.05.4-5.5 1.5-1.45-1.1-3.55-1.5-5.5-1.5S2.45 4.9 1 6v14.65c0 .25.25.5.5.5.1 0 .15-.05.25-.05C3.1 20.45 5.05 20 6.5 20c1.95 0 4.05.4 5.5 1.5 1.35-.85 3.8-1.5 5.5-1.5 1.65 0 3.35.3 4.75 1.05.1.05.15.05.25.05.25 0 .5-.25.5-.5V6c-.6-.45-1.25-.75-2-1zm0 13.5c-1.1-.35-2.3-.5-3.5-.5-1.7 0-4.15.65-5.5 1.5V8c1.35-.85 3.8-1.5 5.5-1.5 1.2 0 2.4.15 3.5.5v11.5z"/></svg>
-                    <?php _e('Documentation', 'nivo-ajax-search-for-woocommerce'); ?>
+                    <?php _e( 'Preset Settings Reference', 'nivo-ajax-search-for-woocommerce' ); ?>
                 </h2>
-                <p><?php _e('Each preset can be configured with:', 'nivo-ajax-search-for-woocommerce'); ?></p>
-                <ul style="font-size: 15px; line-height: 1.8; color: #50575e;">
-                    <li><strong><?php _e('General Settings:', 'nivo-ajax-search-for-woocommerce'); ?></strong> <?php _e('Results limit, minimum characters, placeholder text', 'nivo-ajax-search-for-woocommerce'); ?></li>
-                    <li><strong><?php _e('Search Scope:', 'nivo-ajax-search-for-woocommerce'); ?></strong> <?php _e('Title, SKU, description, short description, out of stock control', 'nivo-ajax-search-for-woocommerce'); ?></li>
-                    <li><strong><?php _e('Others Content:', 'nivo-ajax-search-for-woocommerce'); ?></strong> <?php _e('Show categories and tags in results', 'nivo-ajax-search-for-woocommerce'); ?></li>
-                    <li><strong><?php _e('Display Options:', 'nivo-ajax-search-for-woocommerce'); ?></strong> <?php _e('Product images, prices, SKU, descriptions', 'nivo-ajax-search-for-woocommerce'); ?></li>
-                    <li><strong><?php _e('Search Bar Styling:', 'nivo-ajax-search-for-woocommerce'); ?></strong> <?php _e('Width, height, colors, borders, radius', 'nivo-ajax-search-for-woocommerce'); ?></li>
-                    <li><strong><?php _e('Results Styling:', 'nivo-ajax-search-for-woocommerce'); ?></strong> <?php _e('Borders, background, padding, layout', 'nivo-ajax-search-for-woocommerce'); ?></li>
+                <p style="color:#50575e; margin-bottom:12px;"><?php _e( 'Each preset supports the following option groups:', 'nivo-ajax-search-for-woocommerce' ); ?></p>
+                <ul style="font-size: 14px; line-height: 1.9; color: #50575e;">
+                    <li><strong><?php _e( 'General:', 'nivo-ajax-search-for-woocommerce' ); ?></strong> <?php _e( 'Results limit, minimum characters, search delay (debounce), placeholder text', 'nivo-ajax-search-for-woocommerce' ); ?></li>
+                    <li><strong><?php _e( 'Search Scope:', 'nivo-ajax-search-for-woocommerce' ); ?></strong> <?php _e( 'Title, SKU, description, excerpt — toggle each independently. Hide out-of-stock products.', 'nivo-ajax-search-for-woocommerce' ); ?></li>
+                    <li><strong><?php _e( 'Other Content:', 'nivo-ajax-search-for-woocommerce' ); ?></strong> <?php _e( 'Include product categories and/or tags as separate result sections', 'nivo-ajax-search-for-woocommerce' ); ?></li>
+                    <li><strong><?php _e( 'Display Options:', 'nivo-ajax-search-for-woocommerce' ); ?></strong> <?php _e( 'Thumbnail, price, SKU, short description, stock status badge, category badges, add-to-cart button, quantity selector, "View all results" link', 'nivo-ajax-search-for-woocommerce' ); ?></li>
+                    <li><strong><?php _e( 'Search Bar Style:', 'nivo-ajax-search-for-woocommerce' ); ?></strong> <?php _e( 'Width, height, background colour, text colour, border colour and radius', 'nivo-ajax-search-for-woocommerce' ); ?></li>
+                    <li><strong><?php _e( 'Results Panel Style:', 'nivo-ajax-search-for-woocommerce' ); ?></strong> <?php _e( 'Background, text colour, border colour — all set per preset', 'nivo-ajax-search-for-woocommerce' ); ?></li>
                 </ul>
             </div>
 

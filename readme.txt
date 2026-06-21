@@ -5,11 +5,11 @@ Tags: woocommerce search, ajax search, product search, live search, woocommerce
 Requires at least: 5.6
 Tested up to: 6.8
 Requires PHP: 7.4
-Stable tag: 1.2.0
+Stable tag: 2.0.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-Instant Ajax product search for WooCommerce. Real-time results, fuzzy search, add-to-cart, SKU lookup, and unlimited search presets — free.
+Instant Ajax product search for WooCommerce. Real-time results, add-to-cart from the dropdown, rich product cards, SKU lookup, and unlimited presets — free.
 
 == Description ==
 
@@ -21,71 +21,67 @@ Give your customers a smooth **live product search** experience that keeps them 
 
 = Why Store Owners Choose NivoSearch =
 
-**⚡ Instant Ajax Search Results** — Products appear in a dropdown as customers type. Real-time **WooCommerce product search** with no page reload means faster discovery and fewer abandoned sessions.
+**⚡ Instant Ajax Search Results** — Products appear in a scrollable dropdown as customers type. Real-time results with no page reload means faster discovery and fewer abandoned sessions.
 
-**🔁 Fuzzy Search & Typo Tolerance** — Customers who misspell product names still find what they need. NivoSearch automatically corrects common typos — so "iPhon" still finds "iPhone."
+**🛒 Add to Cart from Search Results** — Shoppers can add simple products directly from the search dropdown — complete with an optional quantity selector and instant mini-cart update. Variable products get a quick-link to their product page. Fewer clicks, more conversions.
 
-**🛒 Add to Cart from Search Results** — Shoppers can add products directly from the search dropdown without visiting a product page. Fewer clicks, more conversions.
+**📋 Rich Product Cards** — Each result shows the product thumbnail, title, inline SKU, current price, short description, stock status badge, and category badges — all toggled per preset.
 
-**🔍 SKU Search** — B2B stores and repeat customers find products instantly by SKU. Supports exact and partial SKU matching.
+**🔍 SKU Search** — B2B stores and repeat customers find products instantly by SKU. Supports exact and partial SKU matching alongside title and description search.
 
-**📂 Category & Tag Search** — Matching product categories and tags appear in dedicated sections, helping customers browse and discover related products.
+**📂 Category & Tag Search** — Matching product categories and tags appear in dedicated sections above product results, helping customers browse and discover related products.
 
-**⭐ Rich Product Cards** — Each result shows the product image, title, price, SKU, short description, star ratings, and stock status — all configurable per preset.
+**🗂️ Unlimited Search Presets** — Create separate search bars for your header, footer, sidebar, or any page. Each preset has its own search scope, display settings, and styling — deployed via shortcode or Gutenberg block.
 
-**🗂️ Unlimited Search Presets** — Create separate search bars for your header, footer, sidebar, or any page. Each preset has its own search scope, display settings, and styling.
+**⚡ Cached for Speed** — Search results are cached with auto-invalidation on product edits, so repeat queries are served in milliseconds without hitting the database.
 
-**🌍 Multilingual & Global Ready** — Translation-ready with a .pot file included. Compatible with WPML, Polylang, and TranslatePress for multilingual and multi-regional WooCommerce stores.
+**🌍 Multilingual & Global Ready** — Translation-ready with a .pot file included. Compatible with WPML, Polylang, and TranslatePress.
 
-**🛠️ Developer-Friendly** — 14+ PHP hooks and filters, 8 JavaScript events, PSR-4 autoloading, nonce-secured AJAX endpoints. Clean architecture built to extend.
+**🛠️ Developer-Friendly** — 14+ PHP hooks and filters, 8 JavaScript events, PSR-4 autoloading, nonce-secured AJAX endpoints. Clean, well-documented architecture built to extend.
 
 = WooCommerce Ajax Search Features =
 
 **Search Capabilities**
 
 * Real-time Ajax product search on every keystroke
-* Search by product title, description, short description, and SKU
-* Fuzzy search with automatic typo correction
-* Synonym expansion — "phone" finds "mobile," "smartphone," and "cell phone"
-* GTIN, UPC, EAN, and ISBN product identifier search
-* Product attribute taxonomy search
+* Search by product title, short description, description, and SKU
 * Category and tag search with dedicated result sections
-* Exclude out-of-stock products from search results
-* Configurable minimum character threshold (1–5 characters)
-* Configurable results limit per preset (1–50 products)
-* Smart debounce — prevents unnecessary server requests
-* Configurable search delay per preset
+* Exclude out-of-stock products from results
+* Configurable minimum character threshold
+* Configurable results limit per preset
+* Configurable search delay (debounce) per preset
 
 **Display Options (per preset)**
 
-* Product thumbnail image with lazy loading
+* Product thumbnail with lazy loading
 * Product title with keyword highlighting
-* Price — regular price, sale price, and variable product price ranges
-* SKU display
+* Inline SKU display (right of title)
+* Current selling price
 * Short description excerpt
-* Star ratings and review count
 * Stock status badge — In Stock, Out of Stock, On Backorder
-* Category badges on individual product results
-* Add-to-cart button with optional quantity selector
-* "View All Results" link to full WooCommerce search page
+* Category badges on each result
+* Add-to-cart button (AJAX) with optional quantity selector
+* Instant mini-cart fragment update after add-to-cart
+* "View All Results" sticky footer link
 * Separate sections for matching categories and tags
 
 **Unlimited Search Presets**
 
-* Unlimited search presets stored as a native WordPress custom post type
+* Unlimited presets stored as a native WordPress custom post type
 * Independent search scope, display settings, and styling per preset
 * Shortcode: `[nivo_search id="123"]`
 * Gutenberg block with visual preset selector
 * Color picker for search bar and results panel
-* Custom CSS class support via shortcode attributes (`container_class`, `input_class`, `results_class`)
+* Custom CSS class support via shortcode attributes
 
 **Performance & Reliability**
 
-* Single optimized WP_Query per search request
+* Transient-cached Ajax responses (5-minute TTL, auto-invalidated)
+* Single optimized WP_Query per request
 * Target response time under 200ms
-* Database migration system for safe, zero-downtime updates
-* Preset data preserved on plugin deletion by default
-* WooCommerce HPOS (High-Performance Order Storage) compatible
+* Database migration system for safe zero-downtime updates
+* Preset data preserved on plugin deletion by default (opt-in cleanup)
+* WooCommerce HPOS compatible
 
 **Developer Features**
 
@@ -97,18 +93,16 @@ Give your customers a smooth **live product search** experience that keeps them 
 * WPML and Polylang compatible
 * Inline PHPDoc documentation throughout
 
-= Coming in Pro =
+= Coming Soon =
 
-A Pro extension is in development with advanced capabilities for high-volume WooCommerce stores:
-
-* **Custom index engine** — sub-100ms search on catalogs with 100,000+ products
-* **Advanced Custom Fields (ACF)** — search any ACF field value
-* **REST API endpoints** — headless WooCommerce and mobile app search
-* **Template override system** — full control over result item HTML
-* **Grid and compact layouts** — alternative result display modes
-* **Search analytics dashboard** — track trending queries and zero-result searches
-* **Role-based display** — show different search bars to different user roles
-* **Page-based conditional display** — enable or disable by post type or URL
+* **Fuzzy search & typo tolerance** — finds "iPhon" → "iPhone"
+* **Synonym expansion** — "phone" finds "mobile," "smartphone"
+* **GTIN / UPC / EAN / ISBN** search support
+* **Product attribute search**
+* **Custom index engine (Pro)** — sub-100ms on 100,000+ product catalogs
+* **REST API endpoints (Pro)** — headless WooCommerce search
+* **Template overrides (Pro)** — full HTML control over result items
+* **Search analytics dashboard (Pro)**
 
 = Compatibility =
 
@@ -186,15 +180,15 @@ Yes — unlimited presets is a core feature. Create as many as you need, each wi
 
 = Does it support fuzzy search and typo correction? =
 
-Yes. NivoSearch includes fuzzy search with automatic typo correction. A customer searching for "iPhon" or "bleutooth headpones" will still get relevant results. The typo correction map is filterable via `nivo_search_typo_corrections` for adding custom terms.
+Fuzzy search and typo correction are on the roadmap and coming in a future release. Currently NivoSearch performs exact and partial keyword matching across title, description, excerpt, and SKU.
 
 = Can customers add products to the cart directly from search results? =
 
-Yes. NivoSearch includes an add-to-cart button inside the search results dropdown. Customers can add simple products without leaving the page. An optional quantity selector is also available per preset.
+Yes. NivoSearch includes an AJAX add-to-cart button inside the search results dropdown. Simple products can be added without leaving the page, with an optional quantity selector. Variable products get a chevron link directly to their product page to choose options. The WooCommerce mini-cart updates instantly after adding.
 
 = Does it search by SKU? =
 
-Yes. NivoSearch supports both exact and partial SKU matching. It also supports GTIN, UPC, EAN, and ISBN product identifier search for stores that use standard product barcodes.
+Yes. NivoSearch supports both exact and partial SKU matching. GTIN, UPC, EAN, and ISBN search are on the roadmap for a future release.
 
 = Will it work with my theme? =
 
@@ -230,6 +224,27 @@ Yes. NivoSearch provides 14+ PHP filters and actions, 8 JavaScript events, nonce
 
 == Changelog ==
 
+= 2.0.0 =
+* NEW: Add-to-cart button directly in search results — AJAX-powered with instant WooCommerce mini-cart fragment update
+* NEW: Quantity selector in search results (configurable per preset)
+* NEW: Variable product support — chevron icon links to product page to select options
+* NEW: Stock status badge — In Stock / Out of Stock / On Backorder per result
+* NEW: Category badges on each product result
+* NEW: Short description shown immediately below product title in results
+* NEW: Current selling price shown per result (no crossed-out regular/sale HTML clutter)
+* NEW: SKU displayed inline next to product title
+* NEW: Transient caching for Ajax search responses (5-min TTL, auto-invalidated on product/preset edits)
+* NEW: "View All Results" sticky footer link always visible at the bottom of the results panel (scrolls above it)
+* NEW: Admin settings page updated — accurate feature list, preset settings reference, new Key Features section
+* IMPROVED: Compact two-column result layout — left column (title → description → badges), right column (price / qty + cart)
+* IMPROVED: Search results panel is now a scrollable flex container — footer link never scrolls away
+* IMPROVED: SKU, short description, and category badge font size increased to 12px for legibility
+* REMOVED: Star ratings removed from results and settings (cleaner UI)
+* FIX: Double add-to-cart bug when quantity selector was used
+* FIX: Mini-cart not updating after AJAX add-to-cart (now uses WooCommerce jQuery fragment events)
+* FIX: Settings checkboxes (category badge, add-to-cart, qty selector) not taking effect — cache invalidation and missing default keys resolved
+* FIX: Price/qty/cart wrapping to separate lines — now grouped as a single right-side flex unit
+
 = 1.2.0 =
 * FIX: Activation race condition — default preset now reliably created on fresh install
 * FIX: Deactivation hook now correctly flushes rewrite rules
@@ -258,6 +273,9 @@ Yes. NivoSearch provides 14+ PHP filters and actions, 8 JavaScript events, nonce
 * Initial release
 
 == Upgrade Notice ==
+
+= 2.0.0 =
+Major update — adds add-to-cart, qty selector, stock badges, category badges, short descriptions, caching, and a redesigned result layout. Existing presets are automatically migrated. No manual action required.
 
 = 1.2.0 =
 Stability and accessibility update. Existing presets are automatically migrated. No manual action required.

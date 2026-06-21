@@ -118,10 +118,11 @@ final class Nivo_Ajax_Search {
 		add_action( 'wp_ajax_nopriv_nivo_search', array( $this, 'handle_search' ) );
 		add_action( 'wc_ajax_nivo_search',        array( $this, 'handle_search' ) );
 
-		// Invalidate search result cache whenever products change.
+		// Invalidate search result cache whenever products or presets change.
 		add_action( 'save_post_product',                     array( __CLASS__, 'invalidate_search_cache' ) );
 		add_action( 'deleted_post',                          array( __CLASS__, 'invalidate_search_cache' ) );
 		add_action( 'woocommerce_product_set_stock_status',  array( __CLASS__, 'invalidate_search_cache' ) );
+		add_action( 'save_post_nivo_search_preset',          array( __CLASS__, 'invalidate_search_cache' ) );
 
 		// Allow other plugins to hook into our initialization.
 		do_action( 'nivo_search_plugin_loaded', $this );
@@ -205,8 +206,12 @@ final class Nivo_Ajax_Search {
 			$query_settings    = get_post_meta( $preset_id, '_nivo_search_query', true ) ?: [];
 			$display_settings  = get_post_meta( $preset_id, '_nivo_search_display', true ) ?: [];
 			$style_settings    = get_post_meta( $preset_id, '_nivo_search_style', true ) ?: [];
-			
+
 			$preset_settings = array_merge( $generale_settings, $query_settings, $display_settings, $style_settings );
+
+			// Fill any keys missing from the DB (e.g. keys added in a new release
+			// before migration ran, or presets saved before a new toggle was added).
+			$preset_settings = wp_parse_args( $preset_settings, Helper::get_default_settings() );
 		}
 
 		// Check if AJAX search is enabled
@@ -305,15 +310,55 @@ final class Nivo_Ajax_Search {
 	 * @return array Formatted result
 	 */
 	private function format_search_result( $product, $query ) {
-		// Always return all data, let frontend handle display
+		// Resolve variable products to their cheapest child for add-to-cart purposes.
+		$purchasable_id = $product->get_id();
+		$product_type   = $product->get_type();
+
+		// Categories (first 2, to keep payload small).
+		$categories = array();
+		$cat_terms  = get_the_terms( $product->get_id(), 'product_cat' );
+		if ( $cat_terms && ! is_wp_error( $cat_terms ) ) {
+			foreach ( array_slice( $cat_terms, 0, 2 ) as $term ) {
+				$categories[] = array(
+					'name' => $term->name,
+					'url'  => get_term_link( $term ),
+				);
+			}
+		}
+
+		// Stock.
+		$stock_status   = $product->get_stock_status();   // 'instock' | 'outofstock' | 'onbackorder'
+		$stock_quantity = $product->get_stock_quantity();  // int|null
+		$is_in_stock    = $product->is_in_stock();
+
+
+		// Add-to-cart data (only for simple/external; variable handled on product page).
+		$is_purchasable   = $product->is_purchasable() && $is_in_stock;
+		$add_to_cart_url  = $product->add_to_cart_url();
+		$add_to_cart_text = $product->add_to_cart_text();
+
 		$result = array(
+			// Core
 			'id'                => $product->get_id(),
 			'title'             => $product->get_name(),
 			'url'               => $product->get_permalink(),
 			'image'             => wp_get_attachment_image_url( $product->get_image_id(), 'thumbnail' ),
 			'price'             => $product->get_price_html(),
+			'current_price'     => wc_price( (float) $product->get_price() ),
 			'sku'               => $product->get_sku(),
-			'short_description' => wp_trim_words( $product->get_short_description(), 15 ),
+			'short_description' => wp_trim_words( wp_strip_all_tags( $product->get_short_description() ), 15 ),
+			'product_type'      => $product_type,
+			// Stock
+			'stock_status'      => $stock_status,
+			'stock_quantity'    => $stock_quantity,
+			'is_in_stock'       => $is_in_stock,
+			// Categories
+			'categories'        => $categories,
+			// Add-to-cart
+			'is_purchasable'    => $is_purchasable,
+			'add_to_cart_url'   => esc_url( $add_to_cart_url ),
+			'add_to_cart_text'  => esc_html( $add_to_cart_text ),
+			'add_to_cart_nonce' => wp_create_nonce( 'add-to-cart' ),
 		);
 
 		return $result;

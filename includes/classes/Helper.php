@@ -131,10 +131,19 @@ class Helper {
             $css .= $selector . ' .nivo-search-results{' . implode( ';', $results_styles ) . '}';
         }
 
-        // Results text color (applied to title + description separately for specificity).
+        // Results text color — cascade from the panel root so ALL text (title, price,
+        // description, SKU, section headings) inherits it. The specific selectors below
+        // override any inline color set by WooCommerce price HTML.
         if ( isset( $settings['results_text_color'] ) ) {
-            $css .= $selector . ' .nivo-search-results .nivo-search-product-title{color:' . esc_attr( $settings['results_text_color'] ) . '}';
-            $css .= $selector . ' .nivo-search-results .nivo-search-product-description{color:' . esc_attr( $settings['results_text_color'] ) . '}';
+            $color = esc_attr( $settings['results_text_color'] );
+            // Cascade to every element inside the results panel.
+            $css .= $selector . ' .nivo-search-results{color:' . $color . '}';
+            // Explicit overrides for elements that may carry their own color rule.
+            $css .= $selector . ' .nivo-search-results .nivo-search-product-title{color:' . $color . '}';
+            $css .= $selector . ' .nivo-search-results .nivo-search-product-description{color:' . $color . '}';
+            $css .= $selector . ' .nivo-search-results .nivo-search-product-price{color:' . $color . '}';
+            $css .= $selector . ' .nivo-search-results .nivo-search-product-sku{color:' . $color . '}';
+            $css .= $selector . ' .nivo-search-results .nivo-search-section-title{color:' . $color . '}';
         }
         
         return $css;
@@ -161,9 +170,6 @@ class Helper {
             'search_product_categories' => 1,
             'search_product_tags'       => 0,
             'exclude_out_of_stock'      => 0,
-            'search_in_gtin'            => 0,
-            'search_in_attributes'      => 0,
-            'enable_synonyms'           => 0,
             // Display
             'show_images'               => 1,
             'show_price'                => 1,

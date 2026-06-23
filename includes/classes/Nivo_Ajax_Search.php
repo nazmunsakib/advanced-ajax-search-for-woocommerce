@@ -53,6 +53,14 @@ final class Nivo_Ajax_Search {
 	public $search_algorithm;
 
 	/**
+	 * Product index manager
+	 *
+	 * @since 2.1.0
+	 * @var Product_Indexer
+	 */
+	public $product_indexer;
+
+	/**
 	 * Admin settings handler
 	 *
 	 * @since 1.0.0
@@ -163,9 +171,20 @@ final class Nivo_Ajax_Search {
 		$this->enqueue          = new Enqueue();
 		$this->search_algorithm = new Search_Algorithm();
 
+		// Boot the product index manager (hooks into save_post_product etc.).
+		$this->product_indexer = new Product_Indexer();
+		$this->product_indexer->init();
+
 		// Initialize admin components
 		if ( is_admin() ) {
-			$this->admin_settings = new Admin_Settings();
+			$this->admin_settings       = new Admin_Settings();
+			$this->search_optimization  = new Search_Optimization();
+		}
+
+		// Search results page + seamless theme integration (front-end only).
+		if ( ! is_admin() ) {
+			new Search_Results_Page();
+			new Theme_Integration();
 		}
 
 		// Initialize Gutenberg block
@@ -232,11 +251,11 @@ final class Nivo_Ajax_Search {
 		$search_args = apply_filters(
 			'nivo_search_args',
 			array(
-				'limit'                => $limit,
+				'limit'                     => $limit,
 				// phpcs:ignore WordPressVIPMinimum.Performance.WPQueryParams.PostNotIn_exclude
-				'exclude'              => $this->get_excluded_products(),
-				'search_fields'        => $this->get_search_fields( $preset_settings ),
-				'exclude_out_of_stock' => $exclude_out_of_stock,
+				'exclude'                   => $this->get_excluded_products(),
+				'search_fields'             => $this->get_search_fields( $preset_settings ),
+				'exclude_out_of_stock'      => $exclude_out_of_stock,
 				'search_product_categories' => ! empty( $preset_settings['search_product_categories'] ) ? 1 : 0,
 				'search_product_tags'       => ! empty( $preset_settings['search_product_tags'] ) ? 1 : 0,
 			),
@@ -274,22 +293,72 @@ final class Nivo_Ajax_Search {
 			}
 		}
 		
-		// Add products
-		$products = isset( $search_results['products'] ) ? $search_results['products'] : $search_results;
+		// Add products — batch-load to avoid N+1 queries (Phase 4.1).
+		$raw_products        = isset( $search_results['products'] ) ? $search_results['products'] : $search_results;
 		$results['products'] = array();
-		foreach ( $products as $post ) {
-			$product = wc_get_product( $post );
-			if ( ! $product ) {
-				continue;
+
+		if ( ! empty( $raw_products ) ) {
+			// Collect ordered post IDs preserving relevance sort from Search_Algorithm.
+			$ordered_ids = array_map(
+				static function ( $post ) {
+					return is_object( $post ) ? (int) $post->ID : (int) $post;
+				},
+				$raw_products
+			);
+
+			// Single batch query — one DB round-trip for all products.
+			$wc_products = wc_get_products(
+				array(
+					'include'  => $ordered_ids,
+					'limit'    => count( $ordered_ids ),
+					'status'   => 'publish',
+					'orderby'  => 'include', // preserve relevance order
+					'return'   => 'objects',
+				)
+			);
+
+			// Index by ID for O(1) lookup while re-applying original sort order.
+			$product_map = array();
+			foreach ( $wc_products as $wc_product ) {
+				$product_map[ $wc_product->get_id() ] = $wc_product;
 			}
-			$result = $this->format_search_result( $product, $query );
-			$results['products'][] = apply_filters( 'nivo_search_result_item', $result, $product, $query );
+
+			foreach ( $ordered_ids as $pid ) {
+				if ( ! isset( $product_map[ $pid ] ) ) {
+					continue;
+				}
+				$product           = $product_map[ $pid ];
+				$result            = $this->format_search_result( $product, $query );
+				$results['products'][] = apply_filters( 'nivo_search_result_item', $result, $product, $query );
+			}
 		}
 
 
 		// Send results directly for JavaScript compatibility
 		$response_data = apply_filters( 'nivo_search_results', $results, $query );
-		
+
+		// Pass "did you mean" suggestion to the frontend when present.
+		// Priority 1: fuzzy-search suggestion (fires when WP_Query returns 0 results).
+		if ( ! empty( $search_results['did_you_mean'] ) && get_option( 'nivo_search_show_did_you_mean', 1 ) ) {
+			$response_data['did_you_mean'] = sanitize_text_field( $search_results['did_you_mean'] );
+		}
+
+		// Priority 2: dictionary correction — show even when results were found,
+		// so users learn the corrected spelling (e.g. "tshirt" → "t-shirt").
+		if ( empty( $response_data['did_you_mean'] )
+			&& ! empty( $search_results['corrected_to'] )
+			&& get_option( 'nivo_search_show_did_you_mean', 1 ) ) {
+			$response_data['did_you_mean'] = sanitize_text_field( $search_results['corrected_to'] );
+		}
+
+		// Log analytics whenever the dictionary corrected the query.
+		if ( ! empty( $search_results['corrected_from'] ) && ! empty( $search_results['corrected_to'] ) ) {
+			Search_Analytics::log_correction(
+				$search_results['corrected_from'],
+				$search_results['corrected_to']
+			);
+		}
+
 		// Add settings to response if using a preset
 		if ( ! empty( $preset_settings ) ) {
 			$response_data['settings'] = $preset_settings;

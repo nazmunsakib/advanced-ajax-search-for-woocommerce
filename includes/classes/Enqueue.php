@@ -88,25 +88,52 @@ class Enqueue {
 	 * @return void
 	 */
 	public function enqueue_admin_assets( $hook ) {
-        if ( 'toplevel_page_nivo-search' === $hook ) {
+        $nivo_admin_pages = array(
+            'toplevel_page_nivo-search',
+            'nivo-search_page_nivo-search-optimization',
+        );
+        if ( in_array( $hook, $nivo_admin_pages, true ) ) {
             wp_enqueue_style(
                 'nivo-search-admin',
                 NIVO_SEARCH_PLUGIN_URL . 'assets/css/admin.css',
                 array(),
                 NIVO_SEARCH_VERSION
             );
+            // jQuery needed for optimization page AJAX (delete rule, clear analytics).
+            wp_enqueue_script( 'jquery' );
         }
 
         if ($hook === 'post.php' || $hook === 'post-new.php') {
             global $post_type;
             if ($post_type === 'nivo_search_preset') {
+                // Admin UI styles
+                wp_enqueue_style(
+                    'nivo-search-admin',
+                    NIVO_SEARCH_PLUGIN_URL . 'assets/css/admin.css',
+                    array(),
+                    NIVO_SEARCH_VERSION
+                );
+                // Frontend search styles — makes the live preview look exactly like the site
+                wp_enqueue_style(
+                    'nivo-search-frontend',
+                    NIVO_SEARCH_PLUGIN_URL . 'assets/css/nivo-search.css',
+                    array(),
+                    NIVO_SEARCH_VERSION
+                );
                 wp_enqueue_style('wp-color-picker');
                 wp_enqueue_script('wp-color-picker');
 
 				wp_enqueue_script(
 					'nivo-search-admin',
 					NIVO_SEARCH_PLUGIN_URL . 'assets/js/admin.js',
-					array('jquery', 'wp-color-picker'),
+					array( 'jquery', 'wp-color-picker' ),
+					NIVO_SEARCH_VERSION,
+					true
+				);
+				wp_enqueue_script(
+					'nivo-search-preview',
+					NIVO_SEARCH_PLUGIN_URL . 'assets/js/admin-preview.js',
+					array( 'jquery', 'nivo-search-admin' ),
 					NIVO_SEARCH_VERSION,
 					true
 				);
@@ -189,12 +216,19 @@ class Enqueue {
 					'on_backorder'  => esc_html__( 'On Backorder', 'nivo-ajax-search-for-woocommerce' ),
 					'add_to_cart'   => esc_html__( 'Add to cart', 'nivo-ajax-search-for-woocommerce' ),
 					'added_to_cart' => esc_html__( 'Added!', 'nivo-ajax-search-for-woocommerce' ),
+					/* translators: %s is the suggested corrected search query */
+					'did_you_mean'  => esc_html__( 'Did you mean: %s?', 'nivo-ajax-search-for-woocommerce' ),
 				),
 				'settings'    => array( // Default settings
 					'min_chars' => 2,
 					'limit'     => 10,
 					'delay'     => 300,
 				),
+				'ga_tracking' => 'yes' === get_option( 'nivo_search_ga_tracking', 'yes' ) ? 1 : 0,
+				// Current language code for WPML / Polylang — passed with every
+				// AJAX search request so the server-side language filter works
+				// correctly even on admin-ajax.php / wc-ajax endpoints.
+				'lang'        => $this->get_current_language(),
 			)
 		);
 
@@ -213,6 +247,35 @@ class Enqueue {
 		}
 
 		wp_localize_script( 'nivo-search', 'nivo_search', $localize_data );
+	}
+
+	/**
+	 * Detect the current language code for WPML or Polylang.
+	 *
+	 * Returns the active language slug (e.g. 'en', 'fr', 'de') when either
+	 * multilingual plugin is active, or an empty string on monolingual sites.
+	 * The value is passed to the frontend via wp_localize_script() and sent
+	 * back with every AJAX search request so the server-side language filter
+	 * can restrict results to the correct language even on AJAX endpoints.
+	 *
+	 * @since 2.3.0
+	 * @return string Language slug, or '' when no multilingual plugin is active.
+	 */
+	private function get_current_language() {
+		// WPML — constant set on every request.
+		if ( defined( 'ICL_LANGUAGE_CODE' ) && ICL_LANGUAGE_CODE ) {
+			return (string) ICL_LANGUAGE_CODE;
+		}
+
+		// Polylang — function available when the plugin is active.
+		if ( function_exists( 'pll_current_language' ) ) {
+			$lang = pll_current_language( 'slug' );
+			if ( $lang ) {
+				return (string) $lang;
+			}
+		}
+
+		return '';
 	}
 
 	/**

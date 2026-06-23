@@ -3,7 +3,7 @@
  * Plugin Name: NivoSearch – Ajax Search for WooCommerce
  * Plugin URI: https://nivosearch.com
  * Description: The fast, modern WooCommerce product search. Give your customers a beautiful live AJAX search bar with instant product results.
- * Version: 2.0.1
+ * Version: 2.3.0
  * Author: Nazmun Sakib
  * Author URI: https://nazmunsakib.com
  * License: GPL v2 or later
@@ -27,7 +27,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 // Define plugin constants.
-define( 'NIVO_SEARCH_VERSION', '2.0.1' );
+define( 'NIVO_SEARCH_VERSION', '2.3.0' );
 define( 'NIVO_SEARCH_PLUGIN_FILE', __FILE__ );
 define( 'NIVO_SEARCH_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 define( 'NIVO_SEARCH_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
@@ -111,6 +111,10 @@ function nivo_search_activate() {
 	// Register the CPT now so wp_insert_post() recognises it.
 	nivo_search_register_preset_cpt();
 
+	// Create required tables (idempotent — safe on re-activation).
+	NivoSearch\Product_Indexer::maybe_create_table();
+	NivoSearch\Search_Analytics::maybe_create_table();
+
 	// Stamp the DB version so the migrator knows this is a fresh install.
 	update_option( 'nivo_search_db_version', NIVO_SEARCH_VERSION );
 
@@ -190,18 +194,18 @@ function nivo_search_create_default_preset() {
 		'search_product_categories' => 1,
 		'search_product_tags'       => 0,
 		'exclude_out_of_stock'      => 0,
-		'search_in_gtin'            => 0,
-		'search_in_attributes'      => 0,
 	) );
 
 	update_post_meta( $preset_id, '_nivo_search_display', array(
-		'show_images'       => 1,
-		'show_price'        => 1,
-		'show_sku'          => 1,
-		'show_description'  => 1,
-		'show_stock_status' => 1,
+		'show_images'         => 1,
+		'show_price'          => 1,
+		'show_sku'            => 1,
+		'show_description'    => 1,
+		'show_stock_status'   => 1,
 		'show_category_badge' => 0,
-		'show_qty_selector' => 0,
+		'show_add_to_cart'    => 0,
+		'show_qty_selector'   => 0,
+		'show_view_all'       => 1,
 	) );
 
 	update_post_meta( $preset_id, '_nivo_search_style', array(

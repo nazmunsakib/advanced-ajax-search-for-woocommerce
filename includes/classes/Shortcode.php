@@ -189,24 +189,30 @@ class Shortcode {
     }
     
     /**
-     * Output preset styles in footer using wp_add_inline_style
+     * Output preset styles in footer.
+     *
+     * We echo a <style> block directly rather than using wp_add_inline_style()
+     * because wp_print_styles() already ran in <head> — styles enqueued during
+     * wp_footer will never be printed by WordPress.
+     *
+     * All CSS values come from sanitized DB fields (sanitize_hex_color / absint)
+     * so direct output is safe here.
      *
      * @since 1.0.0
      */
     public function output_preset_styles() {
-        if (empty(self::$used_presets_style)) {
+        if ( empty( self::$used_presets_style ) ) {
             return;
         }
-        
+
         $css = '';
-        foreach (self::$used_presets_style as $preset_id => $settings) {
-            $css .= $this->generate_preset_css($preset_id, $settings);
+        foreach ( self::$used_presets_style as $preset_id => $settings ) {
+            $css .= $this->generate_preset_css( $preset_id, $settings );
         }
-        
-        if ($css && wp_style_is('nivo-search', 'done')) {
-            wp_register_style('nivo-search-presets', false);
-            wp_enqueue_style('nivo-search-presets');
-            wp_add_inline_style('nivo-search-presets', $css);
+
+        if ( $css ) {
+            // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- CSS built from sanitized values only
+            echo '<style id="nivo-search-preset-styles">' . $css . '</style>' . "\n";
         }
     }
     

@@ -72,6 +72,17 @@ $options = array(
 	'nivo_search_db_version',
 	'nivo_search_delete_data_on_uninstall',
 	'nivo_search_cache_ver',
+	// Typo correction system (v2.2.0).
+	'nivo_search_custom_typo_rules',
+	'nivo_search_enable_fuzzy_search',
+	'nivo_search_enable_typo_tolerance',
+	'nivo_search_max_typo_distance',
+	'nivo_search_show_did_you_mean',
+	// Integration settings (v2.3.0).
+	'nivo_search_results_page',
+	'nivo_search_auto_replace',
+	'nivo_search_theme_preset_id',
+	'nivo_search_ga_tracking',
 );
 
 foreach ( $options as $option ) {
@@ -86,7 +97,8 @@ if ( $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $index_table ) ) ===
 	$wpdb->query( "DROP TABLE IF EXISTS `{$index_table}`" ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery
 }
 
-$log_table = $wpdb->prefix . 'nivo_search_log';
-if ( $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $log_table ) ) === $log_table ) { // phpcs:ignore WordPress.DB.DirectDatabaseQuery
-	$wpdb->query( "DROP TABLE IF EXISTS `{$log_table}`" ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery
+// Search correction analytics table (v2.2.0).
+$corrections_table = $wpdb->prefix . 'nivo_search_corrections_log';
+if ( $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $corrections_table ) ) === $corrections_table ) { // phpcs:ignore WordPress.DB.DirectDatabaseQuery
+	$wpdb->query( "DROP TABLE IF EXISTS `{$corrections_table}`" ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery
 }

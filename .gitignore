@@ -6,6 +6,11 @@ AUDIT_REPORT.md
 DEVELOPMENT_PHASES.md
 FEATURES.md
 RULES.md
+PRODUCT_PLAN.md
+COMPETITIVE_ANALYSIS.md
+
+# Dead code (analytics tab removed in v2.3.0, reserved for Pro)
+includes/admin/Search_Analytics_Page.php
 
 # Composer
 composer.lock

@@ -34,6 +34,9 @@ class Migrator {
 	 */
 	const MIGRATIONS = array(
 		'1.2.0' => 'migrate_to_1_2_0',
+		'2.1.0' => 'migrate_to_2_1_0',
+		'2.2.0' => 'migrate_to_2_2_0',
+		'2.3.0' => 'migrate_to_2_3_0',
 	);
 
 	/**
@@ -81,7 +84,6 @@ class Migrator {
 	 *
 	 * Keys added:
 	 * - _nivo_search_generale: `delay` (300ms debounce)
-	 * - _nivo_search_query: `search_in_gtin`, `search_in_attributes`, `enable_synonyms`
 	 * - _nivo_search_display: `show_ratings`, `show_stock_status`, `show_category_badge`, `show_qty_selector`
 	 *
 	 * @since 1.2.0
@@ -128,9 +130,6 @@ class Migrator {
 				'search_product_categories' => 1,
 				'search_product_tags'       => 0,
 				'exclude_out_of_stock'      => 0,
-				'search_in_gtin'            => 0,
-				'search_in_attributes'      => 0,
-				'enable_synonyms'           => 0,
 			);
 			$query = array_merge( $query_defaults, $query );
 			update_post_meta( $preset_id, '_nivo_search_query', $query );
@@ -147,8 +146,80 @@ class Migrator {
 				'show_description'    => 1,
 				'show_stock_status'   => 1,
 				'show_category_badge' => 0,
+				'show_add_to_cart'    => 0,
 				'show_qty_selector'   => 0,
+				'show_view_all'       => 1,
 			);
+			$display = array_merge( $display_defaults, $display );
+			update_post_meta( $preset_id, '_nivo_search_display', $display );
+		}
+	}
+
+	/**
+	 * Migration: 2.1.0
+	 *
+	 * Creates the wp_nivo_search_index table used by the fuzzy search engine.
+	 * Uses CREATE TABLE IF NOT EXISTS so it is safe to run on fresh installs
+	 * and on upgrades from any earlier version.
+	 *
+	 * @since 2.1.0
+	 * @return void
+	 */
+	private static function migrate_to_2_1_0() {
+		Product_Indexer::maybe_create_table();
+	}
+
+	/**
+	 * Migration: 2.2.0
+	 *
+	 * Creates the wp_nivo_search_corrections_log table used by Search_Analytics
+	 * to track which queries were auto-corrected and how often.
+	 *
+	 * @since 2.2.0
+	 * @return void
+	 */
+	private static function migrate_to_2_2_0() {
+		Search_Analytics::maybe_create_table();
+	}
+
+	/**
+	 * Migration: 2.3.0
+	 *
+	 * Backfills display meta keys introduced in v2.3.0 for all existing presets:
+	 * - show_add_to_cart (default: 0 — opt-in)
+	 * - show_view_all    (default: 1 — always show)
+	 *
+	 * Uses array_merge( $defaults, $existing ) so user-saved values are never
+	 * overwritten — only missing keys are added.
+	 *
+	 * @since 2.3.0
+	 * @return void
+	 */
+	private static function migrate_to_2_3_0() {
+		$presets = get_posts( array(
+			'post_type'      => 'nivo_search_preset',
+			'post_status'    => 'any',
+			'posts_per_page' => -1,
+			'fields'         => 'ids',
+		) );
+
+		if ( empty( $presets ) ) {
+			return;
+		}
+
+		foreach ( $presets as $preset_id ) {
+			$display = get_post_meta( $preset_id, '_nivo_search_display', true );
+			if ( ! is_array( $display ) ) {
+				$display = array();
+			}
+
+			$display_defaults = array(
+				'show_add_to_cart' => 0,
+				'show_view_all'    => 1,
+			);
+
+			// Only fill keys that are genuinely absent (array_merge puts defaults first,
+			// so existing user values in $display overwrite the defaults).
 			$display = array_merge( $display_defaults, $display );
 			update_post_meta( $preset_id, '_nivo_search_display', $display );
 		}

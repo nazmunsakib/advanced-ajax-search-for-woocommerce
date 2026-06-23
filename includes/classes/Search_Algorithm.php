@@ -274,9 +274,11 @@ class Search_Algorithm {
             $term_conditions[] = $wpdb->prepare( "{$wpdb->posts}.post_excerpt LIKE %s", $n . $escaped . $n );
         }
 
-        // SKU search.
+        // SKU search — parent product SKU.
         if ( in_array( 'sku', $search_fields, true ) ) {
             $term_conditions[] = $wpdb->prepare( 'sku_meta.meta_value LIKE %s', $n . $escaped . $n );
+            // Variation-level SKU: match returns the parent product.
+            $term_conditions[] = $wpdb->prepare( 'variation_sku_meta.meta_value LIKE %s', $n . $escaped . $n );
         }
 
         if ( ! empty( $term_conditions ) ) {
@@ -304,9 +306,13 @@ class Search_Algorithm {
         
         $search_fields = $args['search_fields'];
         
-        // Join postmeta for SKU search.
+        // Join postmeta for parent product SKU search.
         if ( in_array( 'sku', $search_fields, true ) ) {
             $join .= " LEFT JOIN {$wpdb->postmeta} AS sku_meta ON ({$wpdb->posts}.ID = sku_meta.post_id AND sku_meta.meta_key = '_sku') ";
+            // Join variation posts and their SKU meta so a variation SKU match
+            // surfaces the parent product in results (free-tier feature).
+            $join .= " LEFT JOIN {$wpdb->posts} AS variation_posts ON (variation_posts.post_parent = {$wpdb->posts}.ID AND variation_posts.post_type = 'product_variation' AND variation_posts.post_status = 'publish') ";
+            $join .= " LEFT JOIN {$wpdb->postmeta} AS variation_sku_meta ON (variation_posts.ID = variation_sku_meta.post_id AND variation_sku_meta.meta_key = '_sku') ";
         }
 
         return $join;
@@ -475,12 +481,17 @@ class Search_Algorithm {
 
         // Phase 4.2 — Bulk-fetch all SKUs in a single query instead of one
         // get_post_meta() call per product (N+1 fix).
-        $sku_map        = array();
-        $needs_sku_rank = in_array( 'sku', $args['search_fields'], true );
+        // Also fetches variation SKUs so that a search for e.g. "TSHIRT-RED-XL"
+        // boosts the parent product's relevance score correctly.
+        $sku_map          = array(); // parent product ID → parent SKU.
+        $variation_sku_map = array(); // parent product ID → lowest variation SKU (for scoring).
+        $needs_sku_rank   = in_array( 'sku', $args['search_fields'], true );
         if ( $needs_sku_rank && ! empty( $products ) ) {
             global $wpdb;
             $ids          = array_map( static fn( $p ) => (int) $p->ID, $products );
             $placeholders = implode( ',', array_fill( 0, count( $ids ), '%d' ) );
+
+            // Parent SKUs.
             // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.PreparedSQL.InterpolatedNotPrepared
             $rows = $wpdb->get_results(
                 $wpdb->prepare(
@@ -490,6 +501,30 @@ class Search_Algorithm {
             );
             foreach ( $rows as $row ) {
                 $sku_map[ (int) $row->post_id ] = strtolower( (string) $row->meta_value );
+            }
+
+            // Variation SKUs — one query: get all variation post IDs whose parent
+            // is one of our result product IDs, then fetch their _sku meta.
+            // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+            $var_rows = $wpdb->get_results(
+                $wpdb->prepare(
+                    "SELECT p.post_parent AS parent_id, pm.meta_value AS sku
+                     FROM {$wpdb->posts} p
+                     INNER JOIN {$wpdb->postmeta} pm ON pm.post_id = p.ID AND pm.meta_key = '_sku'
+                     WHERE p.post_type = 'product_variation'
+                       AND p.post_status = 'publish'
+                       AND p.post_parent IN ({$placeholders})
+                       AND pm.meta_value != ''", // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+                    $ids
+                )
+            );
+            // Store all variation SKUs per parent (we check all of them during scoring).
+            foreach ( $var_rows as $vrow ) {
+                $parent_id = (int) $vrow->parent_id;
+                if ( ! isset( $variation_sku_map[ $parent_id ] ) ) {
+                    $variation_sku_map[ $parent_id ] = array();
+                }
+                $variation_sku_map[ $parent_id ][] = strtolower( (string) $vrow->sku );
             }
         }
 
@@ -505,7 +540,7 @@ class Search_Algorithm {
                 $score += $w_title_contains;
             }
 
-            // SKU match — uses the pre-fetched map, no extra DB call.
+            // SKU match — parent product SKU.
             if ( $needs_sku_rank ) {
                 $sku = $sku_map[ $product->ID ] ?? '';
                 if ( $sku ) {
@@ -513,6 +548,20 @@ class Search_Algorithm {
                         $score += $w_sku_exact;
                     } elseif ( strpos( $sku, $query ) !== false ) {
                         $score += $w_sku_partial;
+                    }
+                }
+
+                // Variation SKU match — score as partial SKU hit on the parent.
+                // Exact variation SKU match gets full exact weight.
+                if ( isset( $variation_sku_map[ $product->ID ] ) ) {
+                    foreach ( $variation_sku_map[ $product->ID ] as $var_sku ) {
+                        if ( $var_sku === $query ) {
+                            $score += $w_sku_exact;
+                            break;
+                        } elseif ( strpos( $var_sku, $query ) !== false ) {
+                            $score += $w_sku_partial;
+                            break;
+                        }
                     }
                 }
             }

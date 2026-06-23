@@ -24,10 +24,18 @@ global $wpdb;
 // ------------------------------------------------------------------
 // Always: remove transients (cache data, safe to delete).
 // ------------------------------------------------------------------
-$wpdb->query( // phpcs:ignore WordPress.DB.DirectDatabaseQuery
-	"DELETE FROM {$wpdb->options}
-	 WHERE option_name LIKE '_transient_nivo_search_%'
-	    OR option_name LIKE '_transient_timeout_nivo_search_%'"
+// Bulk-delete all NivoSearch transients using prepare() + esc_like().
+// delete_transient() does not support prefix-based bulk deletion,
+// so a direct query is required here.
+$transient_prefix         = $wpdb->esc_like( '_transient_nivo_search_' ) . '%';
+$transient_timeout_prefix = $wpdb->esc_like( '_transient_timeout_nivo_search_' ) . '%';
+
+$wpdb->query( // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+	$wpdb->prepare(
+		"DELETE FROM {$wpdb->options} WHERE option_name LIKE %s OR option_name LIKE %s",
+		$transient_prefix,
+		$transient_timeout_prefix
+	)
 );
 
 // ------------------------------------------------------------------
@@ -49,16 +57,24 @@ $preset_ids = $wpdb->get_col(
 );
 
 if ( ! empty( $preset_ids ) ) {
-	$ids_placeholder = implode( ',', array_map( 'intval', $preset_ids ) );
+	// Build a %d placeholder string for each ID and pass the IDs as
+	// individual arguments — the correct prepare() pattern for IN().
+	$placeholders = implode( ',', array_fill( 0, count( $preset_ids ), '%d' ) );
 
 	// Delete postmeta first to avoid orphaned rows.
-	$wpdb->query( // phpcs:ignore WordPress.DB.DirectDatabaseQuery
-		"DELETE FROM {$wpdb->postmeta} WHERE post_id IN ({$ids_placeholder})"
+	$wpdb->query( // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+		$wpdb->prepare(
+			"DELETE FROM {$wpdb->postmeta} WHERE post_id IN ({$placeholders})", // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+			$preset_ids
+		)
 	);
 
 	// Delete the CPT posts.
-	$wpdb->query( // phpcs:ignore WordPress.DB.DirectDatabaseQuery
-		"DELETE FROM {$wpdb->posts} WHERE ID IN ({$ids_placeholder})"
+	$wpdb->query( // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+		$wpdb->prepare(
+			"DELETE FROM {$wpdb->posts} WHERE ID IN ({$placeholders})", // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+			$preset_ids
+		)
 	);
 }
 

@@ -235,16 +235,20 @@ class Fuzzy_Search {
 		}
 
 		// Filter out-of-stock products if requested.
-		if ( ! empty( $args['exclude_out_of_stock'] ) ) {
-			$ids = array_values(
-				array_filter(
-					$ids,
-					static function ( $id ) {
-						$product = wc_get_product( $id );
-						return $product && $product->is_in_stock();
-					}
+		// Use a single wc_get_products() call (batch) instead of one
+		// wc_get_product() per ID to avoid N+1 queries.
+		if ( ! empty( $args['exclude_out_of_stock'] ) && ! empty( $ids ) ) {
+			$in_stock_products = wc_get_products(
+				array(
+					'include'      => $ids,
+					'stock_status' => 'instock',
+					'limit'        => count( $ids ),
+					'return'       => 'ids',
 				)
 			);
+			// Preserve original relevance order — only keep IDs that are in stock.
+			$in_stock_set = array_flip( $in_stock_products );
+			$ids          = array_values( array_filter( $ids, static fn( $id ) => isset( $in_stock_set[ $id ] ) ) );
 		}
 
 		// Only published products.

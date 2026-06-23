@@ -82,12 +82,12 @@ class Search_Preset_CPT {
                        onclick="this.select();" style="width:100%;padding:8px;font-family:monospace;">
                 <button type="button" class="button button-secondary" style="width:100%;margin-top:10px;" 
                         onclick="navigator.clipboard.writeText('<?php echo esc_js($shortcode); ?>');this.innerText='Copied!';setTimeout(()=>this.innerText='Copy Shortcode',2000);">
-                    <?php _e('Copy Shortcode', 'nivo-ajax-search-for-woocommerce'); ?>
+                    <?php esc_html_e( 'Copy Shortcode', 'nivo-ajax-search-for-woocommerce' ); ?>
                 </button>
             </div>
             <?php
         } else {
-            echo '<p>' . __('Publish to generate shortcode', 'nivo-ajax-search-for-woocommerce') . '</p>';
+            echo '<p>' . esc_html__( 'Publish to generate shortcode', 'nivo-ajax-search-for-woocommerce' ) . '</p>';
         }
     }
 
@@ -585,7 +585,7 @@ class Search_Preset_CPT {
      * Save preset meta
      */
     public function save_preset_meta($post_id, $post) {
-        if (!isset($_POST['nivo_preset_nonce']) || !wp_verify_nonce($_POST['nivo_preset_nonce'], 'nivo_preset_meta')) {
+        if ( ! isset( $_POST['nivo_preset_nonce'] ) || ! wp_verify_nonce( wp_unslash( $_POST['nivo_preset_nonce'] ), 'nivo_preset_meta' ) ) { // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
             return;
         }
 

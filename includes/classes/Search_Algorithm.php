@@ -282,6 +282,11 @@ class Search_Algorithm {
         }
 
         if ( ! empty( $term_conditions ) ) {
+            // The posts_search filter is designed to replace the search clause.
+            // We replace it entirely so our custom field conditions (SKU, excerpt,
+            // variation SKU, meta joins) are the sole search logic. meta_query and
+            // tax_query conditions are added via separate filter hooks and are not
+            // passed through posts_search, so replacing here does not affect them.
             $where  = ' AND (' . implode( ' OR ', $term_conditions ) . ') ';
             $where .= " AND {$wpdb->posts}.post_type IN ('product') ";
             $where .= " AND {$wpdb->posts}.post_status = 'publish' ";

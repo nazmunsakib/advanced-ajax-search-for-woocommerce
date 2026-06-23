@@ -354,9 +354,11 @@
         const useWcAjax = window.nivo_search.wc_ajax_url;
         const ajaxUrl = useWcAjax ? window.nivo_search.wc_ajax_url : window.nivo_search.ajax_url;
 
+        // Nonce is always required — PHP verifies it on every request path.
+        formData.append('nonce', window.nivo_search.nonce);
         if (!useWcAjax) {
+            // action param only needed for admin-ajax.php; wc-ajax routes by URL.
             formData.append('action', 'nivo_search');
-            formData.append('nonce', window.nivo_search.nonce);
         }
 
         triggerEvent('beforeSearch', { query, results, container });
@@ -1197,9 +1199,10 @@
         const useWcAjax = window.nivo_search.wc_ajax_url;
         const ajaxUrl   = useWcAjax ? window.nivo_search.wc_ajax_url : window.nivo_search.ajax_url;
 
+        // Nonce is always required — PHP verifies it on every request path.
+        formData.append('nonce', window.nivo_search.nonce);
         if (!useWcAjax) {
             formData.append('action', 'nivo_search');
-            formData.append('nonce', window.nivo_search.nonce);
         }
 
         const xhr = new XMLHttpRequest();

@@ -210,10 +210,9 @@ final class Nivo_Ajax_Search {
 	 * @return void
 	 */
 	public function handle_search() {
-		// Verify nonce for security (skip for wc-ajax)
-		if ( ! isset( $_GET['wc-ajax'] ) ) {
-			check_ajax_referer( 'nivo_search_nonce', 'nonce' );
-		}
+		// Verify nonce on every request path — the JS sends it via both
+		// admin-ajax.php and the wc-ajax endpoint (set in wp_localize_script).
+		check_ajax_referer( 'nivo_search_nonce', 'nonce' );
 
 		$query = isset( $_POST['s'] ) ? sanitize_text_field( wp_unslash( $_POST['s'] ) ) : ( isset( $_POST['query'] ) ? sanitize_text_field( wp_unslash( $_POST['query'] ) ) : '' );
 		$preset_id = isset( $_POST['preset_id'] ) ? absint( $_POST['preset_id'] ) : 0;
@@ -359,9 +358,11 @@ final class Nivo_Ajax_Search {
 			);
 		}
 
-		// Add settings to response if using a preset
+		// Add sanitized display settings to response so the JS can adapt
+		// rendering (e.g. show/hide add-to-cart, qty selector, view-all).
+		// Only scalar, non-sensitive keys are forwarded — never raw meta arrays.
 		if ( ! empty( $preset_settings ) ) {
-			$response_data['settings'] = $preset_settings;
+			$response_data['settings'] = $this->sanitize_settings_for_response( $preset_settings );
 		}
 
 		// Store in transient cache (5 minutes TTL).
@@ -465,6 +466,44 @@ final class Nivo_Ajax_Search {
 		}
 
 		return $fields;
+	}
+
+	/**
+	 * Sanitize preset settings array for inclusion in the AJAX JSON response.
+	 *
+	 * Only scalar display/behaviour flags are forwarded to the client.
+	 * Style values (colors, widths) and internal query flags are excluded.
+	 * All string values are run through sanitize_text_field() to strip tags.
+	 *
+	 * @since 2.3.1
+	 * @param array $settings Raw merged preset settings.
+	 * @return array Safe, client-facing subset of settings.
+	 */
+	private function sanitize_settings_for_response( array $settings ) {
+		// Keys that the frontend JS actually reads from the settings object.
+		$allowed_keys = array(
+			'limit', 'min_chars', 'delay', 'placeholder',
+			'show_images', 'show_price', 'show_sku', 'show_description',
+			'show_stock_status', 'show_category_badge', 'show_add_to_cart',
+			'show_qty_selector', 'show_view_all', 'show_ratings',
+		);
+
+		$safe = array();
+		foreach ( $allowed_keys as $key ) {
+			if ( ! isset( $settings[ $key ] ) ) {
+				continue;
+			}
+			$val = $settings[ $key ];
+			if ( is_string( $val ) ) {
+				$safe[ $key ] = sanitize_text_field( $val );
+			} elseif ( is_int( $val ) || is_float( $val ) ) {
+				$safe[ $key ] = $val;
+			} else {
+				$safe[ $key ] = absint( $val );
+			}
+		}
+
+		return $safe;
 	}
 
 	/**

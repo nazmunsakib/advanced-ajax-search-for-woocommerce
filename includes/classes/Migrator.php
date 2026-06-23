@@ -34,9 +34,16 @@ class Migrator {
 	 */
 	const MIGRATIONS = array(
 		'1.2.0' => 'migrate_to_1_2_0',
-		'2.1.0' => 'migrate_to_2_1_0',
-		'2.2.0' => 'migrate_to_2_2_0',
-		'2.3.0' => 'migrate_to_2_3_0',
+		'1.3.0' => 'migrate_to_1_3_0',
+		'1.4.0' => 'migrate_to_1_4_0',
+		'1.5.0' => 'migrate_to_1_5_0',
+		// 2.0.2: consolidation migration for users updating from the live 2.0.1 release.
+		// The live 2.0.1 stored nivo_search_db_version = '2.0.1', which is greater than
+		// all the 1.x.x keys above — so those migrations are skipped for existing users.
+		// This entry ensures they still get all new DB tables and meta backfills.
+		// All methods called here are idempotent (IF NOT EXISTS / array_merge), so running
+		// them twice on a fresh install is completely safe.
+		'2.0.2' => 'migrate_to_2_0_2',
 	);
 
 	/**
@@ -156,46 +163,46 @@ class Migrator {
 	}
 
 	/**
-	 * Migration: 2.1.0
+	 * Migration: 1.3.0
 	 *
 	 * Creates the wp_nivo_search_index table used by the fuzzy search engine.
 	 * Uses CREATE TABLE IF NOT EXISTS so it is safe to run on fresh installs
 	 * and on upgrades from any earlier version.
 	 *
-	 * @since 2.1.0
+	 * @since 2.0.2
 	 * @return void
 	 */
-	private static function migrate_to_2_1_0() {
+	private static function migrate_to_1_3_0() {
 		Product_Indexer::maybe_create_table();
 	}
 
 	/**
-	 * Migration: 2.2.0
+	 * Migration: 1.4.0
 	 *
 	 * Creates the wp_nivo_search_corrections_log table used by Search_Analytics
 	 * to track which queries were auto-corrected and how often.
 	 *
-	 * @since 2.2.0
+	 * @since 2.0.2
 	 * @return void
 	 */
-	private static function migrate_to_2_2_0() {
+	private static function migrate_to_1_4_0() {
 		Search_Analytics::maybe_create_table();
 	}
 
 	/**
-	 * Migration: 2.3.0
+	 * Migration: 1.5.0
 	 *
-	 * Backfills display meta keys introduced in v2.3.0 for all existing presets:
+	 * Backfills display meta keys introduced in v1.5.0 for all existing presets:
 	 * - show_add_to_cart (default: 0 — opt-in)
 	 * - show_view_all    (default: 1 — always show)
 	 *
 	 * Uses array_merge( $defaults, $existing ) so user-saved values are never
 	 * overwritten — only missing keys are added.
 	 *
-	 * @since 2.3.0
+	 * @since 2.0.2
 	 * @return void
 	 */
-	private static function migrate_to_2_3_0() {
+	private static function migrate_to_1_5_0() {
 		$presets = get_posts( array(
 			'post_type'      => 'nivo_search_preset',
 			'post_status'    => 'any',
@@ -223,5 +230,26 @@ class Migrator {
 			$display = array_merge( $display_defaults, $display );
 			update_post_meta( $preset_id, '_nivo_search_display', $display );
 		}
+	}
+
+	/**
+	 * Migration: 2.0.2
+	 *
+	 * Consolidation migration for users updating from the live 2.0.1 release.
+	 * Their stored nivo_search_db_version is '2.0.1', which is greater than all
+	 * the 1.x.x migration keys, so those are skipped. This method runs all of
+	 * them explicitly to ensure every existing installation gets the full schema.
+	 *
+	 * All methods are idempotent (CREATE TABLE IF NOT EXISTS, array_merge), so
+	 * running them again on a fresh install causes no harm.
+	 *
+	 * @since 2.0.2
+	 * @return void
+	 */
+	private static function migrate_to_2_0_2() {
+		self::migrate_to_1_2_0();
+		self::migrate_to_1_3_0();
+		self::migrate_to_1_4_0();
+		self::migrate_to_1_5_0();
 	}
 }

@@ -12,7 +12,7 @@
  *   3. Return matching product IDs + "did_you_mean" suggestion
  *
  * @package NivoSearch
- * @since 2.1.0
+ * @since 2.0.2
  */
 
 namespace NivoSearch;
@@ -22,7 +22,7 @@ defined( 'ABSPATH' ) || exit;
 /**
  * Fuzzy_Search Class
  *
- * @since 2.1.0
+ * @since 2.0.2
  */
 class Fuzzy_Search {
 
@@ -34,7 +34,7 @@ class Fuzzy_Search {
 	 * the matching product IDs and a "did_you_mean" suggestion when the query
 	 * was corrected.
 	 *
-	 * @since 2.1.0
+	 * @since 2.0.2
 	 * @param string $query  User search query (already sanitised).
 	 * @param array  $args   Search arguments (limit, excluded_products, exclude_out_of_stock).
 	 * @return array {
@@ -128,7 +128,7 @@ class Fuzzy_Search {
 	 *   2. Substring match as a fallback for transpositions.
 	 * A CHAR_LENGTH window of ±2 chars keeps the candidate set small.
 	 *
-	 * @since 2.1.0
+	 * @since 2.0.2
 	 * @param string $token Search token (lowercase).
 	 * @param string $table Full table name.
 	 * @return string[] Array of candidate tokens.
@@ -163,7 +163,7 @@ class Fuzzy_Search {
 	 * Returns the candidate with the lowest edit distance, or null if no candidate
 	 * is within $max_dist edits.
 	 *
-	 * @since 2.1.0
+	 * @since 2.0.2
 	 * @param string   $token      Query token (lowercase).
 	 * @param string[] $candidates Candidate tokens from the index.
 	 * @param int      $max_dist   Maximum allowed Levenshtein distance.
@@ -201,7 +201,7 @@ class Fuzzy_Search {
 	 * Uses a prefix LIKE so "shoe" also matches "shoes", "shoebox", etc.
 	 * Applies exclusion, out-of-stock, and publish status filters.
 	 *
-	 * @since 2.1.0
+	 * @since 2.0.2
 	 * @param string $token Matched index token.
 	 * @param string $table Full table name.
 	 * @param array  $args  Search arguments.
@@ -267,7 +267,7 @@ class Fuzzy_Search {
 	/**
 	 * Tokenise a string into lowercase words (mirrors Product_Indexer::tokenize).
 	 *
-	 * @since 2.1.0
+	 * @since 2.0.2
 	 * @param string $text Input text.
 	 * @return string[] Tokens.
 	 */

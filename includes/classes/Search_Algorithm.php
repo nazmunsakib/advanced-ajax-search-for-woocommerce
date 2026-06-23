@@ -338,8 +338,8 @@ class Search_Algorithm {
      * Delegates to Typo_Manager which handles loading, caching, custom rules,
      * and the developer filter — all in one cached call.
      *
-     * @since 3.0.0
-     * @since 2.2.0 Delegated to Typo_Manager::correct_query().
+     * @since 2.0.2
+     * @since 2.0.2 Delegated to Typo_Manager::correct_query().
      * @param string      $query          Original search query.
      * @param string|null &$corrected_from Set to the original query if corrected.
      * @param string|null &$corrected_to   Set to the corrected query if corrected.
@@ -389,7 +389,7 @@ class Search_Algorithm {
          * Filters the language slug added to WP_Query for multilingual search.
          * Return an empty string to disable the filter.
          *
-         * @since 2.3.0
+         * @since 2.0.2
          * @param array $query_args Current WP_Query args.
          */
         return apply_filters( 'nivo_search_language_query_args', $query_args );
@@ -466,7 +466,7 @@ class Search_Algorithm {
      * sensible defaults when weights are not set.
      *
      * @since 1.0.0
-     * @since 3.0.0 Weights are now configurable via preset settings.
+     * @since 2.0.2 Weights are now configurable via preset settings.
      * @param array  $products WP_Post objects from WP_Query.
      * @param string $query    Search query (original, post-correction).
      * @param array  $args     Search arguments including optional weight keys.
@@ -590,7 +590,7 @@ class Search_Algorithm {
      * Language-filters via WPML/Polylang when active.
      *
      * @since 1.0.0
-     * @since 2.3.1 Added $raw_query parameter and multilingual support.
+     * @since 2.0.2 Added $raw_query parameter and multilingual support.
      * @param string $query     Normalized (diacritics-stripped) search query.
      * @param string $raw_query Pre-normalization query (may contain accent chars).
      * @param array  $args      Search arguments.
@@ -604,7 +604,7 @@ class Search_Algorithm {
      * Get matching product tags.
      *
      * @since 1.0.0
-     * @since 2.3.1 Added $raw_query parameter and multilingual support.
+     * @since 2.0.2 Added $raw_query parameter and multilingual support.
      * @param string $query     Normalized search query.
      * @param string $raw_query Pre-normalization query.
      * @param array  $args      Search arguments.

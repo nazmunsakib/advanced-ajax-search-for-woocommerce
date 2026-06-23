@@ -258,7 +258,7 @@ class Enqueue {
 	 * back with every AJAX search request so the server-side language filter
 	 * can restrict results to the correct language even on AJAX endpoints.
 	 *
-	 * @since 2.3.0
+	 * @since 2.0.2
 	 * @return string Language slug, or '' when no multilingual plugin is active.
 	 */
 	private function get_current_language() {

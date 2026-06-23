@@ -5,7 +5,7 @@ Tags: woocommerce search, ajax search, product search, live search, search form
 Requires at least: 5.6
 Tested up to: 6.8
 Requires PHP: 7.4
-Stable tag: 2.3.0
+Stable tag: 2.0.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -335,7 +335,7 @@ NivoSearch is a free WooCommerce Ajax search plugin that includes features most 
 
 == Changelog ==
 
-= 2.3.0 =
+= 2.0.2 =
 * NEW: Fuzzy search engine: finds close product name matches when no exact results are found
 * NEW: Search index built and maintained automatically, with one-click rebuild in Settings
 * NEW: "Did you mean?" suggestion with a clickable link to re-search using the corrected spelling
@@ -355,21 +355,21 @@ NivoSearch is a free WooCommerce Ajax search plugin that includes features most 
 * IMPROVED: Products loaded in one batch database call instead of one call per product
 * IMPROVED: SKU ranking uses one database query instead of one per product
 
-= 2.2.0 =
+= 2.0.1 =
 * NEW: Typo correction engine with 300+ built-in e-commerce misspelling corrections
 * NEW: Add, edit, and delete your own custom typo correction rules
 * NEW: Bulk import and export custom rules as a CSV file
 * NEW: Corrections log showing which corrections are applied most often
 * NEW: "Did you mean?" hint shown in the no-results state
 
-= 2.1.0 =
+= 2.0.1 =
 * NEW: Search Accuracy settings: typo tolerance toggle, fuzzy search toggle, did-you-mean toggle
 * NEW: Relevance weight settings per preset
 
-= 2.0.1 =
+= 1.1.0 =
 * FIX: Short description trimmed to meet WordPress.org 150-character limit
 
-= 2.0.0 =
+= 1.0.0 =
 * NEW: Add-to-cart button in search results with instant cart update and no page reload
 * NEW: Quantity selector in search results, configurable per preset
 * NEW: Variable product support: link to product page for option selection
@@ -403,10 +403,10 @@ NivoSearch is a free WooCommerce Ajax search plugin that includes features most 
 
 == Upgrade Notice ==
 
-= 2.3.0 =
+= 2.0.2 =
 Major update. After upgrading, go to NivoSearch > Settings > Search Accuracy and click Rebuild Index to update the search index with your current product catalog.
 
-= 2.0.0 =
+= 1.0.0 =
 Adds add-to-cart, quantity selector, stock badges, category labels, short descriptions, and result caching. Existing presets are migrated automatically.
 
 = 1.2.0 =

@@ -173,7 +173,7 @@ class Admin_Settings {
      * Called via wp_ajax_nivo_rebuild_index. Requires manage_options capability
      * and a valid nonce. Delegates to Product_Indexer::rebuild_all().
      *
-     * @since 2.3.0
+     * @since 2.0.2
      * @return void  Sends JSON and exits.
      */
     public function handle_rebuild_index() {
@@ -256,7 +256,7 @@ class Admin_Settings {
     /**
      * Render the Dashboard tab content.
      *
-     * @since 2.2.0
+     * @since 2.0.2
      * @param string|int $default_preset ID of the default preset.
      * @return void
      */
@@ -407,7 +407,7 @@ class Admin_Settings {
     /**
      * Render the Settings tab — accuracy and global plugin settings.
      *
-     * @since 2.3.0
+     * @since 2.0.2
      * @return void
      */
     private function render_settings_tab() {
@@ -778,7 +778,7 @@ class Admin_Settings {
     /**
      * Render the Help tab content.
      *
-     * @since 2.3.0
+     * @since 2.0.2
      * @param string|int $default_preset ID of the default preset for examples.
      * @return void
      */

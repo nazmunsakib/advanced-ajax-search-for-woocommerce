@@ -28,7 +28,7 @@ defined( 'ABSPATH' ) || exit;
  *   Typo_Manager::import_rules( $csv_text );
  *   $csv = Typo_Manager::export_rules_csv();
  *
- * @since 2.2.0
+ * @since 2.0.2
  */
 class Typo_Manager {
 
@@ -37,7 +37,7 @@ class Typo_Manager {
 	 *
 	 * Stored as an indexed array of ['from' => string, 'to' => string] pairs.
 	 *
-	 * @since 2.2.0
+	 * @since 2.0.2
 	 */
 	const CUSTOM_RULES_OPTION = 'nivo_search_custom_typo_rules';
 
@@ -47,21 +47,21 @@ class Typo_Manager {
 	 * Developers can override this via the `nivo_search_max_custom_rules` filter.
 	 * Pro tier sets this to PHP_INT_MAX to remove the cap.
 	 *
-	 * @since 2.3.0
+	 * @since 2.0.2
 	 */
 	const FREE_RULES_LIMIT = 10;
 
 	/**
 	 * Transient key for the merged (built-in + custom) rule set.
 	 *
-	 * @since 2.2.0
+	 * @since 2.0.2
 	 */
 	const CACHE_TRANSIENT = 'nivo_search_merged_typo_rules';
 
 	/**
 	 * Transient TTL in seconds (1 hour).
 	 *
-	 * @since 2.2.0
+	 * @since 2.0.2
 	 */
 	const CACHE_TTL = HOUR_IN_SECONDS;
 
@@ -93,7 +93,7 @@ class Typo_Manager {
 		 * Return a non-null string to override. Return null to continue with
 		 * the default pipeline.
 		 *
-		 * @since 2.2.0
+		 * @since 2.0.2
 		 * @param string|null $override     Return a corrected term, or null to continue.
 		 * @param string      $query        Original query.
 		 * @param array       $merged_rules Merged rule set (from => to).
@@ -128,7 +128,7 @@ class Typo_Manager {
 	 *
 	 * Custom rules always take priority over built-in rules.
 	 *
-	 * @since 2.2.0
+	 * @since 2.0.2
 	 * @return array<string,string> Map of lowercase misspelling => correction.
 	 */
 	public static function get_merged_rules() {
@@ -174,7 +174,7 @@ class Typo_Manager {
 	 *
 	 * Must be called after any change to custom rules.
 	 *
-	 * @since 2.2.0
+	 * @since 2.0.2
 	 * @return void
 	 */
 	public static function invalidate_cache() {
@@ -188,7 +188,7 @@ class Typo_Manager {
 	/**
 	 * Retrieve all custom rules.
 	 *
-	 * @since 2.2.0
+	 * @since 2.0.2
 	 * @return array<int, array{from: string, to: string}> Indexed array of rules.
 	 */
 	public static function get_custom_rules() {
@@ -201,7 +201,7 @@ class Typo_Manager {
 	 * If a rule with the same 'from' already exists it is overwritten in-place.
 	 * If $index is provided, that position is updated directly (used for inline edit).
 	 *
-	 * @since 2.2.0
+	 * @since 2.0.2
 	 * @param string   $from  Misspelling (case-insensitive, stored lowercase).
 	 * @param string   $to    Correction.
 	 * @param int|null $index Existing rule index to update, or null to add new.
@@ -251,7 +251,7 @@ class Typo_Manager {
 	/**
 	 * Delete a custom rule by array index.
 	 *
-	 * @since 2.2.0
+	 * @since 2.0.2
 	 * @param int $index Zero-based index into the custom rules array.
 	 * @return bool True on success, false if index does not exist.
 	 */
@@ -337,7 +337,7 @@ class Typo_Manager {
 	/**
 	 * Export all custom rules as a plain-text file (one rule per line).
 	 *
-	 * @since 2.2.0
+	 * @since 2.0.2
 	 * @return string CSV-like text ready to write or output as download.
 	 */
 	public static function export_rules_csv() {
@@ -365,7 +365,7 @@ class Typo_Manager {
 	/**
 	 * Return the number of entries in the built-in dictionary.
 	 *
-	 * @since 2.2.0
+	 * @since 2.0.2
 	 * @return int
 	 */
 	public static function get_built_in_count() {
@@ -380,7 +380,7 @@ class Typo_Manager {
 	/**
 	 * Return the number of custom rules saved by the store owner.
 	 *
-	 * @since 2.2.0
+	 * @since 2.0.2
 	 * @return int
 	 */
 	public static function get_custom_count() {
@@ -393,7 +393,7 @@ class Typo_Manager {
 	 * Pro tier can hook `nivo_search_max_custom_rules` and return PHP_INT_MAX
 	 * to remove the cap entirely.
 	 *
-	 * @since 2.3.0
+	 * @since 2.0.2
 	 * @return int
 	 */
 	public static function get_rules_limit() {
@@ -402,7 +402,7 @@ class Typo_Manager {
 		 *
 		 * Pro tier hooks this filter and returns PHP_INT_MAX.
 		 *
-		 * @since 2.3.0
+		 * @since 2.0.2
 		 * @param int $limit Current limit (FREE_RULES_LIMIT = 10 on free tier).
 		 */
 		return (int) apply_filters( 'nivo_search_max_custom_rules', self::FREE_RULES_LIMIT );
@@ -411,7 +411,7 @@ class Typo_Manager {
 	/**
 	 * Check whether the custom rules limit has been reached.
 	 *
-	 * @since 2.3.0
+	 * @since 2.0.2
 	 * @return bool True when the store is at or above the limit.
 	 */
 	public static function is_at_limit() {
@@ -434,7 +434,7 @@ class Typo_Manager {
 	 *   - Similarity ≥ 70 % (similar_text check).
 	 *   - 50 ms time budget guard.
 	 *
-	 * @since 2.2.0 (moved from Search_Algorithm)
+	 * @since 2.0.2 (moved from Search_Algorithm)
 	 * @param  string $query_lower Lowercase search query.
 	 * @param  array  $rules       Merged rule set (key => value).
 	 * @return string|null Corrected term, or null if no confident match.

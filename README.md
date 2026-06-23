@@ -6,7 +6,7 @@
 [![WooCommerce](https://img.shields.io/badge/WooCommerce-7.0%2B-96588a)](https://woocommerce.com)
 [![PHP](https://img.shields.io/badge/PHP-7.4%2B-777bb4)](https://php.net)
 [![License](https://img.shields.io/badge/License-GPLv2%2B-green)](https://www.gnu.org/licenses/gpl-2.0.html)
-[![Version](https://img.shields.io/badge/Version-2.3.0-orange)](https://wordpress.org/plugins/nivo-ajax-search-for-woocommerce/)
+[![Version](https://img.shields.io/badge/Version-2.0.2-orange)](https://wordpress.org/plugins/nivo-ajax-search-for-woocommerce/)
 
 [Live Demo](https://nivosearch.com/live-demo-woocommerce-product-search/) · [Documentation](https://nivosearch.com/documentation/) · [WordPress.org](https://wordpress.org/plugins/nivo-ajax-search-for-woocommerce/)
 
@@ -268,7 +268,7 @@ document.addEventListener( 'nivo_search:didYouMeanClicked', ( e ) => {
 
 ## Changelog
 
-### 2.3.0
+### 2.0.2
 - Variation-level SKU search: searching a variation SKU returns the parent product
 - Fuzzy search engine: index-based intelligent typo matching
 - Search index with automatic maintenance and manual rebuild option
@@ -284,12 +284,12 @@ document.addEventListener( 'nivo_search:didYouMeanClicked', ( e ) => {
 - Search results page integration
 - Performance: N+1 product loading and SKU lookup both fixed
 
-### 2.2.0
+### 2.0.1
 - 300+ built-in e-commerce typo corrections
 - Custom typo rules with bulk CSV import and export
 - Correction tracking for store analysis
 
-### 2.0.0
+### 1.0.0
 - Add-to-cart from search results with Ajax mini-cart update
 - Quantity selector in results
 - Variable product support

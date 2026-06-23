@@ -19,21 +19,21 @@ defined( 'ABSPATH' ) || exit;
  *
  * Table: wp_nivo_search_corrections_log
  *
- * @since 2.2.0
+ * @since 2.0.2
  */
 class Search_Analytics {
 
 	/**
 	 * Unprefixed table name.
 	 *
-	 * @since 2.2.0
+	 * @since 2.0.2
 	 */
 	const TABLE_NAME = 'nivo_search_corrections_log';
 
 	/**
 	 * Return the full (prefixed) table name.
 	 *
-	 * @since 2.2.0
+	 * @since 2.0.2
 	 * @return string
 	 */
 	public static function get_table_name() {
@@ -52,7 +52,7 @@ class Search_Analytics {
 	 *   search_count   — cumulative number of times this pair was searched
 	 *   last_searched  — datetime of the most recent occurrence
 	 *
-	 * @since 2.2.0
+	 * @since 2.0.2
 	 * @return void
 	 */
 	public static function maybe_create_table() {
@@ -83,7 +83,7 @@ class Search_Analytics {
 	 * Uses INSERT … ON DUPLICATE KEY UPDATE so one DB call handles both
 	 * new rows and existing ones.
 	 *
-	 * @since 2.2.0
+	 * @since 2.0.2
 	 * @param string $search_term    The original misspelled query.
 	 * @param string $corrected_term The corrected query.
 	 * @return void
@@ -127,7 +127,7 @@ class Search_Analytics {
 	/**
 	 * Return the top N correction pairs by search count.
 	 *
-	 * @since 2.2.0
+	 * @since 2.0.2
 	 * @param int $limit Maximum rows to return (default 25).
 	 * @return array Array of stdClass objects with search_term, corrected_term, search_count, last_searched.
 	 */
@@ -155,7 +155,7 @@ class Search_Analytics {
 	/**
 	 * Return the total number of correction events logged today.
 	 *
-	 * @since 2.2.0
+	 * @since 2.0.2
 	 * @return int
 	 */
 	public static function get_today_count() {
@@ -180,7 +180,7 @@ class Search_Analytics {
 	/**
 	 * Return the single most-searched correction pair.
 	 *
-	 * @since 2.2.0
+	 * @since 2.0.2
 	 * @return object|null stdClass with search_term, corrected_term, search_count, or null.
 	 */
 	public static function get_most_corrected() {
@@ -201,7 +201,7 @@ class Search_Analytics {
 	/**
 	 * Get total number of unique correction pairs logged.
 	 *
-	 * @since 2.2.0
+	 * @since 2.0.2
 	 * @return int
 	 */
 	public static function get_total_pairs() {
@@ -218,7 +218,7 @@ class Search_Analytics {
 	/**
 	 * Delete all rows from the analytics table.
 	 *
-	 * @since 2.2.0
+	 * @since 2.0.2
 	 * @return void
 	 */
 	public static function clear_log() {
@@ -234,7 +234,7 @@ class Search_Analytics {
 	/**
 	 * Check whether the analytics table exists in the DB.
 	 *
-	 * @since 2.2.0
+	 * @since 2.0.2
 	 * @return bool
 	 */
 	public static function table_exists() {

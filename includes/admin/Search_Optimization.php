@@ -19,35 +19,35 @@ defined( 'ABSPATH' ) || exit;
 /**
  * Search_Optimization class
  *
- * @since 2.2.0
+ * @since 2.0.2
  */
 class Search_Optimization {
 
 	/**
 	 * Nonce action for the add/edit rule form.
 	 *
-	 * @since 2.2.0
+	 * @since 2.0.2
 	 */
 	const NONCE_RULE = 'nivo_save_typo_rule';
 
 	/**
 	 * Nonce action for the bulk import form.
 	 *
-	 * @since 2.2.0
+	 * @since 2.0.2
 	 */
 	const NONCE_IMPORT = 'nivo_import_typo_rules';
 
 	/**
 	 * Nonce action for admin AJAX (delete rule, clear analytics).
 	 *
-	 * @since 2.2.0
+	 * @since 2.0.2
 	 */
 	const NONCE_AJAX = 'nivo_optimization_ajax';
 
 	/**
 	 * Register hooks.
 	 *
-	 * @since 2.2.0
+	 * @since 2.0.2
 	 */
 	public function __construct() {
 		add_action( 'nivo_render_optimization_tab',    array( $this, 'render_tab_content' ) );
@@ -63,7 +63,7 @@ class Search_Optimization {
 	/**
 	 * Handle add/edit rule and bulk import form submissions.
 	 *
-	 * @since 2.2.0
+	 * @since 2.0.2
 	 * @return void
 	 */
 	public function handle_form_posts() {
@@ -122,7 +122,7 @@ class Search_Optimization {
 	/**
 	 * Handle CSV export download (GET request with action=nivo_export_rules).
 	 *
-	 * @since 2.2.0
+	 * @since 2.0.2
 	 * @return void
 	 */
 	public function handle_export() {
@@ -158,7 +158,7 @@ class Search_Optimization {
 	 *
 	 * Expects: nonce, index (int).
 	 *
-	 * @since 2.2.0
+	 * @since 2.0.2
 	 * @return void
 	 */
 	public function ajax_delete_rule() {
@@ -188,7 +188,7 @@ class Search_Optimization {
 	/**
 	 * Render the Search Optimization tab content (called via nivo_render_optimization_tab action).
 	 *
-	 * @since 2.2.0
+	 * @since 2.0.2
 	 * @return void
 	 */
 	public function render_tab_content() {
@@ -567,7 +567,7 @@ class Search_Optimization {
 	/**
 	 * Render an admin notice from a query-arg notice code.
 	 *
-	 * @since 2.2.0
+	 * @since 2.0.2
 	 * @param string $notice   Notice key from redirect.
 	 * @param int    $imported Number of rules imported (used for 'imported' notice).
 	 * @param int    $errors   Number of import errors (used for 'imported' notice).

@@ -55,7 +55,7 @@ final class Nivo_Ajax_Search {
 	/**
 	 * Product index manager
 	 *
-	 * @since 2.1.0
+	 * @since 2.0.2
 	 * @var Product_Indexer
 	 */
 	public $product_indexer;
@@ -475,7 +475,7 @@ final class Nivo_Ajax_Search {
 	 * Style values (colors, widths) and internal query flags are excluded.
 	 * All string values are run through sanitize_text_field() to strip tags.
 	 *
-	 * @since 2.3.1
+	 * @since 2.0.2
 	 * @param array $settings Raw merged preset settings.
 	 * @return array Safe, client-facing subset of settings.
 	 */

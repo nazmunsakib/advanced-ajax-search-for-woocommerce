@@ -8,7 +8,7 @@
  * up to date automatically via WordPress post-save and delete hooks.
  *
  * @package NivoSearch
- * @since 2.1.0
+ * @since 2.0.2
  */
 
 namespace NivoSearch;
@@ -29,14 +29,14 @@ defined( 'ABSPATH' ) || exit;
  *   $indexer = new Product_Indexer();
  *   $indexer->rebuild_all();
  *
- * @since 2.1.0
+ * @since 2.0.2
  */
 class Product_Indexer {
 
 	/**
 	 * Unprefixed table name.
 	 *
-	 * @since 2.1.0
+	 * @since 2.0.2
 	 * @var string
 	 */
 	const TABLE_NAME = 'nivo_search_index';
@@ -44,7 +44,7 @@ class Product_Indexer {
 	/**
 	 * Return the full (prefixed) table name.
 	 *
-	 * @since 2.1.0
+	 * @since 2.0.2
 	 * @return string
 	 */
 	public static function get_table_name() {
@@ -64,7 +64,7 @@ class Product_Indexer {
 	 *   field        – where the token came from: title | sku | category | tag
 	 *   weight       – relevance weight (title=3, sku=3, category=2, tag=1)
 	 *
-	 * @since 2.1.0
+	 * @since 2.0.2
 	 * @return void
 	 */
 	public static function maybe_create_table() {
@@ -94,7 +94,7 @@ class Product_Indexer {
 	 *
 	 * Called from Nivo_Ajax_Search::init_components().
 	 *
-	 * @since 2.1.0
+	 * @since 2.0.2
 	 * @return void
 	 */
 	public function init() {
@@ -114,7 +114,7 @@ class Product_Indexer {
 	/**
 	 * Re-index a product inserted or updated via the WooCommerce CSV importer.
 	 *
-	 * @since 2.3.0
+	 * @since 2.0.2
 	 * @param WC_Product $product    The imported product object.
 	 * @param array      $data       Raw CSV data for the row (unused but part of hook signature).
 	 * @return void
@@ -133,7 +133,7 @@ class Product_Indexer {
 	/**
 	 * Re-index (or de-index) a product when it is saved.
 	 *
-	 * @since 2.1.0
+	 * @since 2.0.2
 	 * @param int $post_id WordPress post ID.
 	 * @return void
 	 */
@@ -153,7 +153,7 @@ class Product_Indexer {
 	/**
 	 * Remove a product from the index when it is deleted.
 	 *
-	 * @since 2.1.0
+	 * @since 2.0.2
 	 * @param int $post_id WordPress post ID.
 	 * @return void
 	 */
@@ -172,7 +172,7 @@ class Product_Indexer {
 	 * Removes any existing rows for the product first, then inserts fresh tokens.
 	 * Tokens are deduplicated per field before insertion.
 	 *
-	 * @since 2.1.0
+	 * @since 2.0.2
 	 * @param int $product_id WooCommerce product ID.
 	 * @return void
 	 */
@@ -227,7 +227,7 @@ class Product_Indexer {
 		/**
 		 * Filter the token rows before they are inserted into the index.
 		 *
-		 * @since 2.1.0
+		 * @since 2.0.2
 		 * @param array      $rows       Array of ['token'=>string, 'field'=>string, 'weight'=>int].
 		 * @param int        $product_id Product ID.
 		 * @param WC_Product $product    Product object.
@@ -262,7 +262,7 @@ class Product_Indexer {
 	/**
 	 * Remove all index rows for a product.
 	 *
-	 * @since 2.1.0
+	 * @since 2.0.2
 	 * @param int $product_id Product ID.
 	 * @return void
 	 */
@@ -281,7 +281,7 @@ class Product_Indexer {
 	 * Truncates the table and re-indexes all published products in batches.
 	 * Stores the rebuild timestamp and count in options.
 	 *
-	 * @since 2.1.0
+	 * @since 2.0.2
 	 * @param int $batch_size Number of products per batch (default 100).
 	 * @return int Number of products indexed.
 	 */
@@ -320,7 +320,7 @@ class Product_Indexer {
 	/**
 	 * Return index statistics for the admin UI.
 	 *
-	 * @since 2.1.0
+	 * @since 2.0.2
 	 * @return array {
 	 *   @type int $indexed      Number of distinct products in the index.
 	 *   @type int $total        Total published products.
@@ -351,7 +351,7 @@ class Product_Indexer {
 	 * Strips punctuation, splits on whitespace, removes tokens shorter than
 	 * 2 characters, and removes common English stopwords.
 	 *
-	 * @since 2.1.0
+	 * @since 2.0.2
 	 * @param string $text Input text.
 	 * @return string[] Array of tokens.
 	 */

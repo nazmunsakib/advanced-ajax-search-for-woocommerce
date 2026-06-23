@@ -26,14 +26,14 @@ defined( 'ABSPATH' ) || exit;
 /**
  * Search_Results_Page class.
  *
- * @since 2.3.0
+ * @since 2.0.2
  */
 class Search_Results_Page {
 
 	/**
 	 * Constructor — registers hooks only when the feature is enabled.
 	 *
-	 * @since 2.3.0
+	 * @since 2.0.2
 	 */
 	public function __construct() {
 		// Skip entirely during AJAX requests — redirects must never fire during AJAX.
@@ -67,7 +67,7 @@ class Search_Results_Page {
 	 *   - We are NOT already on the shop/product page (avoids infinite loops).
 	 *   - WooCommerce is active and has a shop page configured.
 	 *
-	 * @since 2.3.0
+	 * @since 2.0.2
 	 * @return void
 	 */
 	public function redirect_search_to_shop() {
@@ -101,7 +101,7 @@ class Search_Results_Page {
 		 *
 		 * Return an empty string to cancel the redirect.
 		 *
-		 * @since 2.3.0
+		 * @since 2.0.2
 		 * @param string $redirect_url  URL to redirect to.
 		 * @param string $search_term   The search query.
 		 * @param string $shop_url      The WooCommerce shop page URL.
@@ -128,7 +128,7 @@ class Search_Results_Page {
 	 * (so the redirect above never fired). Filters the WP search results page
 	 * to show published products only instead of all post types.
 	 *
-	 * @since 2.3.0
+	 * @since 2.0.2
 	 * @param \WP_Query $query The current WP_Query instance.
 	 * @return void
 	 */

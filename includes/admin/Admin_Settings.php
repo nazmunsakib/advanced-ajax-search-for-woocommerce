@@ -125,7 +125,7 @@ class Admin_Settings {
         $results_page = isset( $_POST['nivo_search_results_page'] ) ? 'yes' : 'no';
         update_option( 'nivo_search_results_page', $results_page );
 
-        // Seamless theme integration.
+        // Seamless theme integration — auto-replace theme search forms.
         $auto_replace = isset( $_POST['nivo_search_auto_replace'] ) ? 'yes' : 'no';
         update_option( 'nivo_search_auto_replace', $auto_replace );
 
@@ -641,7 +641,7 @@ class Admin_Settings {
                 <!-- Inner integration setting cards -->
                 <div class="nivo-integration-cards">
 
-                    <!-- Card 1: Auto-replace theme search form (first — most important) -->
+                    <!-- Card 1: Auto-replace theme search form -->
                     <div class="nivo-integration-card">
                         <div class="nivo-integration-card__top">
                             <span class="nivo-integration-card__icon">
@@ -653,7 +653,7 @@ class Admin_Settings {
                                 <span class="nivo-gs-toggle__slider"></span>
                             </label>
                         </div>
-                        <p class="nivo-integration-card__desc"><?php esc_html_e( 'Swap your theme\'s default search box with NivoSearch — no shortcode needed. Works with classic themes and block themes (Twenty Twenty-Four, Twenty Twenty-Five).', 'nivo-ajax-search-for-woocommerce' ); ?></p>
+                        <p class="nivo-integration-card__desc"><?php esc_html_e( 'Automatically replace your theme\'s search form with NivoSearch — no shortcode needed. Works with classic themes, WooCommerce themes (Flatsome, WoodMart, XStore), and FSE/block themes.', 'nivo-ajax-search-for-woocommerce' ); ?></p>
                         <!-- Preset sub-option — visible only when toggle is on -->
                         <div class="nivo-integration-card__sub" id="nivo_theme_preset_row" style="<?php echo 'yes' === $auto_replace_val ? '' : 'display:none'; ?>">
                             <label class="nivo-integration-card__sub-label"><?php esc_html_e( 'Which preset to use:', 'nivo-ajax-search-for-woocommerce' ); ?></label>

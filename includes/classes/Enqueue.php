@@ -232,7 +232,7 @@ class Enqueue {
 			)
 		);
 
-		// Use default preset settings if available
+		// Use default preset settings if available.
 		$default_preset = Helper::get_default_preset_id();
 		if ( $default_preset ) {
 			$preset_settings = Helper::get_preset_settings( $default_preset );
@@ -243,6 +243,7 @@ class Enqueue {
 				if ( isset( $preset_settings['delay'] ) ) {
 					$localize_data['settings']['delay'] = absint( $preset_settings['delay'] );
 				}
+
 			}
 		}
 

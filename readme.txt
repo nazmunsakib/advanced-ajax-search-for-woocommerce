@@ -9,13 +9,13 @@ Stable tag: 2.0.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-WooCommerce Ajax Search plugin, free. Live product search with typo tolerance, fuzzy matching, GTIN and SKU lookup, and add-to-cart from results.
+WooCommerce Ajax Search plugin, free. Live product search with typo tolerance, fuzzy matching, SKU search, and add-to-cart from results.
 
 == Description ==
 
 **NivoSearch** is a free WooCommerce Ajax search plugin that turns your WooCommerce search bar into a live autocomplete search. Products appear in a dropdown as customers type, with no page reload and no coding required. Works with any WooCommerce store, any theme, and any page builder, right out of the box.
 
-The default WooCommerce search makes customers wait for a full page to reload and cannot handle typos, SKU searches, or barcode lookups. NivoSearch solves all of that. It corrects spelling mistakes automatically, searches product barcodes, finds products by attribute values like Color or Size, and lets shoppers add items to the cart directly from the search results, all in under 200 ms.
+The default WooCommerce search makes customers wait for a full page to reload and cannot handle typos or SKU searches. NivoSearch solves all of that. It corrects spelling mistakes automatically, searches product SKUs, and lets shoppers add items to the cart directly from the search results, all in under 200 ms.
 
 [Live Demo](https://nivosearch.com/live-demo-woocommerce-product-search/) | [Documentation](https://nivosearch.com/documentation/)
 
@@ -32,11 +32,8 @@ NivoSearch uses two separate correction engines. The first checks a built-in dic
 **Customers can add to cart without leaving the page**
 Simple products show an add-to-cart button directly in the search results. Shoppers can set a quantity and add to the cart without opening the product page. The cart count updates instantly.
 
-**Barcodes and product codes work**
-Customers who scan or copy a GTIN, UPC, EAN, or ISBN find the exact product immediately.
-
-**Attributes, colors, and sizes are searchable**
-A customer searching "red" or "size 10" finds products where those are attribute values, not just products with those words in the title.
+**Product codes and SKUs work**
+Customers and staff who search by product code find the exact product. NivoSearch searches parent SKUs and individual variation SKUs, so searching a variation code returns the right product.
 
 **Results are organized and easy to scan**
 Products appear in a relevance-ranked list. Categories and tags that match the search appear in their own sections above the product results. Matching keywords are highlighted in the product title.
@@ -51,12 +48,11 @@ On phones and small screens, the search opens in a full-screen overlay so result
 
 = What You Get Free (That Other Plugins Charge For) =
 
-The most WooCommerce Ajax search plugins charge for the features. NivoSearch includes all of these for free:
+The most WooCommerce Ajax search plugins charge for features. NivoSearch includes all of these for free:
 
 * Typo correction with 300+ built-in rules, and up to 10 custom rules you add yourself
 * Fuzzy search that finds products even with unusual misspellings
-* GTIN, UPC, EAN, and ISBN barcode search
-* Product attribute search: Color, Size, Material, and any custom attribute
+* SKU search: parent SKU and variation-level SKU both searched automatically
 * Add-to-cart button directly in the WooCommerce search results
 * Unlimited WooCommerce search bars, each with its own settings and style
 * Block and FSE theme support: Twenty Twenty-Four, Twenty Twenty-Five, and any FSE theme
@@ -72,9 +68,7 @@ The most WooCommerce Ajax search plugins charge for the features. NivoSearch inc
 | — | — | — |
 | Results appear as you type | Yes | No, requires page reload |
 | Spelling correction | Yes, 300+ rules | No |
-| Searches SKUs | Yes | No |
-| Searches barcodes (GTIN, UPC, EAN) | Yes | No |
-| Searches product attributes | Yes | No |
+| Searches SKUs | Yes, parent and variation | No |
 | Add to cart from results | Yes | No |
 | Images and prices in results | Yes | No |
 | Mobile search overlay | Yes | No |
@@ -89,9 +83,7 @@ The most WooCommerce Ajax search plugins charge for the features. NivoSearch inc
 
 * Product names: exact, partial, and starts-with matching
 * Product descriptions and short descriptions
-* Product SKUs: exact and partial
-* GTIN, UPC, EAN-13, ISBN, and other barcode meta fields
-* Product attributes: Color, Size, Material, and any custom WooCommerce attribute
+* Product SKUs: parent SKU and individual variation SKUs
 * Product categories, shown in their own section
 * Product tags, shown in their own section
 * Accented characters treated as equivalent: searching "cafe" finds cafe and café
@@ -184,7 +176,7 @@ NivoSearch is a free WooCommerce Ajax search plugin. It replaces or supplements 
 
 = How is NivoSearch different from the default WooCommerce search? =
 
-The default WooCommerce search requires a full page reload, returns plain links with no images or prices, cannot correct typos, and cannot search by SKU, barcode, or product attributes. NivoSearch shows results in a styled dropdown in under 200 ms, corrects over 300 common misspellings, and lets shoppers add items to the cart without leaving the page.
+The default WooCommerce search requires a full page reload, returns plain links with no images or prices, cannot correct typos, and cannot search by SKU. NivoSearch shows results in a styled dropdown in under 200 ms, corrects over 300 common misspellings, searches parent and variation SKUs, and lets shoppers add items to the cart without leaving the page.
 
 = What happens if a customer makes a typo? =
 
@@ -196,9 +188,9 @@ If no dictionary correction exists, Fuzzy Search takes over. NivoSearch keeps a 
 
 Both engines run only when the original search returns no results, so they never interfere with exact matches. Both have their own on/off toggle in NivoSearch > Settings > Search Accuracy. You can use either engine independently or run both together.
 
-= Does it support GTIN, UPC, EAN, and ISBN search? =
+= Does it search product SKUs? =
 
-Yes. If your products have barcode values stored in standard WooCommerce GTIN meta fields, customers can find those products by typing the barcode number. NivoSearch reads all five standard GTIN meta fields automatically.
+Yes. NivoSearch searches both parent product SKUs and individual variation SKUs. If a staff member or customer searches a variation code, NivoSearch returns the correct parent product.
 
 = Can customers add products to the cart from the search results? =
 
@@ -246,7 +238,7 @@ Enable Google Analytics tracking in NivoSearch > Settings > Search Integration. 
 
 = What is the best free WooCommerce Ajax search plugin? =
 
-NivoSearch is a free WooCommerce Ajax search plugin that includes features most competitors charge for. It delivers real-time WooCommerce instant search with autocomplete, typo tolerance using a 300+ word dictionary, fuzzy search via an index-based engine, GTIN and SKU lookup, product attribute search, add-to-cart from results, search history, mobile overlay, WPML and Polylang support, and unlimited WooCommerce search bars. There is no subscription and no feature locks. It works on any theme, including block and FSE themes, without coding.
+NivoSearch is a free WooCommerce Ajax search plugin that includes features most competitors charge for: real-time WooCommerce instant search with autocomplete, typo tolerance using a 300+ word dictionary, fuzzy search via an index-based engine, SKU and variation SKU search, add-to-cart from results, search history, mobile overlay, WPML and Polylang support, and unlimited WooCommerce search bars. There is no subscription and no feature locks. It works on any theme, including block and FSE themes, without coding.
 
 —
 
@@ -339,10 +331,10 @@ NivoSearch is a free WooCommerce Ajax search plugin that includes features most 
 * NEW: Fuzzy search engine: finds close product name matches when no exact results are found
 * NEW: Search index built and maintained automatically, with one-click rebuild in Settings
 * NEW: "Did you mean?" suggestion with a clickable link to re-search using the corrected spelling
-* NEW: GTIN, UPC, EAN, and ISBN barcode search
-* NEW: Product attribute search: Color, Size, Material, and any custom WooCommerce attribute
+* NEW: Variation SKU search: searching a variation SKU returns the parent product
 * NEW: Typo Rules settings page: add up to 10 custom correction rules, import and export as CSV
-* NEW: Accented characters treated as equivalent (cafe finds cafe and cafe with accent)
+* NEW: Typo correction engine with 300+ built-in e-commerce misspelling corrections
+* NEW: Accented characters treated as equivalent (cafe finds cafe and café)
 * NEW: WPML and Polylang support: language scoped automatically on each search
 * NEW: Block and FSE theme support: replaces the Gutenberg search block automatically
 * NEW: Preset selector for theme form replacement: choose which preset replaces your theme search box
@@ -354,20 +346,9 @@ NivoSearch is a free WooCommerce Ajax search plugin that includes features most 
 * IMPROVED: Fuzzy search and typo tolerance are now separate, independent toggles
 * IMPROVED: Products loaded in one batch database call instead of one call per product
 * IMPROVED: SKU ranking uses one database query instead of one per product
-
-= 2.0.1 =
-* NEW: Typo correction engine with 300+ built-in e-commerce misspelling corrections
-* NEW: Add, edit, and delete your own custom typo correction rules
-* NEW: Bulk import and export custom rules as a CSV file
-* NEW: Corrections log showing which corrections are applied most often
-* NEW: "Did you mean?" hint shown in the no-results state
-
-= 2.0.1 =
-* NEW: Search Accuracy settings: typo tolerance toggle, fuzzy search toggle, did-you-mean toggle
-* NEW: Relevance weight settings per preset
-
-= 1.1.0 =
-* FIX: Short description trimmed to meet WordPress.org 150-character limit
+* SECURITY: Nonce verified on all request paths including wc-ajax
+* SECURITY: Preset settings sanitized before sending in JSON response
+* SECURITY: All database queries use prepared statements
 
 = 1.0.0 =
 * NEW: Add-to-cart button in search results with instant cart update and no page reload
@@ -380,24 +361,14 @@ NivoSearch is a free WooCommerce Ajax search plugin that includes features most 
 * NEW: SKU shown inline next to the product name
 * NEW: 5-minute result cache, cleared automatically when products or presets change
 * NEW: "View All Results" link pinned to the bottom of the results panel
-* IMPROVED: Two-column result layout: product info on the left, price and cart on the right
-* FIX: Double add-to-cart when quantity selector was used
-* FIX: Cart count not updating after adding from search results
-
-= 1.2.0 =
 * NEW: Database migration system for safe plugin updates
 * NEW: Preset data preserved by default on plugin deletion
 * NEW: "Delete all data on uninstall" opt-in setting
+* NEW: Unlimited search presets
+* NEW: Gutenberg block with preset selector
 * FIX: Default preset not created reliably on fresh install
 * FIX: Deactivation now correctly flushes rewrite rules
 * FIX: Custom CSS class attributes on the shortcode now applied to the HTML output
-
-= 1.1.0 =
-* NEW: Unlimited search presets
-* NEW: Gutenberg block with preset selector
-
-= 1.0.0 =
-* Initial release
 
 —
 
@@ -405,12 +376,6 @@ NivoSearch is a free WooCommerce Ajax search plugin that includes features most 
 
 = 2.0.2 =
 Major update. After upgrading, go to NivoSearch > Settings > Search Accuracy and click Rebuild Index to update the search index with your current product catalog.
-
-= 1.0.0 =
-Adds add-to-cart, quantity selector, stock badges, category labels, short descriptions, and result caching. Existing presets are migrated automatically.
-
-= 1.2.0 =
-Stability and accessibility update. Existing presets are migrated automatically.
 
 —
 

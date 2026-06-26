@@ -187,6 +187,11 @@ class Admin_Settings {
         $count   = $indexer->rebuild_all();
         $stats   = Product_Indexer::get_stats();
 
+        // Invalidate the search transient cache so the freshly-indexed products
+        // are visible immediately — without this, stale cached results are served
+        // until the 5-minute TTL expires or a product is manually saved.
+        Nivo_Ajax_Search::invalidate_search_cache();
+
         wp_send_json_success(
             array(
                 'indexed'      => $stats['indexed'],

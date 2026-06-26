@@ -111,10 +111,21 @@ class Search_Algorithm {
             );
 
             if ( $args['exclude_out_of_stock'] === 'yes' || $args['exclude_out_of_stock'] === 1 || $args['exclude_out_of_stock'] === true ) {
+                // Use a compound OR so products that have no _stock_status meta at
+                // all (e.g. created via WP CLI without a full WooCommerce save) are
+                // treated as "not out of stock" rather than silently excluded by the
+                // INNER JOIN that a plain '!=' compare generates.
                 $qargs['meta_query'][] = array(
-                    'key'     => '_stock_status',
-                    'value'   => 'outofstock',
-                    'compare' => '!=',
+                    'relation' => 'OR',
+                    array(
+                        'key'     => '_stock_status',
+                        'value'   => 'outofstock',
+                        'compare' => '!=',
+                    ),
+                    array(
+                        'key'     => '_stock_status',
+                        'compare' => 'NOT EXISTS',
+                    ),
                 );
             }
 

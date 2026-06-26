@@ -305,29 +305,27 @@ final class Nivo_Ajax_Search {
 				$raw_products
 			);
 
-			// Single batch query — one DB round-trip for all products.
-			$wc_products = wc_get_products(
-				array(
-					'include'  => $ordered_ids,
-					'limit'    => count( $ordered_ids ),
-					'status'   => 'publish',
-					'orderby'  => 'include', // preserve relevance order
-					'return'   => 'objects',
-				)
-			);
-
-			// Index by ID for O(1) lookup while re-applying original sort order.
-			$product_map = array();
-			foreach ( $wc_products as $wc_product ) {
-				$product_map[ $wc_product->get_id() ] = $wc_product;
-			}
-
+			// Load WC_Product objects directly via wc_get_product() rather than
+			// wc_get_products(). wc_get_products() uses WC_Product_Query which
+			// may silently exclude products that were created outside of
+			// WooCommerce's full save flow (WP CLI, CSV import, raw wp_insert_post)
+			// because those products may lack entries in wc_product_meta_lookup or
+			// have no product_type taxonomy term set. wc_get_product($id) reads
+			// from WordPress's post and postmeta tables directly, so it works for
+			// any published product regardless of WooCommerce initialization state.
+			//
+			// Performance: WP_Query above already ran with update_post_meta_cache=true,
+			// so post meta for all result IDs is in WordPress's object cache. Each
+			// wc_get_product() call is served from cache — no extra DB round-trips.
 			foreach ( $ordered_ids as $pid ) {
-				if ( ! isset( $product_map[ $pid ] ) ) {
+				$product = wc_get_product( $pid );
+
+				// Skip if product can't be loaded or is no longer published.
+				if ( ! $product || 'publish' !== $product->get_status() ) {
 					continue;
 				}
-				$product           = $product_map[ $pid ];
-				$result            = $this->format_search_result( $product, $query );
+
+				$result                = $this->format_search_result( $product, $query );
 				$results['products'][] = apply_filters( 'nivo_search_result_item', $result, $product, $query );
 			}
 		}

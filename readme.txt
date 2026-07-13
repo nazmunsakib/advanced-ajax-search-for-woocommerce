@@ -337,7 +337,7 @@ All events fire on `document` and are prefixed `nivo_search:`.
 * SECURITY: Preset settings sanitized before including in the JSON response
 * SECURITY: All database queries use prepared statements throughout
 
-= 1.0.0 =
+= 2.0.0 =
 * NEW: Add-to-cart button in search results with instant cart update and no page reload
 * NEW: Quantity selector in search results, configurable per preset
 * NEW: Variable product support: link to product page for option selection
@@ -356,6 +356,22 @@ All events fire on `document` and are prefixed `nivo_search:`.
 * FIX: Default preset not created reliably on fresh install
 * FIX: Deactivation now correctly flushes rewrite rules
 * FIX: Custom CSS class attributes on the shortcode now applied correctly to the HTML output
+
+= 1.2.0 =
+* FIX: Activation race condition, default preset now reliably created on fresh install
+* FIX: Activation race condition, default preset now reliably created on fresh install
+* FIX: Deactivation hook now correctly flushes rewrite rules
+* FIX: Shortcode container_class, input_class, and results_class attributes now applied to rendered HTML
+* FIX: Duplicate clear button, suppressed browser-native X icon on type="search" inputs
+* NEW: Database migration system for safe, zero-downtime plugin updates
+* NEW: Safe uninstall, preset data is preserved by default when the plugin is deleted
+* NEW: “Data & Privacy” settings card with opt-in data deletion toggle
+* IMPROVED: aria-label on search input and aria-live on results panel for screen readers
+* IMPROVED: Submit button restored for keyboard navigation and accessibility users
+* IMPROVED: Default preset now pre-populated with all current settings keys on fresh install
+
+= 1.0.0 =
+* Initial release
 
 ---
 

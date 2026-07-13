@@ -9,7 +9,7 @@ Stable tag: 2.0.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-Free instant product search for WooCommerce. Live results, typo tolerance, fuzzy search, SKU search, and add-to-cart. No coding needed.
+Free instant product search for WooCommerce with live AJAX search, category and tag search, SKU search, fuzzy search, and typo tolerance.
 
 == Description ==
 
@@ -21,7 +21,7 @@ Under the hood, NivoSearch is a WooCommerce Ajax search plugin: every keystroke 
 
 The truth is simple: shoppers who cannot find a product leave. Every zero-result search, every misspelled query, every product a shopper has to hunt for manually is a sale your store is losing right now. NivoSearch fixes all of that automatically, silently, and without any developer involvement.
 
-[Live Demo](https://nivosearch.com/live-demo-woocommerce-product-search/) | [Documentation](https://nivosearch.com/documentation/)
+[Live Demo](https://nivosearch.com/live-demo/) | [Features](https://nivosearch.com/features/) | [Documentation](https://nivosearch.com/documentation/)
 
 **At a glance:** NivoSearch is a free WooCommerce search plugin and WooCommerce Ajax search plugin in one. It upgrades your store's default search to an instant product search experience: shoppers type, results appear in a live dropdown within 200 ms, misspellings are auto-corrected, SKUs and variation codes are searched, and products can be added to cart directly from the results. No subscription. No coding. Works on every WooCommerce theme.
 

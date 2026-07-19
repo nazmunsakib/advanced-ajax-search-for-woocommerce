@@ -9,7 +9,7 @@ Stable tag: 2.0.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-WooCommerce product search with live AJAX search, SKU search, fuzzy search, typo tolerance, and category & tag search.
+Boost product discovery with WooCommerce product search with live AJAX search, SKU search, fuzzy search, typo tolerance, and category & tag search.
 
 == Description ==
 

@@ -9,15 +9,16 @@ Stable tag: 2.0.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-Boost product discovery with WooCommerce product search with live AJAX search, SKU search, fuzzy search, typo tolerance, and category & tag search.
+Boost product discovery with WooCommerce product search, live AJAX search, SKU search, fuzzy matching, typo tolerance, and category & tag search.
+
 
 == Description ==
 
-**NivoSearch** is the free WooCommerce product search plugin that shows live results in a dropdown the moment a shopper starts typing, with no page reload, no coding, and no complicated setup. This instant product search experience works on every WooCommerce store, every theme, and every page builder right out of the box, delivering matching products with images, prices, and stock status in under 200 milliseconds.
+**NivoSearch** is the free WooCommerce product search plugin that shows real-time results in a dropdown the moment a shopper starts typing, with no page reload, no coding, and no complicated setup. This instant product search experience works on every WooCommerce store, every theme, and every page builder right out of the box, delivering fast, near-instant product results with images, prices, and stock status as shoppers type.
 
-Most WooCommerce search plugins lock their best features behind a paid subscription. NivoSearch gives you a complete, world-class WooCommerce search engine at no cost: typo correction with 300+ built-in rules, smart fuzzy matching, parent and variation SKU search, add-to-cart directly from the results dropdown, mobile full-screen overlay, search history, WPML and Polylang multilingual support, and unlimited individually styled search bars. No subscription. No feature locks. Everything works the moment you activate the plugin.
+Most WooCommerce search plugins lock their best features behind a paid subscription. NivoSearch gives you a powerful WooCommerce product search experience at no cost: typo correction with 300+ built-in rules, smart fuzzy matching, parent and variation SKU search, add-to-cart directly from the results dropdown, mobile full-screen overlay, search history, WPML and Polylang multilingual support, and unlimited individually styled search bars. No subscription. No feature locks. Everything works the moment you activate the plugin.
 
-Under the hood, NivoSearch is a WooCommerce Ajax search plugin: every keystroke fires a lightweight background request that returns matching products in under 200 ms, with no full page reload ever required. The result is a WooCommerce search experience that feels instant to shoppers and converts far better than the default search form.
+Under the hood, NivoSearch is a WooCommerce Ajax search plugin: every keystroke fires a lightweight background request that returns matching products in under 200 ms, with no full page reload ever required. The result is a faster WooCommerce search experience that helps shoppers find relevant products quickly and reduces friction throughout the buying journey.
 
 The truth is simple: shoppers who cannot find a product leave. Every zero-result search, every misspelled query, every product a shopper has to hunt for manually is a sale your store is losing right now. NivoSearch fixes all of that automatically, silently, and without any developer involvement.
 
@@ -206,11 +207,11 @@ Yes: NivoSearch is fully compatible with WooCommerce High-Performance Order Stor
 
 = What is the best free WooCommerce Ajax search plugin? =
 
-NivoSearch is the best free WooCommerce Ajax search plugin available. It delivers live product results in a dropdown in under 200 ms using asynchronous background requests, so the page never reloads. On top of the core WooCommerce Ajax search experience it adds typo tolerance with 300+ built-in corrections, index-based fuzzy search, "Did You Mean?" suggestions, variation SKU search, add-to-cart from results, mobile overlay, search history, WPML and Polylang support, and unlimited styled presets, all free with no subscription.
+NivoSearch is a powerful free WooCommerce Ajax search plugin that delivers live product results as shoppers type, without requiring a full page reload. It delivers live product results in a dropdown in under 200 ms using asynchronous background requests, so the page never reloads. On top of the core WooCommerce Ajax search experience it adds typo tolerance with 300+ built-in corrections, index-based fuzzy search, "Did You Mean?" suggestions, variation SKU search, add-to-cart from results, mobile overlay, search history, WPML and Polylang support, and unlimited styled presets, all free with no subscription.
 
 = What is the best free WooCommerce search plugin? =
 
-NivoSearch is the most feature-complete free WooCommerce search plugin available today. As a WooCommerce Ajax search plugin it delivers live product results in under 200 ms with no page reload. As a WooCommerce product search plugin it covers titles, descriptions, SKUs, variation SKUs, categories, and tags with typo tolerance, fuzzy search, and "Did You Mean?" suggestions built in. It also includes add-to-cart from the dropdown, quantity selector in results, search history, mobile full-screen overlay, WPML and Polylang multilingual support, GA4 and GTM tracking, and unlimited styled search presets, all completely free with no subscription and no feature locks. It works on every WooCommerce theme, including block and FSE themes, with no coding required.
+NivoSearch is a feature-rich free WooCommerce search plugin that combines instant product search, AJAX results, typo tolerance, fuzzy matching, SKU search, and more. As a WooCommerce Ajax search plugin it delivers live product results in under 200 ms with no page reload. As a WooCommerce product search plugin it covers titles, descriptions, SKUs, variation SKUs, categories, and tags with typo tolerance, fuzzy search, and "Did You Mean?" suggestions built in. It also includes add-to-cart from the dropdown, quantity selector in results, search history, mobile full-screen overlay, WPML and Polylang multilingual support, GA4 and GTM tracking, and unlimited styled search presets, all completely free with no subscription and no feature locks. It works on every WooCommerce theme, including block and FSE themes, with no coding required.
 
 = How do I get started quickly? =
 

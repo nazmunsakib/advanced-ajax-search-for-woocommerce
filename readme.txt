@@ -1,7 +1,7 @@
 === NivoSearch – Instant Product Search for WooCommerce ===
 Contributors: nazmunsakib
 Donate link: https://nivosearch.com
-Tags: woocommerce, product search, instant search, live search, autocomplete
+Tags: woocommerce search, product search, instant search, ajax search, autocomplete
 Requires at least: 5.6
 Tested up to: 6.8
 Requires PHP: 7.4
@@ -9,12 +9,13 @@ Stable tag: 2.0.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-Boost product discovery with WooCommerce product search, live AJAX search, SKU search, fuzzy matching, typo tolerance, and category & tag search.
+
+A powerful WooCommerce search plugin to boost product discovery. Includes instant WooCommerce Ajax search, SKU lookup, typo tolerance, and many more.
 
 
 == Description ==
 
-**NivoSearch** is the free WooCommerce product search plugin that shows real-time results in a dropdown the moment a shopper starts typing, with no page reload, no coding, and no complicated setup. This instant product search experience works on every WooCommerce store, every theme, and every page builder right out of the box, delivering fast, near-instant product results with images, prices, and stock status as shoppers type.
+**NivoSearch** is the free WooCommerce search plugin that shows real-time results in a dropdown the moment a shopper starts typing, with no page reload, no coding, and no complicated setup. This instant product search experience works on every WooCommerce store, every theme, and every page builder right out of the box, delivering fast, near-instant product results with images, prices, and stock status as shoppers type.
 
 Most WooCommerce search plugins lock their best features behind a paid subscription. NivoSearch gives you a powerful WooCommerce product search experience at no cost: typo correction with 300+ built-in rules, smart fuzzy matching, parent and variation SKU search, add-to-cart directly from the results dropdown, mobile full-screen overlay, search history, WPML and Polylang multilingual support, and unlimited individually styled search bars. No subscription. No feature locks. Everything works the moment you activate the plugin.
 
@@ -26,7 +27,7 @@ The truth is simple: shoppers who cannot find a product leave. Every zero-result
 
 **At a glance:** NivoSearch is a free WooCommerce product search and WooCommerce Ajax search plugin in one. It upgrades your store's default search to an instant product search experience: shoppers type, results appear in a live dropdown within 200 ms, misspellings are auto-corrected, SKUs and variation codes are searched, and products can be added to cart directly from the results. No subscription. No coding. Works on every WooCommerce theme.
 
----
+—
 
 = How NivoSearch Transforms Your WooCommerce Product Search =
 
@@ -54,7 +55,7 @@ The truth is simple: shoppers who cannot find a product leave. Every zero-result
 
 **⏱️ Search History:** The last 8 searches a customer makes are saved in their browser and shown the moment they focus the search bar. One tap replays any previous search, cutting re-order time to a single click.
 
----
+—
 
 = What NivoSearch Does That Default WooCommerce Search Cannot =
 
@@ -73,7 +74,7 @@ The default WooCommerce product search reloads the entire page and returns plain
 * Search events sent to Google Analytics 4 and GTM automatically after every search
 * Results delivered in under 200 milliseconds on standard shared hosting
 
----
+—
 
 = Who Is NivoSearch For? =
 
@@ -87,7 +88,7 @@ NivoSearch is the right WooCommerce instant product search solution for:
 * **Mobile-first stores** where a large share of shoppers are on phones and need a full-screen overlay experience
 * **Stores losing sales to zero-result searches** caused by misspellings, typos, or unusual product names
 
----
+—
 
 = What You Get Free =
 
@@ -109,7 +110,7 @@ Top WooCommerce product search plugins lock their best features behind a paid pl
 * ✅ Search history panel: last 8 searches shown on focus
 * ✅ WooCommerce products shown on the native WordPress search results page
 
----
+—
 
 == Frequently Asked Questions ==
 
@@ -221,7 +222,7 @@ Getting started takes under 5 minutes and requires zero coding. Install NivoSear
 
 Yes: NivoSearch finds all published WooCommerce products regardless of how they were created, including products imported via WP CLI, WooCommerce CSV importer, or any third-party import tool. After a bulk import, visit NivoSearch > Settings > Search Accuracy and click Rebuild Index to include your newly imported products in the search index.
 
----
+—
 
 == Installation ==
 
@@ -256,7 +257,7 @@ Yes: NivoSearch finds all published WooCommerce products regardless of how they 
 5. Click **Publish**
 6. Copy the shortcode from the preset list and paste it anywhere on your site
 
----
+—
 
 == For Developers ==
 
@@ -296,7 +297,7 @@ All events fire on `document` and are prefixed `nivo_search:`.
 `nivo_search:blur`: Fired when the search input loses focus.
 `nivo_search:didYouMeanClicked`: Fired when a customer clicks a "Did you mean?" suggestion.
 
----
+—
 
 == Screenshots ==
 
@@ -308,7 +309,7 @@ All events fire on `document` and are prefixed `nivo_search:`.
 6. NivoSearch Settings: Search Integration tab showing theme form replacement, shop redirect, and GA tracking options
 7. Typo Rules page: add custom correction rules and import or export them as CSV
 
----
+—
 
 == Changelog ==
 
@@ -374,14 +375,14 @@ All events fire on `document` and are prefixed `nivo_search:`.
 = 1.0.0 =
 * Initial release
 
----
+—
 
 == Upgrade Notice ==
 
 = 2.0.2 =
 Major update. After upgrading, go to NivoSearch > Settings > Search Accuracy and click Rebuild Index to update the search index with your latest product catalog.
 
----
+—
 
 == Privacy ==
 

@@ -5,7 +5,7 @@ Tags: woocommerce search, product search, instant search, ajax search, autocompl
 Requires at least: 5.6
 Tested up to: 6.8
 Requires PHP: 7.4
-Stable tag: 2.0.2
+Stable tag: 2.0.3
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -313,6 +313,13 @@ All events fire on `document` and are prefixed `nivo_search:`.
 
 == Changelog ==
 
+= 2.0.3 =
+* NEW: Default WooCommerce search form is now replaced by NivoSearch automatically when theme integration is enabled
+* NEW: Native WordPress search form and WooCommerce product search form both route through NivoSearch
+* FIX: Resolved a search caching issue that could return stale results after product updates
+* IMPROVED: Plugin metadata updated for better SEO and WordPress.org discoverability
+* IMPROVED: Plugin name and short descriptions refined for clarity
+
 = 2.0.2 =
 * NEW: Fuzzy search engine: finds close product name matches when no exact results exist
 * NEW: Search index built and maintained automatically, with one-click rebuild in Settings
@@ -378,6 +385,9 @@ All events fire on `document` and are prefixed `nivo_search:`.
 —
 
 == Upgrade Notice ==
+
+= 2.0.3 =
+Maintenance release. Improves theme search form integration and fixes a search caching edge case. Recommended for all users.
 
 = 2.0.2 =
 Major update. After upgrading, go to NivoSearch > Settings > Search Accuracy and click Rebuild Index to update the search index with your latest product catalog.

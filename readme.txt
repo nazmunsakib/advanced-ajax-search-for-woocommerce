@@ -1,21 +1,21 @@
-=== NivoSearch – Instant Product Search for WooCommerce ===
+=== NivoSearch – Ajax Search for WooCommerce ===
 Contributors: nazmunsakib
 Donate link: https://nivosearch.com
 Tags: woocommerce search, product search, instant search, ajax search, autocomplete
 Requires at least: 5.6
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 2.0.3
+Stable tag: 2.0.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
 
-A powerful WooCommerce search plugin to boost product discovery. Includes instant WooCommerce Ajax search, SKU lookup, typo tolerance, and many more.
+A powerful WooCommerce Ajax search to boost product discovery. Includes fuzzy search, SKU lookup, typo tolerance, and many more.
 
 
 == Description ==
 
-**NivoSearch** is the free WooCommerce search plugin that shows real-time results in a dropdown the moment a shopper starts typing, with no page reload, no coding, and no complicated setup. This instant product search experience works on every WooCommerce store, every theme, and every page builder right out of the box, delivering fast, near-instant product results with images, prices, and stock status as shoppers type.
+**NivoSearch** is WooCommerce Ajax search plugin that shows real-time results in a dropdown the moment a shopper starts typing, with no page reload, no coding, and no complicated setup. This instant product search experience works on every WooCommerce store, every theme, and every page builder right out of the box, delivering fast, near-instant product results with images, prices, and stock status as shoppers type.
 
 Most WooCommerce search plugins lock their best features behind a paid subscription. NivoSearch gives you a powerful WooCommerce product search experience at no cost: typo correction with 300+ built-in rules, smart fuzzy matching, parent and variation SKU search, add-to-cart directly from the results dropdown, mobile full-screen overlay, search history, WPML and Polylang multilingual support, and unlimited individually styled search bars. No subscription. No feature locks. Everything works the moment you activate the plugin.
 
